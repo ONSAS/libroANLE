@@ -1,0 +1,528 @@
+% ============================================================================
+% This work is published under a CC BY-SA license (\textit{Creative Commons Attribution-ShareAlike 4.0 International License}), which means that you can copy, redistribute, remix, transform, and build upon the content for any purpose, even commercially, as long as you give appropriate credit, provide a link to the license, and indicate if changes were made. License details: creativecommons.org/licenses/by-sa/4.0 .
+% ============================================================================
+
+\documentclass[spanish,twoside,openright,10pt]{book}
+
+% ------------------------------------
+% paquetes de formato
+
+% paquetes basicos
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+%\usepackage{epsfig}
+\usepackage{graphicx}
+
+\usepackage{amssymb,amsmath,amsfonts,amsthm}%,stmaryrd,latexsym,bbold,psfrag,fontenc,dsfont}
+\usepackage{bm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{lscape}
+\usepackage{wrapfig}
+
+% color
+\usepackage[usenames]{color}
+\color{black} % IMPORTANTE, el paquete color hace define el color por defecto Black cmyk 0 0 0 1 que no es totalmente negro
+\usepackage[skins]{tcolorbox}
+
+\usepackage{subfig}
+
+\usepackage{hyphenat}
+%\usepackage[hidelinks,bookmarks=false]{hyperref}
+\usepackage[plainpages=false]{hyperref}
+
+% diagramacion de hoja
+\usepackage[a5paper,top=16.5mm,bottom=12.5mm,left=16.5mm,right=12.5mm,portrait]{geometry}
+
+\usepackage[cam,a4,center]{crop}
+
+% fuente
+\usepackage{libertine}
+\usepackage{libertinust1math}
+\usepackage[T1]{fontenc}
+% ------------------------------------
+
+
+% -----------------------------
+% estilo de bibliografia
+\usepackage{natbib}
+\bibliographystyle{./bibs/apalike-es}
+% -----------------------------
+
+% ----------------------------------------------------
+% ----- encabezados ------------
+\usepackage{fancyhdr,fancybox}
+
+\pagestyle{fancy}
+
+% with this we ensure that the chapter and section headings are in lowercase.
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\hspace{1ex}#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{Sección \thesection.\hspace{1ex}#1}}
+\fancyhf{} % delete current header and footer
+\fancyhead[LE,RO]{\small\sffamily\bfseries\thepage}
+\fancyhead[LO]{\small\sffamily\bfseries\nouppercase{\rightmark}}
+\fancyhead[RE]{\small\sffamily\bfseries\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0pt}
+\addtolength{\headheight}{3.6pt} % space for the rule
+\fancypagestyle{plain}{%
+	\fancyhead{} % get rid of headers on plain pages
+	\renewcommand{\headrulewidth}{0pt} % and the line
+}
+% ----------------------------------------------------
+
+
+\usepackage[normalem]{ulem}
+\usepackage[labelfont={small,sf,bf}]{caption}
+\usepackage{enumitem}
+
+% para setear interlineado
+\usepackage{setspace}
+
+% --------------------------------
+% ----- algoritmos y codigos -----
+
+% algoritmos-pseudocodigos
+\usepackage{algorithmic}
+\usepackage{algorithm}
+%\usepackage{algcompatible} %\usepackage{algpseudocode}
+\makeatletter
+\renewcommand*{\ALG@name}{Algoritmo}
+\makeatother
+% ----------------------
+
+% marca de agua: EN REVISION
+\usepackage[printwatermark]{xwatermark}
+\newwatermark[pages=1-100,color=red!10,angle=45,scale=2.0,xpos=0,ypos=0]{En revisión.}
+
+
+% ----------------------
+% codigos embebidos
+\usepackage[numbered,framed]{matlab-prettifier}
+%
+\let\ph\mlplaceholder % shorter macro
+\lstMakeShortInline"
+
+\lstset{
+	style              = Matlab-editor,
+	basicstyle         = \footnotesize\mlttfamily,
+	language           = Octave,
+	escapechar         = ",
+	mlshowsectionrules = true,
+}
+\renewcommand\lstlistingname{Código}
+% ----------------------
+
+
+
+% ----------------------------------------------
+% seteos varios
+% ----------------------------------------------
+
+\usepackage{bigfoot} % to allow verbatim in footnote
+
+\usepackage{titlesec}
+\usepackage{titletoc}
+
+%\titleformat{\chapter}[display]{\Huge\sffamily\bfseries}{\chaptertitlename~\thechapter}{2ex}{}
+\titleformat{\section}   {\large\sffamily\bfseries}{\thetitle.}{1ex}{}
+\titleformat{\subsection}{\small\sffamily\bfseries}{\thetitle.}{1ex}{}
+\titleformat{\subsubsection}{\small\sffamily\bfseries}{}{1ex}{}
+
+\titlecontents{chapter}[1.3em]
+{\vspace{1.1em}\sffamily\bfseries}
+{\contentslabel{1.3em}}
+{\hspace*{-1.3em}}
+{\titlerule[1pt]\contentspage}
+\titlecontents{section}[3.5em]
+{\small\sffamily} % note that 3.5 = 1.3 + 2.2
+{\contentslabel{2.2em}}
+{\hspace*{-2.2em}}
+{\titlerule*[1pc]{.}\contentspage}
+\titlecontents{subsection}[6.4em]
+{\small\sffamily} % note that 6.4 = 3.5 + 2.9
+{\contentslabel{2.9em}}
+{\hspace*{-2.9em}}
+{\titlerule*[1pc]{.}\contentspage}
+
+% --------------------------------------------------------
+% Cuadros en ejemplos y ejercicios
+% -------------------------------------------------------
+\usepackage{framed}
+
+\renewcommand{\FrameCommand}{\shadowbox}
+
+\definecolor{shadecolor}{rgb}{0.8,0.8,0.8}
+
+\setlength{\fboxsep}{0.5em}
+%\setlength{\FrameSep}{0.0mm}
+%\setlength{\FrameRule}{1pt}
+% --------------------------------------------------------
+
+%
+\usepackage{pdfpages}
+
+
+
+% ----------   paquetes para diagrama de flujo apendice ------------
+\usepackage{pgf,tikz}
+\usetikzlibrary{arrows,backgrounds,shapes.geometric,calc}
+%\usetikzlibrary{arrows,snakes,backgrounds,shapes.geometric,calc}
+\listfiles
+% -------------------------------------
+
+
+ \usepackage{relsize}
+
+\usetikzlibrary{arrows.meta}
+\tikzset{%
+	>={Latex[width=2mm,length=2mm]},
+	% Specifications for style of nodes:
+	base/.style = {rectangle, rounded corners, draw=black,
+		minimum width=4cm, minimum height=1cm,
+		text centered, font=\sffamily},
+	activityStarts/.style = {base, fill=blue!30},
+	startstop/.style = {base, fill=red!30},
+	activityRuns/.style = {base, fill=green!30},
+	process/.style = {base, minimum width=2.5cm, fill=orange!15,
+		font=\ttfamily},
+}
+
+
+% esto resuelve problema tikz con babel
+\usepackage{etoolbox}
+\AtBeginEnvironment{tikzpicture}{\shorthandoff{>}\shorthandoff{<}}{}{}
+
+
+
+%
+% --------------------------------------------------------
+% para figuras con tikz e inkscape
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+% Comandos figuras inkscape
+%\newcommand{\executeiffilenewer}[3]{%
+%\ifnum\pdfstrcmp{\pdffilemoddate{#1}}%
+%{\pdffilemoddate{#2}}>0%
+%{\immediate\write18{#3}}\fi%
+%}
+%\newcommand{\includesvg}[1]{%
+%\executeiffilenewer{#1.svg}{#1.pdf}%
+%{inkscape -z -D --file=#1.svg %
+%--export-pdf=#1.pdf --export-latex}%
+%\input{#1.eps_tex}%
+%}
+
+% agrega ruta a figuras
+\graphicspath{{../fig/}}
+% -------------------------------------------
+%
+%
+\newtheoremstyle{miestilo}% <name>
+{0pt}% <Space above>
+{0pt}% <Space below>
+{\normalfont}% <Body font>
+{0pt}% <Indent amount>
+{\small\sffamily\bfseries}% <Theorem head font>
+{\quad}% <Punctuation after theorem head>
+{0pt}% <Space after theorem head>
+{}% <Theorem head spec (can be left empty, meaning `normal')>
+
+\addto{\captionsspanish}{\renewcommand*{\tablename}{Tabla}}
+
+\theoremstyle{miestilo}
+\newtheorem{SHteorema}{Teorema}[chapter]
+\newtheorem{SHcorolario}[SHteorema]{Corolario}
+\newtheorem{SHhipotesis}[SHteorema]{Hipótesis}
+\newtheorem{SHlema}[SHteorema]{Lema}
+\newtheorem{SHnotacion}[SHteorema]{Notación}
+\newtheorem{SHdefinicion}[SHteorema]{Definición}
+\newtheorem{SHejemplo}[SHteorema]{Ejemplo}
+\newtheorem{SHejercicio}[SHteorema]{Ejercicio}
+\newtheorem{SHobservacion}[SHteorema]{Observación}
+\newtheorem{axioma}{Axioma}
+%
+\newenvironment{teorema}[1][]{\begin{SHteorema}[#1]\begin{framed}}{\end{framed}\end{SHteorema}}
+\newenvironment{corolario}[1][]{\begin{SHcorolario}[#1]\begin{framed}}{\end{framed}\end{SHcorolario}}
+\newenvironment{hipotesis}[1][]{\begin{SHhipotesis}[#1]\begin{framed}}{\end{framed}\end{SHhipotesis}}
+\newenvironment{lema}[1][]{\begin{SHlema}[#1]\begin{framed}}{\end{framed}\end{SHlema}}
+\newenvironment{definicion}[1][]{\begin{SHdefinicion}[#1]\begin{framed}}{\end{framed}\end{SHdefinicion}}
+\newenvironment{notacion}[1][]{\begin{SHnotacion}[#1]\begin{framed}}{\end{framed}\end{SHnotacion}}
+\newenvironment{ejemplo}[1][]{\begin{SHejemplo}[#1]\begin{framed}}{\end{framed}\end{SHejemplo}}
+\newenvironment{ejercicio}[1][]{\begin{SHejercicio}[#1]\begin{framed}}{\end{framed}\end{SHejercicio}}
+\newenvironment{observacion}[1][]{\begin{SHobservacion}[#1]\begin{framed}}{\end{framed}\end{SHobservacion}}
+
+\newcommand{\subtitulo}[1]{~\\\noindent{\small\sffamily\bfseries #1}\vspace{2mm}}
+
+\usepackage{lineno}
+
+%\definecolor{miblue}{rgb}{0,0.1,0.5}%
+\definecolor{miblue}{rgb}{0,0.1,0.38}%
+%
+\definecolor{colorbordecajas}{rgb}{0,0.1,0.4}%
+\definecolor{colorfondocajas}{rgb}{.86,.91,.996}%
+%
+%
+% -----------  cajas ----------------------------
+\newcommand{\cajaactividad}[1]{
+\begin{center}
+\begin{tcolorbox}[enhanced,width=0.9\textwidth,drop fuzzy shadow southwest,colframe=colorbordecajas,colback=colorfondocajas,title=\textbf{Actividad}]
+#1
+\end{tcolorbox}
+\end{center}
+}
+
+\definecolor{colorbordecajasconcepto}{rgb}{0.1,0.33,0.01}%
+%\definecolor{colorfondocajasconcepto}{rgb}{.73,.95,.65}%
+\definecolor{colorfondocajasconcepto}{rgb}{.9,.99,.8}%
+
+\newcommand{\cajaconcepto}[2]{
+	\begin{center}
+		\begin{tcolorbox}[enhanced,width=0.9\textwidth,drop fuzzy shadow southwest,colframe=colorbordecajasconcepto,colback=colorfondocajasconcepto,title=\textbf{#1}]
+			#2
+		\end{tcolorbox}
+	\end{center}
+}
+% ---------------------------------------------------------
+%
+%
+\titleformat{\chapter}
+{\normalfont\Large\color{miblue}\bfseries}{\color{miblue}\chaptername\ \thechapter:}{1em}{}[{\color{miblue}\titlerule[0.8pt]}]
+
+
+%\usepackage{forest}
+
+%\definecolor{foldercolor}{RGB}{124,166,198}
+%
+%\tikzset{pics/folder/.style={code={%
+%			\node[inner sep=0pt, minimum size=#1](-foldericon){};
+%			\node[folder style, inner sep=0pt, minimum width=0.3*#1, minimum height=0.6*#1, above right, xshift=0.05*#1] at (-foldericon.west){};
+%			\node[folder style, inner sep=0pt, minimum size=#1] at (-foldericon.center){};}},
+%	pics/folder/.default={20pt},folder style/.style={draw=foldercolor!80!black,top color=foldercolor!40,bottom color=foldercolor}
+%}
+%
+%\forestset{is file/.style={edge path'/.expanded={%
+%			([xshift=\forestregister{folder indent}]!u.parent anchor) |- (.child anchor)},
+%		inner sep=1pt}, this folder size/.style={edge path'/.expanded={%
+%			([xshift=\forestregister{folder indent}]!u.parent anchor) |- (.child anchor) pic[solid]{folder=#1}}, inner ysep=0.6*#1},
+%	folder tree indent/.style={before computing xy={l=#1}},
+%	folder icons/.style={folder, this folder size=#1, folder tree indent=3*#1},
+%	folder icons/.default={12pt},
+%}
+
+
+
+% archivo de definiciones
+\input{definitions.tex}
+
+% --------------------------------------------
+% Numeracion de secciones (hasta subsection)
+\setcounter{secnumdepth}{2}
+
+\addto\captionsspanish{%
+	\renewcommand\contentsname{Lista de contenidos}%
+}
+
+
+% ===================================================================================================================================
+% contenido del documento
+% ===================================================================================================================================
+\begin{document}
+
+\frontmatter
+
+%%opcion pdf
+%\includepdf[pages={1}]{figs/tapa_apuntes.pdf}
+
+%\begin{center}
+%\includegraphics[width=\textwidth]{figs/tapa_apuntes}
+%\end{center}
+
+%\thispagestyle{empty}
+
+%\clearpage\thispagestyle{empty}\addtocounter{page}{-1}
+%\clearpage\thispagestyle{empty}
+
+
+
+\begin{titlepage}
+
+~
+\vspace{2cm}
+%  \doublespacing
+%  \begin{center}
+%      ~\\[1cm]
+      % Upper part of the page
+%        \includegraphics[height=0.14\textwidth]{figs/logofing}
+%        \hfill
+%        \includegraphics[height=0.17\textwidth]{figs/logoudelar}    
+
+
+  \noindent
+\textcolor{miblue}{        \rule{\linewidth}{0.4mm}} \\[0.2cm]
+  \noindent {\Large\sffamily\textbf{Introducción al Análisis No Lineal de Estructuras}}\\[0.3cm]
+%        \rule{\linewidth}{0.6mm} \\[0.2cm]
+                {\large\sffamily Texto del curso Análisis No Lineal de Estructuras}\\
+\textcolor{miblue}{\rule{\linewidth}{.4mm}} \\[0.2cm]
+{\Large\sffamily  Juan Bruno Bazzano  $\cdot$ Jorge Pérez Zerpa}\\[0.4cm]
+%{\sffamily  Facultad de Ingeniería}\\
+%{\sffamily  Universidad de la República}
+%    \end{center}
+
+%  {\sffamily Juan Bruno Bazzano \hfill Jorge Pérez Zerpa\\
+%	{\footnotesize 	Instituto de Matemática y Estadística  \hfill Instituto de Estructuras y Transporte\\
+%		Facultad de Ingeniería \hfill Facultad de Ingeniería\\
+%		Universidad de la República \hfill Universidad de la República\\
+%		Montevideo, Uruguay \hfill Montevideo, Uruguay}}\\[0.5cm]
+%  \end{flushright}
+
+
+
+
+\vfill
+
+\noindent
+\begin{center}
+	% Upper part of the page
+	\hfill
+	\includegraphics[height=0.12\textwidth]{logofing}
+\qquad	
+	\includegraphics[height=0.15\textwidth]{logoudelar}    
+\end{center}
+
+\end{titlepage}
+
+%~
+%\thispagestyle{empty}
+%
+%\clearpage\thispagestyle{empty}
+
+
+~
+\vspace{5mm}
+\singlespacing
+
+
+  \noindent
+{\sffamily Juan Bruno Bazzano \hfill Jorge Pérez Zerpa\\
+	{\footnotesize 	Instituto de Matemática y Estadística  \hfill Instituto de Estructuras y Transporte\\
+		Facultad de Ingeniería \hfill Facultad de Ingeniería\\
+		Universidad de la República \hfill Universidad de la República\\
+		Montevideo, Uruguay \hfill Montevideo, Uruguay}}\\[0.5cm]
+
+
+\vspace{25mm}
+
+\noindent
+Versión de documento en desarrollo. Ver primer edición en enlace publicado en
+\href{https://github.com/jorgepz/libroANLE}{github.com/jorgepz/libroANLE}
+
+\noindent
+Título: Introducción al Análisis No Lineal de Estructuras\\
+\noindent
+Sub-título: Texto del curso Análisis No Lineal de Estructuras\\[-2mm]
+
+\noindent
+Facultad de Ingeniería, Universidad de la República.\\
+Diciembre de 2017, Montevideo, Uruguay.\\[-2mm]
+
+%\noindent
+%ISBN: 978-9974-0-1525-8.\\
+
+\begin{small}
+
+\noindent
+Este documento es publicado bajo una licencia \textit{Creative Commons Attribution-ShareAlike 4.0 International License}. Ver detalles de la licencia en creativecommons.org/licenses/by-sa/4.0.\\
+
+\noindent
+Diseño de tapa: Carlos Gomez. \\
+Registro: Jimena Machado.\\[1mm] % \href{http://beto.otrosur.com/}{beto.otrosur.com} .
+Imágenes de tapa (de izquierda a derecha): Gimnasio de Talleres Don Bosco, Montevideo, Uruguay (foto: JPZ) - Sony Center, Berlin, Alemania (foto: JBB) - Great Court British Museum, Londres, Reino Unido (foto: JBB). \\
+
+\noindent
+This work is published under a CC BY-SA license (\textit{Creative Commons Attribution-ShareAlike 4.0 International License}), which means that you can copy, redistribute, remix, transform, and build upon the content for any purpose, even commercially, as long as you give appropriate credit, provide a link to the license, and indicate if changes were made. If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original. License details: \href{https://creativecommons.org/licenses/by-sa/4.0/}{creativecommons.org/licenses/by-sa/4.0}.
+
+\vspace{2mm}
+
+\noindent
+The use of general descripitive names, resgistered names, trademarks, etc. in this publication does not imply, even in the absence of a specific statement, that such names are exempt from the relevant protective laws and regulations and therefore free for general use.
+
+\end{small}
+
+\vspace{3mm}
+
+\noindent
+\begin{footnotesize}
+Documento producido usando software libre: \LaTeX, TeXstudio, Geany, Inkscape y GNU-Octave.
+\end{footnotesize}
+
+
+
+\thispagestyle{empty}
+%~
+
+% ----------------
+% prefacio y dedicatoria de primer edicion
+%\input{prefacio.tex}
+%\newpage
+%\thispagestyle{empty}
+%~
+%\vspace{150mm}
+%
+%\begin{small}
+%\hfill \textit{A los Profesores Adam Sadowski y Julio Borghi.}
+%\end{small}
+% --------------------
+
+
+
+\tableofcontents
+\thispagestyle{empty}
+
+
+
+\mainmatter
+
+\linenumbers
+
+
+% ------ Capitulo 1 - Introduccion  ---------
+%\input{sourcesJBBG/Cap1_Intro.tex} % Autor JBBG. Acá va Intro general. MetNums.
+
+% ------ Capitulo 2 - Nolinealidad geometrica  ---------
+%\input{sourcesJBBG/Cap2_Sec1_PMEPT} % Autor JBBG. Principio de Minima Energia Potencial Total
+%\input{sourcesJBBG/Cap2_Sec2_PTV} % Autor JBBG. Principio de los Trabajos Virtuales
+%\input{sourcesJBBG/Cap2_Sec3_NLSM} % Autor JBBG. Non Linear Strain Measures
+%\input{sourcesJPZ/Cap2_Sec4_MEF} % Autor JPZ. Formulación de Elementos Finitos en No Linealidad Geométrica
+
+%\input{chaps/Cap3_MNAN}
+
+% ------ Capitulo 3 - Nolinealidad material ---------
+%\input{sourcesJPZ/Cap3_NonLinMat.tex} % Autor JPZ. Material Hiperelástico NoLin. Plasticidad.
+
+% ------ Capitulo 4 - Dinamica ---------
+%\input{sourcesJBBG/Cap4_Dinamica.tex} % Autores JBBG. Diferencia Centrada y Newmark. JPZ. Formulación Dinámica en FEM.
+%
+%\appendix
+%\renewcommand\chaptername{Apéndice}
+
+%\input{sourcesJPZ/Ape_retic} % Autor JPZ. Formulacion de Reticulados equivalentes a Viga Timoshenko.
+
+%\input{sourcesJPZ/Ape_ONSAS} % ONSAS
+%
+%%\bibliographystyle{apa}
+\bibliography{./bib/esc_apuntes}
+%
+%\newpage
+
+%~
+%\thispagestyle{empty}
+
+%%opcion pdf
+%\includepdf[pages={1}]{figs/contratapa_apuntes.pdf}
+
+\end{document}
+% ===================================================================================================================================
