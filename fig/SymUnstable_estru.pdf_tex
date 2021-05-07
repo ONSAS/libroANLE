@@ -1,6 +1,6 @@
 %% Creator: Inkscape inkscape 0.92.5, www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
-%% Accompanies image file 'Fig0_modif.pdf' (pdf, eps, ps)
+%% Accompanies image file 'SymUnstable_estru.pdf' (pdf, eps, ps)
 %%
 %% To include the image in your LaTeX document, write
 %%   \input{<filename>.pdf_tex}
@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{916.97917332bp}%
+    \setlength{\unitlength}{298.83270169bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,20 +50,17 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.75821646)%
+  \begin{picture}(1,1.64395533)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
-    \put(0,0){\includegraphics[width=\unitlength,page=1]{Fig0_modif.pdf}}%
-    \put(0.41034398,0.35718089){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.26372868\unitlength}\raggedright $\circled{6}$ GMNIA\end{minipage}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=2]{Fig0_modif.pdf}}%
-    \put(0.32694451,0.71789241){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35201074\unitlength}\raggedright $\circled{1}$ LA\end{minipage}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=3]{Fig0_modif.pdf}}%
-    \put(0.75662111,0.57150065){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.26372868\unitlength}\raggedright $\circled{5}$ GNIA\end{minipage}}}%
-    \put(-0.00271634,0.52177215){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35312826\unitlength}\raggedright $\circled{4}$ MNA\end{minipage}}}%
-    \put(0.0044034,0.63841879){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35312826\unitlength}\raggedright $\circled{2}$ LBA\end{minipage}}}%
-    \put(0.56269965,0.66076868){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35312826\unitlength}\raggedright $\circled{3}$ GNA\end{minipage}}}%
-    \put(0.59514317,0.07030441){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.26372868\unitlength}\raggedright Desplazamiento\end{minipage}}}%
-    \put(0.71486118,0.07724855){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.01340993\unitlength}\raggedright \end{minipage}}}%
-    \put(0.01450238,0.74471229){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.26372868\unitlength}\raggedright Carga\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{SymUnstable_estru.pdf}}%
+    \put(0.71527297,0.36492135){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.4674699\unitlength}\raggedright $\theta$\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{SymUnstable_estru.pdf}}%
+    \put(0.2099196,0.85114578){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.4674699\unitlength}\raggedright $K$\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{SymUnstable_estru.pdf}}%
+    \put(0.76943951,1.52316281){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.4674699\unitlength}\raggedright $P$\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{SymUnstable_estru.pdf}}%
+    \put(0.72533723,1.06769727){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.4674699\unitlength}\raggedright $\theta$\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{SymUnstable_estru.pdf}}%
   \end{picture}%
 \endgroup%

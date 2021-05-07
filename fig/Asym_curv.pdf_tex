@@ -1,6 +1,6 @@
 %% Creator: Inkscape inkscape 0.92.5, www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
-%% Accompanies image file 'Fig0_modif.pdf' (pdf, eps, ps)
+%% Accompanies image file 'Asym_curv.pdf' (pdf, eps, ps)
 %%
 %% To include the image in your LaTeX document, write
 %%   \input{<filename>.pdf_tex}
@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{916.97917332bp}%
+    \setlength{\unitlength}{927.69981bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,20 +50,20 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.75821646)%
+  \begin{picture}(1,0.62271765)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
-    \put(0,0){\includegraphics[width=\unitlength,page=1]{Fig0_modif.pdf}}%
-    \put(0.41034398,0.35718089){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.26372868\unitlength}\raggedright $\circled{6}$ GMNIA\end{minipage}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=2]{Fig0_modif.pdf}}%
-    \put(0.32694451,0.71789241){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35201074\unitlength}\raggedright $\circled{1}$ LA\end{minipage}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=3]{Fig0_modif.pdf}}%
-    \put(0.75662111,0.57150065){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.26372868\unitlength}\raggedright $\circled{5}$ GNIA\end{minipage}}}%
-    \put(-0.00271634,0.52177215){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35312826\unitlength}\raggedright $\circled{4}$ MNA\end{minipage}}}%
-    \put(0.0044034,0.63841879){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35312826\unitlength}\raggedright $\circled{2}$ LBA\end{minipage}}}%
-    \put(0.56269965,0.66076868){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35312826\unitlength}\raggedright $\circled{3}$ GNA\end{minipage}}}%
-    \put(0.59514317,0.07030441){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.26372868\unitlength}\raggedright Desplazamiento\end{minipage}}}%
-    \put(0.71486118,0.07724855){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.01340993\unitlength}\raggedright \end{minipage}}}%
-    \put(0.01450238,0.74471229){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.26372868\unitlength}\raggedright Carga\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{Asym_curv.pdf}}%
+    \put(0.33793224,0.0333643){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.260681\unitlength}\raggedright $(0,0)$\end{minipage}}}%
+    \put(0.76422694,0.04023591){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.260681\unitlength}\raggedright $\theta$\end{minipage}}}%
+    \put(0.64381625,-0.00549899){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.01325497\unitlength}\raggedright \end{minipage}}}%
+    \put(0.37150182,0.6106705){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.34904746\unitlength}\raggedright $P$\end{minipage}}}%
+    \put(0.5220026,0.62546502){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.61975051\unitlength}\raggedright {\small punto de bifurcación}\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{Asym_curv.pdf}}%
+    \put(0.50334488,0.47565042){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.34904746\unitlength}\raggedright $P^c$\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{Asym_curv.pdf}}%
+    \put(0.5473503,0.23490338){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.61975051\unitlength}\raggedright {\small con imperf.}\end{minipage}}}%
+    \put(-0.0040429,0.3990107){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.61975051\unitlength}\raggedright {\small sin imperf.}\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{Asym_curv.pdf}}%
   \end{picture}%
 \endgroup%
