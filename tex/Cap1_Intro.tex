@@ -28,11 +28,6 @@ No obstante, para estructuras que se apartan de las hipótesis asumidas en los p
 La necesidad de llevar adelante estos análisis se vuelve imprescindible para ciertos tipos de estructuras que trabajan en régimen no lineal bajo cargas de servicio. Algunos ejemplos de estas estructuras son:
 
 
-%\begin{myboxedtext}{My text}
-%	Some test text goes here to illustrate the use of the box defined for text.
-%\end{myboxedtext}
-
-
 \begin{itemize}
 	\item mástiles atirantados \citep{Sparling1995},
 	\item puentes suspendidos \citep{Larsen2000},
@@ -282,478 +277,425 @@ Estas desventajas del método motivan a introducir los métodos iterativos en la
 
 
 
+\lstinputlisting[caption = {Implementación del Método de Euler para Ejemplo Numérico 1.}\label{cod:ejnonlin}]{../src/Incremental1dof.m}
+%
+%
+\subsection{Métodos Iterativos}\label{Iter}
+
+Luego de haber presentado los métodos incrementales y observar desventajas como el fenómeno de \textit{drift}, se plantea en esta sección la resolución del problema en cuestión por medio de métodos iterativos. %
+
+La idea fundamental de los métodos iterativos es fijar el valor del parámetro $\lambda=\lambda_k$ y hallar el vector $\bfx_k$ que verifica la ecuación no lineal: $\bff(\bfx_k)-\lambda_k \bfv=0$. De esta manera las incógnitas del sistema no lineal son solamente las entradas del vector $\bfx_k$.
+
+El procedimiento consiste en, dado un vector inicial $\bfx_k^{(0)}$, iterar mediante alguna regla de manera de asegurar que el vector obtenido ($\bfx_k^{(N)}$) satisface la ecuación no lineal con una tolerancia definida a priori, siendo $N$ el número de iteraciones requeridas. %
+%
+La expresión matemática asociada a satisfacer la ecuación no lineal es:
+%
+\begin{equation}\label{ec9}
+	\| \bff(\bfx_k^{(N)}) - \lambda_k \bfv \| < \epsilon_{tol}.
+\end{equation}
+
+Este procedimiento iterativo suele llamarse ``iterar hasta obtener convergencia''. %
+%
+Iterar hasta satisfacer la condición dada por la Ecuación~\eqref{ec9} garantiza que se habrá obtenido un punto $(\lambda_k,\bfx_k^{(N)})$ para el cual se tiene un error controlado respecto de la solución exacta. Es por esto que los métodos iterativos eliminan el problema de \textit{drift}.
 
 
 
+A continuación se presenta una de las reglas iterativas más populares para resolver sistemas de ecuaciones no lineales, el llamado Método de Newton-Raphson.
 
+\subsubsection{Método de Newton-Raphson} \label{sec:NRcap1}
+
+En el Método de Newton-Raphson (NR) se asume que se cuenta con un vector $\bfx_k^{(0)}$ próximo a la solución buscada $\bfx_k$ de la Ecuación~\eqref{ec2}. Para una ecuación no lineal con una sola incógnita, el método se puede deducir mediante un argumento geométrico, mientras que para un sistema de ecuaciones no lineales, la deducción requiere del concepto de linealización de funciones vectoriales.
+
+A modo de referencia, el software SAP 2000\textsuperscript{\textregistered} \footnote{desarrollado por \textit{Computers and Structures Inc.}}, utiliza iteraciones de N-R para resolver problemas con no linealidad geométrica, permitiendo al usuario definir parámetros básicos del método.
+
+
+\paragraph{Una Ecuación y Una Variable:} %
 %
-%\lstinputlisting[caption = {Implementación del Método de Euler para resolución del Ejemplo Numérico 1.}\label{cod:ejnonlin}]{sourcesJBBG/Incremental1dof.m}
+Se describe a continuación la deducción geométrica para el caso de una sola incógnita. De acuerdo a lo que se muestra en la Figura~\ref{fig:fig2}, la idea del método es trazar la tangente a la curva $(x,f(x))$ en el punto conocido $x_k^{(0)}$ y hallar la intersección de esta recta tangente con la recta horizontal dada por el nivel de carga definido: $\lambda_k \bfv$. %
 %
+El valor de $x$ en esta intersección será la nueva aproximación de la solución de la ecuación no lineal $x_k^{(1)}$.
+
+\begin{figure}[htb]
+	\centering
+   \def\svgwidth{0.7\textwidth}
+\input{../fig/esquemaIterNR.pdf_tex}
+	\caption{Representación geométrica de iteración de Newton-Raphson.}
+	\label{fig:fig2}
+\end{figure}
+
+La ecuación de recta de la tangente en el punto $x_k^{(0)}$ está dada por:
 %
-%\subsection{Métodos Iterativos}\label{Iter}
+\begin{equation}
+	\lambda v = f(x_k^{(0)})+f'(x_k^{(0)})(x-x_k^{(0)}),
+\end{equation}
 %
-%Luego de haber presentado los métodos incrementales y observar desventajas como el fenómeno de \textit{drift}, se plantea en esta sección la resolución del problema en cuestión por medio de métodos iterativos. %
+mientras que la ecuación de la recta horizontal correspondiente al nivel de carga especificado es:
 %
-%La idea fundamental de los métodos iterativos es fijar el valor del parámetro $\lambda=\lambda_k$ y hallar el vector $\bfx_k$ que verifica la ecuación no lineal: $\bff(\bfx_k)-\lambda_k \bfv=0$. De esta manera las incógnitas del sistema no lineal son solamente las entradas del vector $\bfx_k$.
+\begin{equation}
+	\lambda v = \lambda_k v.
+\end{equation}
+
+La intersección de ambas rectas provee la siguiente ecuación lineal en $x$:
 %
-%El procedimiento consiste en, dado un vector inicial $\bfx_k^{(0)}$, iterar mediante alguna regla de manera de asegurar que el vector obtenido ($\bfx_k^{(N)}$) satisface la ecuación no lineal con una tolerancia definida a priori, siendo $N$ el número de iteraciones requeridas. %
-%%
-%La expresión matemática asociada a satisfacer la ecuación no lineal es:
-%%
-%\begin{equation}\label{ec9}
-%	\| \bff(\bfx_k^{(N)}) - \lambda_k \bfv \| < \epsilon_{tol}.
-%\end{equation}
+\begin{equation}
+\lambda_k v = f(x_k^{(0)})+f'(x_k^{(0)})(x-x_k^{(0)}).
+\end{equation}
+
+Resolviendo $x$ en la ecuación anterior y definiendo ese valor como la nueva aproximación de la solución: $x_k^{(1)}$,
+se llega a:
 %
-%Este procedimiento iterativo suele llamarse ``iterar hasta obtener convergencia''. %
-%%
-%Iterar hasta satisfacer la condición dada por la Ecuación~\eqref{ec9} garantiza que se habrá obtenido un punto $(\lambda_k,\bfx_k^{(N)})$ para el cual se tiene un error controlado respecto de la solución exacta. Es por esto que los métodos iterativos eliminan el problema de \textit{drift}.
+\begin{equation}
+x_k^{(1)}=x_k^{(0)}-\frac{f(x_k^{(0)})-\lambda_k v}{f'(x_k^{(0)})}.
+\end{equation}
+
+El procedimiento anterior permite definir el método iterativo de Newton-Raphson:
 %
+\begin{equation}\label{NR1}
+\text{N-R}
+	\begin{cases} 
+	\displaystyle
+		x_k^{(i+1)}=x_k^{(i)}-\frac{f(x_k^{(i)})-\lambda_k v}{f'(x_k^{(i)})} \\
+		x_k^{(0)}
+	\end{cases}
+\end{equation}
+
+Es claro a partir de la Ecuación~\eqref{NR1} que este método no puede iterar si la derivada primera de $f(x)$ es igual a cero en el punto donde se traza la tangente. Esta limitación también estará presente en el caso de Newton-Raphson para varias variables.
+
+
+\paragraph{Sistema de $n$ Ecuaciones y $n$ Variables:} %
 %
+A continuación se presenta la deducción del método de Newton-Raphson para un sistema de $n$ ecuaciones no lineales con $n$ incógnitas. Se trabajará con el sistema de ecuaciones no lineales dado en la Ecuación~\eqref{ec3}. %
 %
-%A continuación se presenta una de las reglas iterativas más populares para resolver sistemas de ecuaciones no lineales, el llamado Método de Newton-Raphson.
+Para deducir el método, se linealiza el sistema de ecuaciones no lineales en el punto actual de la iteración $\bfx_k^{(i)}$. Esto se efectúa mediante un desarrollo de Taylor de $\bff$ respecto de la variable $\bfx$ en un entorno de $\bfx_{k}^{(i)}$:
 %
-%\subsubsection{Método de Newton-Raphson} \label{sec:NRcap1}
+\begin{equation}
+	\lambda \bfv = \bff(\bfx_k^{(i)})+\bfF_x(\bfx_k^{(i)})(\bfx-\bfx_k^{(i)})+O(\|\bfx-\bfx_k^{(i)}\|^2)
+\end{equation}
+
+Imponiendo que $\lambda \bfv=\lambda_k \bfv$ y truncando el término de mayor orden se obtiene un sistema de ecuaciones  lineales en la variable $\bfx$:
 %
-%En el Método de Newton-Raphson (NR) se asume que se cuenta con un vector $\bfx_k^{(0)}$ próximo a la solución buscada $\bfx_k$ de la Ecuación~\eqref{ec2}. Para una ecuación no lineal con una sola incógnita, el método se puede deducir mediante un argumento geométrico, mientras que para un sistema de ecuaciones no lineales, la deducción requiere del concepto de linealización de funciones vectoriales.
+\begin{equation}\label{ec10}
+\lambda_k \bfv = \bff(\bfx_k^{(i)})+\bfF_x(\bfx_k^{(i)})(\bfx-\bfx_k^{(i)})
+\end{equation}
+
+Se define el paso del método de Newton-Raphson como $\Delta \bfx_k^{(i)}=\bfx_k^{(i+1)}-\bfx_k^{(i)}$ y a partir de la Ecuación~\eqref{ec10} se obtiene:
 %
-%A modo de referencia, el software SAP 2000\textsuperscript{\textregistered} \footnote{desarrollado por \textit{Computers and Structures Inc.}}, utiliza iteraciones de N-R para resolver problemas con no linealidad geométrica, permitiendo al usuario definir parámetros básicos del método.
+\begin{equation}\label{NR2}
+\text{N-R}
+\begin{cases} 
+	\bfF_x(\bfx_k^{(i)})\Delta \bfx_k^{(i)} =-\left((\bff(\bfx_k^{(i)})-\lambda_k \bfv\right)\\
+	\bfx_k^{(i+1)}=\bfx_k^{(i)}+\Delta \bfx_k^{(i)} \\
+	\bfx_k^{(0)}
+\end{cases}
+\end{equation}
+
+\cajaactividad{
+Verificar que si $x\in\mathbb{R}$ el método dado por la Ecuación~\eqref{NR2} se reduce al presentado en la Ecuación~\eqref{NR1}.}
+
+Asumiendo que el punto de arranque ($\bfx_k^{(0)}$) está suficientemente cerca de la solución buscada, la sucesión de iterados que genera N-R converge con orden 2. Esto significa que las distancias entre cada iterado y la solución exacta ($\bfx_k$) verifican $\|\bfx_k^{(i+1)}-\bfx_k\| \approx \beta \|\bfx_k^{(i)}-\bfx_k\|^2$, siendo $\beta>0$ la velocidad de convergencia. %
 %
+En este documento no se presentarán formalmente los conceptos de orden y velocidad de convergencia, ver \citep{quarteroni2007numeric} por dichas definiciones.
+
+El método de N-R presentado en (\ref{NR2}) requiere que $\bfF_x(\bfx_k^{(i)})$ sea invertible para poder calcular el paso iterativo. Más en general, para poder tener pasos iterativos con precisión confiable se deberá cumplir que el número de condición de la matriz $\bfF_x(\bfx_k^{(i)})$ sea pequeño. Ver la Sección 7.6 del libro \citep{dahquist2008numeric} por más detalles sobre estimación de número de condición, perturbaciones y errores en sistemas lineales.
+
+En la introducción a los métodos iterativos, en la Sección \ref{Iter}, se introdujo un criterio de parada general, el cual es válido evidentemente para la iteración de N-R. Existen otros posibles criterios de parada, como por ejemplo fijar un límite máximo para el número de iteraciones: $i\leq \text{MAXITER}$. Otro criterio puede ser iterar hasta que la diferencia relativa entre dos iterados sea menor que una tolerancia $\epsilon_{rel}$:
 %
-%\paragraph{Una Ecuación y Una Variable:} %
-%%
-%Se describe a continuación la deducción geométrica para el caso de una sola incógnita. De acuerdo a lo que se muestra en la Figura~\ref{fig:fig2}, la idea del método es trazar la tangente a la curva $(x,f(x))$ en el punto conocido $x_k^{(0)}$ y hallar la intersección de esta recta tangente con la recta horizontal dada por el nivel de carga definido: $\lambda_k \bfv$. %
-%%
-%El valor de $x$ en esta intersección será la nueva aproximación de la solución de la ecuación no lineal $x_k^{(1)}$.
+\begin{equation}
+	\frac{\|\Delta \bfx_k^{(i)}\|}{\|\bfx_k^{(i+1)}\|} < \epsilon_{rel}
+\end{equation}
+
+En cada iteración de N-R se debe resolver un sistema de tamaño $(n \times n)$. Dependiendo de la estructura de la matriz $\bfF_x(x_k^{(i)})$ esta solución puede llevarse a cabo de maneras más eficientes que una escalerización de Gauss genérica. En el capítulo 8 de \citep{Bathe2014} se pueden ver en detalle métodos numéricos eficientes usados para la solución de dichos sistemas lineales.
+
+La evaluación de la matriz $\bfF_x$ y su factorización (solución del sistema lineal) en cada paso de N-R tiene un costo elevado. Existen otros métodos numéricos iterativos que evitan evaluar $\bfF_x$ en cada iteración, o que utilizan una definición distinta para $\bfF_x$ de manera de obtener solución con menor costo computacional en cada iteración.
+
+\subsubsection{Método de Newton-Raphson Modificado}
+
+El método de N-R modificado presenta una alternativa para no tener que evaluar y factorizar la matriz $\bfF_x$ en cada iteración. Precisamente esto es lo que define al método en cuestión, el mismo deja fija la matriz $\bfF_x(\bfx_k^{(0)})$ a lo largo de las iteraciones.
+
+Algunas herramientas computacionales, como por ejemplo el software SAP 2000\textsuperscript{\textregistered}, resuelven problemas con no linealidad geométrica realizando un cierto número de iteraciones de NR modificado para luego pasar a realizar iteraciones Newton-Raphson si no se alcanza convergencia.
+
+La iteración de Newton-Raphson modificado puede ser escrita como:
 %
-%\begin{figure}[htb]
-%	\centering
-%	\setlength{\unitlength}{0.65\textwidth}
-% \begin{picture}(1,0.77777905)%
-% \put(0,0){\includegraphics[width=\unitlength,page=1]{fig2_modif.pdf}}%
-% \put(-0.00287414,0.05370452){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $(0,0)$\end{minipage}}}%
-% \put(0,0){\includegraphics[width=\unitlength,page=2]{fig2_modif.pdf}}%
-% \put(0.49299342,0.77413208){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37246005\unitlength}\raggedright Recta tangente\end{minipage}}}%
-% \put(0,0){\includegraphics[width=\unitlength,page=3]{fig2_modif.pdf}}%
-% \put(-0.00110828,0.66107249){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37364249\unitlength}\raggedright $\lambda_k \bfv$\end{minipage}}}%
-% \put(0.9233917,0.03571526){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x$\end{minipage}}}%
-% \put(0.69829665,0.05725176){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.01418896\unitlength}\raggedright \end{minipage}}}%
-% \put(0.03017145,0.76224563){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37364249\unitlength}\raggedright $\lambda \bfv$\end{minipage}}}%
-% \put(0,0){\includegraphics[width=\unitlength,page=4]{fig2_modif.pdf}}%
-% \put(0.34857467,0.04732496){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x_k^{(1)}$\end{minipage}}}%
-% \put(0,0){\includegraphics[width=\unitlength,page=5]{fig2_modif.pdf}}%
-% \put(0.17771602,0.04629465){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x_k^{(0)}$\end{minipage}}}%
-% \put(0,0){\includegraphics[width=\unitlength,page=6]{fig2_modif.pdf}}%
-% \end{picture}%
-%%	\includegraphics[width=.6\linewidth]{sourcesJBBG/fig2}
-%	\caption{Representación geométrica de iteración de Newton-Raphson.}
-%	\label{fig:fig2}
-%\end{figure}
+\begin{equation}\label{NRM}
+\text{N-R Modif.}
+\begin{cases} 
+\bfF_x(\bfx_k^{(0)})\Delta \bfx_k^{(i)} =-\left((\bff(\bfx_k^{(i)})-\lambda_k \bfv\right)\\
+\bfx_k^{(i+1)}=\bfx_k^{(i)}+\Delta \bfx_k^{(i)} \\
+\bfx_k^{(0)}
+\end{cases}
+\end{equation}
+
+Esto permite factorizar la matriz $\bfF_x(\bfx_k^{(0)})$ al comienzo de las iteraciones y almacenar dichos factores. Luego, en cada paso iterativo se deberá resolver una sustitución hacia adelante y una sustitución hacia atrás para hallar $\Delta \bfx_k^{(i)}$. El costo computacional de dichas sustituciones es un orden de magnitud menor (en $n$) que el de la factorización de la matriz $\bfF_x(\bfx_k^{(0)})$.
+
+Como contrapartida al costo computacional reducido de N-R Modificado, se destaca que el orden de convergencia del método es 1. Esto implica que las distancias entre cada iterado y la solución exacta ($\bfx_k$) verifican $\|\bfx_k^{(i+1)}-\bfx_k\| \approx \beta \|\bfx_k^{(i)}-\bfx_k\|$, con $\beta \in (0,1)$.
+
+\subsubsection{Métodos Cuasi-Newton}
+
+La familia de métodos cuasi-Newton comprende a aquellos en los cuales se cambia la matriz $\bfF_x$ del método de Newton-Raphson (matriz tangente) por una matriz más económica de evaluar y factorizar (matriz secante).
+
+En el caso de una sola ecuación y una sola incógnita, el Método de la Secante corresponde a un método cuasi-Newton. %
 %
-%La ecuación de recta de la tangente en el punto $x_k^{(0)}$ está dada por:
-%%
-%\begin{equation}
-%	\lambda v = f(x_k^{(0)})+f'(x_k^{(0)})(x-x_k^{(0)}),
-%\end{equation}
-%%
-%mientras que la ecuación de la recta horizontal correspondiente al nivel de carga especificado es:
-%%
-%\begin{equation}
-%	\lambda v = \lambda_k v.
-%\end{equation}
+En éste método, en lugar de trazar la tangente por el punto actual ($x_k^{(i)}$), se traza la secante por el punto actual y el anterior como se muestra en la Figura \ref{fig:fig3}.
 %
-%La intersección de ambas rectas provee la siguiente ecuación lineal en $x$:
-%%
-%\begin{equation}
-%\lambda_k v = f(x_k^{(0)})+f'(x_k^{(0)})(x-x_k^{(0)}).
-%\end{equation}
+\begin{figure}[htb]
+	\centering
+   \def\svgwidth{0.7\textwidth}
+\input{../fig/esquemaIterQN.pdf_tex}
+	\caption{Esquema Geométrico del Método de la Secante}
+	\label{fig:fig3}
+\end{figure}
+
+Es claro que se deben especificar dos puntos de arranque para poder comenzar a iterar con el Método de la Secante.
+
+\cajaactividad{
+Verificar que la expresión de la iteración del Método de la secante está dada por:
 %
-%Resolviendo $x$ en la ecuación anterior y definiendo ese valor como la nueva aproximación de la solución: $x_k^{(1)}$,
-%se llega a:
-%%
-%\begin{equation}
-%x_k^{(1)}=x_k^{(0)}-\frac{f(x_k^{(0)})-\lambda_k v}{f'(x_k^{(0)})}.
-%\end{equation}
+\begin{equation}
+	x_k^{(i+1)}=x_k^{(i)} -\frac{x_k^{(i)}-x_k^{(i-1)}}{f(x_k^{(i)})-f(x_k^{(i-1)})}\left(f(x_k^{(i)})-\lambda_k \bfv \right)
+\end{equation}
+}
+
+El Método de la Secante tiene orden de convergencia super-lineal ($\text{Orden}=\frac{1+\sqrt{5}}{2}$), lo cual lo posiciona como más lento que N-R pero más rápido que N-R Modificado.
+
+La generalización del Método de la Secante a sistemas de ecuaciones no lineales corresponde al Método de Broyden. %
 %
-%El procedimiento anterior permite definir el método iterativo de Newton-Raphson:
-%%
-%\begin{equation}\label{NR1}
-%\text{N-R}
-%	\begin{cases} 
-%	\displaystyle
-%		x_k^{(i+1)}=x_k^{(i)}-\frac{f(x_k^{(i)})-\lambda_k v}{f'(x_k^{(i)})} \\
-%		x_k^{(0)}
-%	\end{cases}
-%\end{equation}
+En ese método, en lugar de la matriz tangente $\bfF_x$ utilizada en N-R, se utiliza una matriz secante que verifica una relación en los incrementos de $\bff(\bfx)$ y $\bfx$ de la forma: $\Delta \bff_k = \bfB_k \Delta \bfx_k$. La condición de matriz secante no es suficiente para definir la completamente y es ahí donde surgen distintas variantes. %
 %
-%Es claro a partir de la Ecuación~\eqref{NR1} que este método no puede iterar si la derivada primera de $f(x)$ es igual a cero en el punto donde se traza la tangente. Esta limitación también estará presente en el caso de Newton-Raphson para varias variables.
+En la Sección 7.1.4 de \citep{quarteroni2007numeric} se presenta una definición más detallada del método. %
+
+Otro método cuasi-Newton que deriva de la condición secante mencionada anteriormente es el Método BFGS, cuya formulación puede encontrarse en la Sección 8.4.2 de \citep{Bathe2014}.
+
+El motivo por el cual estos métodos son atractivos es que en ellos las inversas de las matrices secantes se actualizan de forma computacionalmente económica a partir de las anteriores. Se obtiene, por lo tanto, un compromiso entre velocidad y economía computacional.
+
+\subsubsection{Ejemplo Numérico 2: Soluciones Iterativas}
+
+Se resuelve nuevamente la ecuación no lineal vista en el ejemplo dado en la Sección~\ref{ej1}, dada por la expresión:
 %
+\begin{equation}
+x-\frac{3}{2}x^2+\frac{1}{2}x^3-\lambda=0
+\end{equation}
+
+En este caso se fija el nivel de carga $\lambda_k=0.19$ y se comienza la iteración desde $x_k^{(0)}=0$. %
 %
-%\paragraph{Sistema de $n$ Ecuaciones y $n$ Variables:} %
-%%
-%A continuación se presenta la deducción del método de Newton-Raphson para un sistema de $n$ ecuaciones no lineales con $n$ incógnitas. Se trabajará con el sistema de ecuaciones no lineales dado en la Ecuación~\eqref{ec3}. %
-%%
-%Para deducir el método, se linealiza el sistema de ecuaciones no lineales en el punto actual de la iteración $\bfx_k^{(i)}$. Esto se efectúa mediante un desarrollo de Taylor de $\bff$ respecto de la variable $\bfx$ en un entorno de $\bfx_{k}^{(i)}$:
-%%
-%\begin{equation}
-%	\lambda \bfv = \bff(\bfx_k^{(i)})+\bfF_x(\bfx_k^{(i)})(\bfx-\bfx_k^{(i)})+O(\|\bfx-\bfx_k^{(i)}\|^2)
-%\end{equation}
+La expresión del Método de Newton-Raphson para la ecuación no lineal a resolver está dada por:
 %
-%Imponiendo que $\lambda \bfv=\lambda_k \bfv$ y truncando el término de mayor orden se obtiene un sistema de ecuaciones  lineales en la variable $\bfx$:
-%%
-%\begin{equation}\label{ec10}
-%\lambda_k \bfv = \bff(\bfx_k^{(i)})+\bfF_x(\bfx_k^{(i)})(\bfx-\bfx_k^{(i)})
-%\end{equation}
+\begin{equation}
+x_k^{(i+1)}=x_k^{(i)}-\frac{x_k^{(i)}-\frac{3}{2}{x_k^{(i)}}^2+\frac{1}{2}{x_k^{(i)}}^3-0.19 }{1-3x_k^{(i)}+\frac{3}{2}{x_k^{(i)}}^2},
+\end{equation}
 %
-%Se define el paso del método de Newton-Raphson como $\Delta \bfx_k^{(i)}=\bfx_k^{(i+1)}-\bfx_k^{(i)}$ y a partir de la Ecuación~\eqref{ec10} se obtiene:
-%%
-%\begin{equation}\label{NR2}
-%\text{N-R}
-%\begin{cases} 
-%	\bfF_x(\bfx_k^{(i)})\Delta \bfx_k^{(i)} =-\left((\bff(\bfx_k^{(i)})-\lambda_k \bfv\right)\\
-%	\bfx_k^{(i+1)}=\bfx_k^{(i)}+\Delta \bfx_k^{(i)} \\
-%	\bfx_k^{(0)}
+mientras que la iteración del Método de Newton-Raphson Modificado está dada por:
+%
+\begin{equation}
+x_k^{(i+1)}=x_k^{(i)}-\frac{x_k^{(i)}-\frac{3}{2}{x_k^{(i)}}^2+\frac{1}{2}{x_k^{(i)}}^3-0.19 }{1}.
+\end{equation}
+
+La implementación de ambos métodos se presenta al final de esta sección, en el Código \ref{cod:EjNum2}. %
+%
+En la Figura~\ref{fig:fig4} se muestran resultados obtenidos al aplicar los métodos a la resolución del ejemplo considerando $\epsilon_{tol}=10^{-8}$. %
+%
+
+\begin{figure}[htb]
+	\centering
+	\resizebox{\textwidth}{!}{\input{../fig/Fig4Epscargabaja}}
+%	\includegraphics[width=.9\linewidth]{sourcesJBBG/Fig4}
+	\caption{Resultados obtenidos por métodos iterativos. Izquierda: método de Newton-Raphson. Derecha: método de Newton-Raphson Modificado.}
+	\label{fig:fig4}
+\end{figure}
+
+El método Newton-Raphson Modificado requiere 20 iteraciones mientras que el método Newton-Raphson requiere 7. %
+%
+Vale la pena remarcar que, dado que $f'(x)$ en la solución tiene un valor cercano a cero, el método requiere un número de iteraciones considerablemente elevado para converger. %
+%
+Esto se puede comprender mejor si se tiene en cuenta el siguiente resultado teórico: el método de N-R tiene orden de convergencia igual a 1 cuando $f'(x)$ en la raíz es igual a 0.
+
+\cajaactividad{Modificar los parámetros de la implementación presentada y resolver el ejemplo para $\lambda_{k}=0.26$ y otros dos valores superiores a $0.2$. %
+%
+Analizar los resultados y comparar con los obtenidos por el método incremental.}
+
+\lstinputlisting[caption = {Implementación de métodos iterativos para ejemplo numérico 2.}\label{cod:EjNum2}]{../src/Iterative1dof.m}
+
+
+\subsection{Métodos de Longitud de Arco (Arc-Length)}\label{ArcLength}
+
+En esta sección se presenta una variante de Método de Longitud de Arco para la resolución de sistemas de ecuaciones no lineales parametrizados del tipo dado en la Ecuación~\eqref{ec3}. %
+%
+Estos métodos son estudiados en matemática aplicada en el área de continuación numérica (ver notas del curso de \textit{Análisis numérico de ecuaciones no-lineales} \citep{Doedl2014Slides} y el software AUTO-07p \citep{AUTO-07p}). %
+%
+Por otra parte, se destaca que estos métodos fueron inicialmente desarrollados en el área de análisis estructural. %
+%
+Una breve reseña histórica puede encontrarse en la Sección 9.3 de \citep{crisfield1996non}. 
+
+La ventaja fundamental de estos métodos sobre los expuestos en las secciones anteriores es que los Métodos de Longitud de Arco permiten resolver las ecuaciones no lineales en situaciones en las cuales los métodos anteriores fallan o encuentran problemas de convergencia.
+
+Del punto de vista estructural, el interés en poder resolver el equilibrio de estructuras más allá de puntos críticos o puntos de soluciones con matriz tangente singular (más detalles en Capítulo~\ref{cap2GNA}) se justifica en que:
+%
+\begin{itemize}
+	\item Puede ocurrir que un punto crítico solamente sea un máximo local de la curva de carga-desplazamiento.
+	\item Puede ocurrir que se desee analizar un componente asilado de una estructura, para luego incorporar ese componente a una estructura completa.
+	\item En general es importante saber cual es la carga de colapso de una estructura, pero además es importante saber como es su comportamiento post-colapso, si es dúctil o frágil por ejemplo.
+	\item Para saber que efectivamente se alcanzó la capacidad de carga máxima de la estructura, se debe ser capaz de resolver el equilibrio más allá de dicho punto para poder verificar que en efecto es un máximo.
+	\item Para poder estudiar el estado de tensiones que la estructura tiene en su carga de colapso, se debe ser capaz de converger la solución en dicho punto de carga máxima. Esto es difícil con los métodos presentados anteriormente.
+	\item En la solución de problemas elásticos-perfectamente plásticos, la carga máxima de la estructura (capacidad plástica) es difícil de obtener mediante los métodos anteriores dado que la curva de carga-desplazamiento alcanza una meseta plástica en dicha carga.
+\end{itemize}
+
+Es claro a partir de lo anterior que estos métodos son esenciales para el análisis computacional del colapso de estructuras. Algunas herramientas computacionales como: ABAQUS\textsuperscript{\textregistered}, LUSAS\textsuperscript{\textregistered}, ANSYS\textsuperscript{\textregistered} o ADINA\textsuperscript{\textregistered} tienen la capacidad de llevar a cabo análisis estáticos mediante este tipo de procedimientos.
+
+En lo que sigue se presenta una versión básica del método de Longitud de Arco, la cual no es una implementación eficiente pero tiene como ventaja la claridad en su formulación. En la Sección 9.3 de \citep{crisfield1996non} se presenta una exposición completa de estos métodos y su historia.
+
+La idea básica de estos métodos es considerar a $\bfx\in\mathbb{R}^n$ y $\lambda\in\mathbb{R}^+$ como incógnitas. Se requiere, naturalmente, que esas incógnitas satisfagan la Ecuación~\eqref{ec3}. %
+%
+Sin embargo, ésta condición por sí sola no es suficiente para tener un problema determinado, ya que se puede comprobar que en ese caso se tienen $n+1$ incógnitas y $n$ ecuaciones. Por lo tanto, los métodos de Longitud de Arco imponen una restricción adicional de manera de obtener un problema determinado.
+
+Dependiendo de cuál sea dicha restricción adicional y la implementación elegida, se obtienen los distintos métodos que forman parte de la familia de Métodos de longitud de arco. Ver en \citep{crisfield1996non} Métodos de Longitud de Arco Linealizado, Cilíndrico y Esférico. %
+%
+La restricción adicional está, tal como lo indica el nombre de cada método, directamente relacionada al concepto de longitud del arco de la curva carga-desplazamiento. %
+%
+En la Figura~\ref{fig:fig5} se presenta un esquema geométrico de la restricción de longitud de arco. %
+
+
+\begin{figure}[htb]
+	\centering
+   \def\svgwidth{0.65\textwidth}
+\input{../fig/esquemaIterAL.pdf_tex}
+	\caption{Esquema geométrico del Método de Longitud de Arco.}
+	\label{fig:fig5}
+\end{figure}
+
+El incremento diferencial de la coordenada de longitud de arco $s$ puede escribirse en función de los incrementos de carga y desplazamiento como:
+%
+\begin{equation}
+	ds^2 = \dif\bfx^T\dif\bfx+\dif\lambda^2 \psi^2 \bfv^T\bfv,
+\end{equation}
+%
+donde $\psi$ es un factor de escala de la carga con respecto a los desplazamientos. %
+%
+Esta relación diferencial para la longitud de arco se puede traducir a una relación en los incrementos $\Delta \bfx$ y $\Delta \lambda$:
+%
+\begin{equation}\label{ec11}
+\Delta l^2 = \Delta \bfx^T \Delta \bfx+\Delta \lambda^2 \psi^2 \bfv^T\bfv.
+\end{equation}
+
+Observar que el parámetro $\Delta l^2$ controla la distancia a la cual el método de Longitud de Arco busca el nuevo punto solución de la ecuación no lineal.
+
+En lo que sigue, se asume que se tiene una solución de la ecuación $\left(\bfx_{k-1},\lambda_{k-1}\right)$ y que el arco de radio $\Delta l$ está centrado en ese punto. Con lo cual: $\Delta \bfx_k = \bfx_k - \bfx_{k-1} $ y $\Delta \lambda_k = \lambda_k - \lambda_{k-1}$.
+
+De esta manera el sistema de ecuaciones no lineales que se deberán satisfacer en el método de Longitud de Arco propuesto son:
+%
+\begin{equation}\label{ec12}
+\begin{cases} 
+\bff(\bfx_k) - \lambda_k \bfv = 0\\
+\Delta \bfx_k^T \Delta \bfx_k+\Delta \lambda_k^2 \psi^2 \bfv^T\bfv - \Delta l^2 = 0 \\
+\end{cases}
+\end{equation}
+
+Para obtener la expresión de la iteración del método de Longitud de Arco se debe linealizar las ecuaciones no lineales dadas en la Ecuación~\eqref{ec12} en torno al último punto iterado: 
+$$\left(\bfx_{k-1}+\Delta \bfx_k^{(i)}, \lambda_{k-1}+\Delta \lambda_k^{(i)}\right)$$  respecto de las incógnitas $\Delta \bfx_k$ y $\Delta \lambda_k$.
+
+Luego, se resuelve el sistema lineal resultante definiendo el paso iterativo del método. %
+%
+Notar que se expresa la linealización e iteraciones respecto de los incrementos de las variables $\bfx$ y $\lambda$.
+
+Las ecuaciones linealizadas resultantes son:
+%
+%\begin{equation}\label{ec12b}
+%\begin{cases} \begin{split}
+%	\bff\left(\bfx_{k-1}+\Delta \bfx_k^{(i)}\right)- \left(\lambda_{k-1}+\Delta \lambda_k^{(i)}\right) \bfv +&\\
+%	\bfF_x\left(\bfx_{k-1} +\Delta \bfx_k^{(i)}\right)&\delta \bfx_k^{(i)} - \delta \lambda_k^{(i)} \bfv=0
+%\end{split}\\ \\
+%\begin{split}
+%	{\Delta \bfx_k^{(i)}}^T \Delta \bfx_k^{(i)} + {\Delta \lambda_k^{(i)}}^2 \psi^2 \bfv^T\bfv - \Delta l^2  + &\\
+%	2{\Delta \bfx_k^{(i)}}^T\delta \bfx_k^{(i)} + &2\psi^2\bfv^T\bfv\Delta \lambda_k^{(i)}\delta \lambda_k^{(i)}= 0
+%\end{split} \\
 %\end{cases}
 %\end{equation}
 %
-%\cajaactividad{
-%Verificar que si $x\in\mathbb{R}$ el método dado por la Ecuación~\eqref{NR2} se reduce al presentado en la Ecuación~\eqref{NR1}.}
-%
-%Asumiendo que el punto de arranque ($\bfx_k^{(0)}$) está suficientemente cerca de la solución buscada, la sucesión de iterados que genera N-R converge con orden 2. Esto significa que las distancias entre cada iterado y la solución exacta ($\bfx_k$) verifican $\|\bfx_k^{(i+1)}-\bfx_k\| \approx \beta \|\bfx_k^{(i)}-\bfx_k\|^2$, siendo $\beta>0$ la velocidad de convergencia. %
-%%
-%En este documento no se presentarán formalmente los conceptos de orden y velocidad de convergencia, ver \citep{quarteroni2007numeric} por dichas definiciones.
-%
-%El método de N-R presentado en (\ref{NR2}) requiere que $\bfF_x(\bfx_k^{(i)})$ sea invertible para poder calcular el paso iterativo. Más en general, para poder tener pasos iterativos con precisión confiable se deberá cumplir que el número de condición de la matriz $\bfF_x(\bfx_k^{(i)})$ sea pequeño. Ver la Sección 7.6 del libro \citep{dahquist2008numeric} por más detalles sobre estimación de número de condición, perturbaciones y errores en sistemas lineales.
-%
-%En la introducción a los métodos iterativos, en la Sección \ref{Iter}, se introdujo un criterio de parada general, el cual es válido evidentemente para la iteración de N-R. Existen otros posibles criterios de parada, como por ejemplo fijar un límite máximo para el número de iteraciones: $i\leq \text{MAXITER}$. Otro criterio puede ser iterar hasta que la diferencia relativa entre dos iterados sea menor que una tolerancia $\epsilon_{rel}$:
-%%
-%\begin{equation}
-%	\frac{\|\Delta \bfx_k^{(i)}\|}{\|\bfx_k^{(i+1)}\|} < \epsilon_{rel}
-%\end{equation}
-%
-%En cada iteración de N-R se debe resolver un sistema de tamaño $(n \times n)$. Dependiendo de la estructura de la matriz $\bfF_x(x_k^{(i)})$ esta solución puede llevarse a cabo de maneras más eficientes que una escalerización de Gauss genérica. En el capítulo 8 de \citep{Bathe2014} se pueden ver en detalle métodos numéricos eficientes usados para la solución de dichos sistemas lineales.
-%
-%La evaluación de la matriz $\bfF_x$ y su factorización (solución del sistema lineal) en cada paso de N-R tiene un costo elevado. Existen otros métodos numéricos iterativos que evitan evaluar $\bfF_x$ en cada iteración, o que utilizan una definición distinta para $\bfF_x$ de manera de obtener solución con menor costo computacional en cada iteración.
-%
-%\subsubsection{Método de Newton-Raphson Modificado}
-%
-%El método de N-R modificado presenta una alternativa para no tener que evaluar y factorizar la matriz $\bfF_x$ en cada iteración. Precisamente esto es lo que define al método en cuestión, el mismo deja fija la matriz $\bfF_x(\bfx_k^{(0)})$ a lo largo de las iteraciones.
-%
-%Algunas herramientas computacionales, como por ejemplo el software SAP 2000\textsuperscript{\textregistered}, resuelven problemas con no linealidad geométrica realizando un cierto número de iteraciones de NR modificado para luego pasar a realizar iteraciones Newton-Raphson si no se alcanza convergencia.
-%
-%La iteración de Newton-Raphson modificado puede ser escrita como:
-%%
-%\begin{equation}\label{NRM}
-%\text{N-R Modif.}
-%\begin{cases} 
-%\bfF_x(\bfx_k^{(0)})\Delta \bfx_k^{(i)} =-\left((\bff(\bfx_k^{(i)})-\lambda_k \bfv\right)\\
-%\bfx_k^{(i+1)}=\bfx_k^{(i)}+\Delta \bfx_k^{(i)} \\
-%\bfx_k^{(0)}
-%\end{cases}
-%\end{equation}
-%
-%Esto permite factorizar la matriz $\bfF_x(\bfx_k^{(0)})$ al comienzo de las iteraciones y almacenar dichos factores. Luego, en cada paso iterativo se deberá resolver una sustitución hacia adelante y una sustitución hacia atrás para hallar $\Delta \bfx_k^{(i)}$. El costo computacional de dichas sustituciones es un orden de magnitud menor (en $n$) que el de la factorización de la matriz $\bfF_x(\bfx_k^{(0)})$.
-%
-%Como contrapartida al costo computacional reducido de N-R Modificado, se destaca que el orden de convergencia del método es 1. Esto implica que las distancias entre cada iterado y la solución exacta ($\bfx_k$) verifican $\|\bfx_k^{(i+1)}-\bfx_k\| \approx \beta \|\bfx_k^{(i)}-\bfx_k\|$, con $\beta \in (0,1)$.
-%
-%\subsubsection{Métodos Cuasi-Newton}
-%
-%La familia de métodos cuasi-Newton comprende a aquellos en los cuales se cambia la matriz $\bfF_x$ del método de Newton-Raphson (matriz tangente) por una matriz más económica de evaluar y factorizar (matriz secante).
-%
-%En el caso de una sola ecuación y una sola incógnita, el Método de la Secante corresponde a un método cuasi-Newton. %
-%%
-%En éste método, en lugar de trazar la tangente por el punto actual ($x_k^{(i)}$), se traza la secante por el punto actual y el anterior como se muestra en la Figura \ref{fig:fig3}.
-%
-%\begin{figure}[htb]
-%	\centering
-%	\setlength{\unitlength}{0.75\textwidth}
-%  \begin{picture}(1,0.77777905)%
-%\put(0,0){\includegraphics[width=\unitlength,page=1]{fig3_modif.pdf}}%
-%\put(-0.00287414,0.05370452){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $(0,0)$\end{minipage}}}%
-%\put(0,0){\includegraphics[width=\unitlength,page=2]{fig3_modif.pdf}}%
-%\put(0.49299342,0.77413208){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37246005\unitlength}\raggedright Recta secante\end{minipage}}}%
-%\put(0,0){\includegraphics[width=\unitlength,page=3]{fig3_modif.pdf}}%
-%\put(-0.00110828,0.68239285){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37364249\unitlength}\raggedright $\lambda_k \bfv$\end{minipage}}}%
-%\put(0.9233917,0.03571526){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x$\end{minipage}}}%
-%\put(0.69829665,0.05725176){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.01418896\unitlength}\raggedright \end{minipage}}}%
-%\put(0.03017145,0.76224563){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37364249\unitlength}\raggedright $\lambda \bfv$\end{minipage}}}%
-%\put(0,0){\includegraphics[width=\unitlength,page=4]{fig3_modif.pdf}}%
-%\put(0.30426179,0.05903024){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x_k^{(1)}$\end{minipage}}}%
-%\put(0,0){\includegraphics[width=\unitlength,page=5]{fig3_modif.pdf}}%
-%\put(0.14176406,0.05758189){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x_k^{(0)}$\end{minipage}}}%
-%\put(0,0){\includegraphics[width=\unitlength,page=6]{fig3_modif.pdf}}%
-%\put(0.37911227,0.05825203){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x_k^{(2)}$\end{minipage}}}%
-%\end{picture}%
-%%	\includegraphics[width=.6\linewidth]{sourcesJBBG/Fig3}
-%	\caption{Esquema Geométrico del Método de la Secante}
-%	\label{fig:fig3}
-%\end{figure}
-%
-%Es claro que se deben especificar dos puntos de arranque para poder comenzar a iterar con el Método de la Secante.
-%
-%\cajaactividad{
-%Verificar que la expresión de la iteración del Método de la secante está dada por:
-%%
-%\begin{equation}
-%	x_k^{(i+1)}=x_k^{(i)} -\frac{x_k^{(i)}-x_k^{(i-1)}}{f(x_k^{(i)})-f(x_k^{(i-1)})}\left(f(x_k^{(i)})-\lambda_k \bfv \right)
-%\end{equation}
-%}
-%
-%El Método de la Secante tiene orden de convergencia super-lineal ($\text{Orden}=\frac{1+\sqrt{5}}{2}$), lo cual lo posiciona como más lento que N-R pero más rápido que N-R Modificado.
-%
-%La generalización del Método de la Secante a sistemas de ecuaciones no lineales corresponde al Método de Broyden. %
-%%
-%En ese método, en lugar de la matriz tangente $\bfF_x$ utilizada en N-R, se utiliza una matriz secante que verifica una relación en los incrementos de $\bff(\bfx)$ y $\bfx$ de la forma: $\Delta \bff_k = \bfB_k \Delta \bfx_k$. La condición de matriz secante no es suficiente para definir la completamente y es ahí donde surgen distintas variantes. %
-%%
-%En la Sección 7.1.4 de \citep{quarteroni2007numeric} se presenta una definición más detallada del método. %
-%
-%Otro método cuasi-Newton que deriva de la condición secante mencionada anteriormente es el Método BFGS, cuya formulación puede encontrarse en la Sección 8.4.2 de \citep{Bathe2014}.
-%
-%El motivo por el cual estos métodos son atractivos es que en ellos las inversas de las matrices secantes se actualizan de forma computacionalmente económica a partir de las anteriores. Se obtiene, por lo tanto, un compromiso entre velocidad y economía computacional.
-%
-%\subsubsection{Ejemplo Numérico 2: Soluciones Iterativas}
-%
-%Se resuelve nuevamente la ecuación no lineal vista en el ejemplo dado en la Sección~\ref{ej1}, dada por la expresión:
-%%
-%\begin{equation}
-%x-\frac{3}{2}x^2+\frac{1}{2}x^3-\lambda=0
-%\end{equation}
-%
-%En este caso se fija el nivel de carga $\lambda_k=0.19$ y se comienza la iteración desde $x_k^{(0)}=0$. %
-%%
-%La expresión del Método de Newton-Raphson para la ecuación no lineal a resolver está dada por:
-%%
-%\begin{equation}
-%x_k^{(i+1)}=x_k^{(i)}-\frac{x_k^{(i)}-\frac{3}{2}{x_k^{(i)}}^2+\frac{1}{2}{x_k^{(i)}}^3-0.19 }{1-3x_k^{(i)}+\frac{3}{2}{x_k^{(i)}}^2},
-%\end{equation}
-%%
-%mientras que la iteración del Método de Newton-Raphson Modificado está dada por:
-%%
-%\begin{equation}
-%x_k^{(i+1)}=x_k^{(i)}-\frac{x_k^{(i)}-\frac{3}{2}{x_k^{(i)}}^2+\frac{1}{2}{x_k^{(i)}}^3-0.19 }{1}.
-%\end{equation}
-%
-%La implementación de ambos métodos se presenta al final de esta sección, en el Código \ref{cod:EjNum2}. %
-%%
-%En la Figura~\ref{fig:fig4} se muestran resultados obtenidos al aplicar los métodos a la resolución del ejemplo considerando $\epsilon_{tol}=10^{-8}$. %
-%%
-%
-%\begin{figure}[htb]
-%	\centering
-%	\resizebox{\textwidth}{!}{\input{sourcesJBBG/Fig4Epscargabaja}}
-%%	\includegraphics[width=.9\linewidth]{sourcesJBBG/Fig4}
-%	\caption{Resultados obtenidos por métodos iterativos. Izquierda: método de Newton-Raphson. Derecha: método de Newton-Raphson Modificado.}
-%	\label{fig:fig4}
-%\end{figure}
-%
-%El método Newton-Raphson Modificado requiere 20 iteraciones mientras que el método Newton-Raphson requiere 7. %
-%%
-%Vale la pena remarcar que, dado que $f'(x)$ en la solución tiene un valor cercano a cero, el método requiere un número de iteraciones considerablemente elevado para converger. %
-%%
-%Esto se puede comprender mejor si se tiene en cuenta el siguiente resultado teórico: el método de N-R tiene orden de convergencia igual a 1 cuando $f'(x)$ en la raíz es igual a 0.
-%
-%\cajaactividad{Modificar los parámetros de la implementación presentada y resolver el ejemplo para $\lambda_{k}=0.26$ y otros dos valores superiores a $0.2$. %
-%%
-%Analizar los resultados y comparar con los obtenidos por el método incremental.}
-%
-%\lstinputlisting[caption = {Implementación de métodos iterativos para ejemplo numérico 2.}\label{cod:EjNum2}]{sourcesJBBG/Iterative1dof.m}
-%
-%
-%\subsection{Métodos de Longitud de Arco (Arc-Length)}\label{ArcLength}
-%
-%En esta sección se presenta una variante de Método de Longitud de Arco para la resolución de sistemas de ecuaciones no lineales parametrizados del tipo dado en la Ecuación~\eqref{ec3}. %
-%%
-%Estos métodos son estudiados en matemática aplicada en el área de continuación numérica (ver notas del curso de \textit{Análisis numérico de ecuaciones no-lineales} \citep{Doedl2014Slides} y el software AUTO-07p \citep{AUTO-07p}). %
-%%
-%Por otra parte, se destaca que estos métodos fueron inicialmente desarrollados en el área de análisis estructural. %
-%%
-%Una breve reseña histórica puede encontrarse en la Sección 9.3 de \citep{crisfield1996non}. 
-%
-%La ventaja fundamental de estos métodos sobre los expuestos en las secciones anteriores es que los Métodos de Longitud de Arco permiten resolver las ecuaciones no lineales en situaciones en las cuales los métodos anteriores fallan o encuentran problemas de convergencia.
-%
-%Del punto de vista estructural, el interés en poder resolver el equilibrio de estructuras más allá de puntos críticos o puntos de soluciones con matriz tangente singular (más detalles en Capítulo~\ref{cap2GNA}) se justifica en que:
-%%
-%\begin{itemize}
-%	\item Puede ocurrir que un punto crítico solamente sea un máximo local de la curva de carga-desplazamiento.
-%	\item Puede ocurrir que se desee analizar un componente asilado de una estructura, para luego incorporar ese componente a una estructura completa.
-%	\item En general es importante saber cual es la carga de colapso de una estructura, pero además es importante saber como es su comportamiento post-colapso, si es dúctil o frágil por ejemplo.
-%	\item Para saber que efectivamente se alcanzó la capacidad de carga máxima de la estructura, se debe ser capaz de resolver el equilibrio más allá de dicho punto para poder verificar que en efecto es un máximo.
-%	\item Para poder estudiar el estado de tensiones que la estructura tiene en su carga de colapso, se debe ser capaz de converger la solución en dicho punto de carga máxima. Esto es difícil con los métodos presentados anteriormente.
-%	\item En la solución de problemas elásticos-perfectamente plásticos, la carga máxima de la estructura (capacidad plástica) es difícil de obtener mediante los métodos anteriores dado que la curva de carga-desplazamiento alcanza una meseta plástica en dicha carga.
-%\end{itemize}
-%
-%Es claro a partir de lo anterior que estos métodos son esenciales para el análisis computacional del colapso de estructuras. Algunas herramientas computacionales como: ABAQUS\textsuperscript{\textregistered}, LUSAS\textsuperscript{\textregistered}, ANSYS\textsuperscript{\textregistered} o ADINA\textsuperscript{\textregistered} tienen la capacidad de llevar a cabo análisis estáticos mediante este tipo de procedimientos.
-%
-%En lo que sigue se presenta una versión básica del método de Longitud de Arco, la cual no es una implementación eficiente pero tiene como ventaja la claridad en su formulación. En la Sección 9.3 de \citep{crisfield1996non} se presenta una exposición completa de estos métodos y su historia.
-%
-%La idea básica de estos métodos es considerar a $\bfx\in\mathbb{R}^n$ y $\lambda\in\mathbb{R}^+$ como incógnitas. Se requiere, naturalmente, que esas incógnitas satisfagan la Ecuación~\eqref{ec3}. %
-%%
-%Sin embargo, ésta condición por sí sola no es suficiente para tener un problema determinado, ya que se puede comprobar que en ese caso se tienen $n+1$ incógnitas y $n$ ecuaciones. Por lo tanto, los métodos de Longitud de Arco imponen una restricción adicional de manera de obtener un problema determinado.
-%
-%Dependiendo de cuál sea dicha restricción adicional y la implementación elegida, se obtienen los distintos métodos que forman parte de la familia de Métodos de longitud de arco. Ver en \citep{crisfield1996non} Métodos de Longitud de Arco Linealizado, Cilíndrico y Esférico. %
-%%
-%La restricción adicional está, tal como lo indica el nombre de cada método, directamente relacionada al concepto de longitud del arco de la curva carga-desplazamiento. %
-%%
-%En la Figura~\ref{fig:fig5} se presenta un esquema geométrico de la restricción de longitud de arco. %
-%
-%
-%\begin{figure}[htb]
-%	\centering
-%	\setlength{\unitlength}{0.65\textwidth}
-%  \begin{picture}(1,0.77777905)%
-%\put(0,0){\includegraphics[width=\unitlength,page=1]{Fig5_modif.pdf}}%
-%\put(-0.00287414,0.05370452){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $(0,0)$\end{minipage}}}%
-%\put(0,0){\includegraphics[width=\unitlength,page=2]{Fig5_modif.pdf}}%
-%\put(0.59054248,0.74871021){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37246005\unitlength}\raggedright radio: $\Delta \ell$\end{minipage}}}%
-%\put(-0.00110828,0.60463628){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37364249\unitlength}\raggedright $\lambda_k \bfv$\end{minipage}}}%
-%\put(0.9233917,0.03571526){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x$\end{minipage}}}%
-%\put(0.69829665,0.05725176){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.01418896\unitlength}\raggedright \end{minipage}}}%
-%\put(0.03017145,0.76224563){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37364249\unitlength}\raggedright $\lambda \bfv$\end{minipage}}}%
-%\put(0.75211131,0.05089315){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x_k$\end{minipage}}}%
-%\put(0,0){\includegraphics[width=\unitlength,page=3]{Fig5_modif.pdf}}%
-%\put(0.48668934,0.2455312){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37364249\unitlength}\raggedright $s_k$\end{minipage}}}%
-%\put(0.40288814,0.65724635){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37246005\unitlength}\raggedright $\bff(\bfx)$\end{minipage}}}%
-%\put(0,0){\includegraphics[width=\unitlength,page=4]{Fig5_modif.pdf}}%
-%\end{picture}%
-%	%	\includegraphics[width=.6\linewidth]{sourcesJBBG/Fig5}
-%	\caption{Esquema geométrico del Método de Longitud de Arco.}
-%	\label{fig:fig5}
-%\end{figure}
-%
-%El incremento diferencial de la coordenada de longitud de arco $s$ puede escribirse en función de los incrementos de carga y desplazamiento como:
-%%
-%\begin{equation}
-%	ds^2 = \dif\bfx^T\dif\bfx+\dif\lambda^2 \psi^2 \bfv^T\bfv,
-%\end{equation}
-%%
-%donde $\psi$ es un factor de escala de la carga con respecto a los desplazamientos. %
-%%
-%Esta relación diferencial para la longitud de arco se puede traducir a una relación en los incrementos $\Delta \bfx$ y $\Delta \lambda$:
-%%
-%\begin{equation}\label{ec11}
-%\Delta l^2 = \Delta \bfx^T \Delta \bfx+\Delta \lambda^2 \psi^2 \bfv^T\bfv.
-%\end{equation}
-%
-%Observar que el parámetro $\Delta l^2$ controla la distancia a la cual el método de Longitud de Arco busca el nuevo punto solución de la ecuación no lineal.
-%
-%En lo que sigue, se asume que se tiene una solución de la ecuación $\left(\bfx_{k-1},\lambda_{k-1}\right)$ y que el arco de radio $\Delta l$ está centrado en ese punto. Con lo cual: $\Delta \bfx_k = \bfx_k - \bfx_{k-1} $ y $\Delta \lambda_k = \lambda_k - \lambda_{k-1}$.
-%
-%De esta manera el sistema de ecuaciones no lineales que se deberán satisfacer en el método de Longitud de Arco propuesto son:
-%%
-%\begin{equation}\label{ec12}
-%\begin{cases} 
-%\bff(\bfx_k) - \lambda_k \bfv = 0\\
-%\Delta \bfx_k^T \Delta \bfx_k+\Delta \lambda_k^2 \psi^2 \bfv^T\bfv - \Delta l^2 = 0 \\
-%\end{cases}
-%\end{equation}
-%
-%Para obtener la expresión de la iteración del método de Longitud de Arco se debe linealizar las ecuaciones no lineales dadas en la Ecuación~\eqref{ec12} en torno al último punto iterado: 
-%$$\left(\bfx_{k-1}+\Delta \bfx_k^{(i)}, \lambda_{k-1}+\Delta \lambda_k^{(i)}\right)$$  respecto de las incógnitas $\Delta \bfx_k$ y $\Delta \lambda_k$.
-%
-%Luego, se resuelve el sistema lineal resultante definiendo el paso iterativo del método. %
-%%
-%Notar que se expresa la linealización e iteraciones respecto de los incrementos de las variables $\bfx$ y $\lambda$.
-%
-%Las ecuaciones linealizadas resultantes son:
-%%
-%%\begin{equation}\label{ec12b}
-%%\begin{cases} \begin{split}
-%%	\bff\left(\bfx_{k-1}+\Delta \bfx_k^{(i)}\right)- \left(\lambda_{k-1}+\Delta \lambda_k^{(i)}\right) \bfv +&\\
-%%	\bfF_x\left(\bfx_{k-1} +\Delta \bfx_k^{(i)}\right)&\delta \bfx_k^{(i)} - \delta \lambda_k^{(i)} \bfv=0
-%%\end{split}\\ \\
-%%\begin{split}
-%%	{\Delta \bfx_k^{(i)}}^T \Delta \bfx_k^{(i)} + {\Delta \lambda_k^{(i)}}^2 \psi^2 \bfv^T\bfv - \Delta l^2  + &\\
-%%	2{\Delta \bfx_k^{(i)}}^T\delta \bfx_k^{(i)} + &2\psi^2\bfv^T\bfv\Delta \lambda_k^{(i)}\delta \lambda_k^{(i)}= 0
-%%\end{split} \\
-%%\end{cases}
-%%\end{equation}
-%%
-%\begin{small}
-%\begin{eqnarray}\label{ec12b}
-%\bff\!\left(\bfx_{k-1}+\Delta \bfx_k^{(i)}\right)\!-\!\left(\lambda_{k-1}+\Delta \lambda_k^{(i)}\right)\!\bfv\!+\!\bfF_x\!\left(\bfx_{k-1} +\Delta \bfx_k^{(i)}\right) \delta \bfx_k^{(i)} - \delta \lambda_k^{(i)} \bfv =\!0\\
-%{\Delta \bfx_k^{(i)}}^T \Delta \bfx_k^{(i)} + {\Delta \lambda_k^{(i)}}^2 \psi^2 \bfv^T\bfv - \Delta l^2 +
-%2{\Delta \bfx_k^{(i)}}^T\delta \bfx_k^{(i)} + 2\psi^2\bfv^T\bfv\Delta \lambda_k^{(i)}\delta \lambda_k^{(i)} = 0
-%\end{eqnarray}
-%%
-%\end{small}
-%con los incrementos iterativos definidos como
-%\begin{equation}\label{ec13}
-%		\delta \bfx_k^{(i)}=\Delta \bfx_k^{(i+1)}-\Delta \bfx_k^{(i)} \qquad \text{y} \qquad
-%		\delta \lambda_k^{(i)}=\Delta \lambda_k^{(i+1)}-\Delta \lambda_k^{(i)}		.
-%\end{equation}
-%
-%La versión linealizada de la Ecuación~\eqref{ec12} se traduce en el siguiente sistema lineal a ser resuelto en cada iteración del método:
-%%
-%\begin{eqnarray}\label{ec14}
-%\left[\begin{array}{cc}
-%\bfF_x\left(\bfx_{k-1} +\Delta \bfx_k^{(i)}\right) & -\bfv\\ 
-%2 \left(\Delta \bfx_k^{(i)}\right)^{\text{T}} &  2\psi^2\bfv^{\text{T}}\bfv\Delta \lambda_k^{(i)} 
-%\end{array}\right] \cdot 
-%\left[\begin{array}{c} 
-%\delta \bfx_k^{(i)} \\
-%\delta \lambda_k^{(i)} 
-%\end{array}
-%\right] = \\ 
-%\dots 
-%\left[\begin{array}{c}
-%-\left( \bff\left(\bfx_{k-1}+\Delta \bfx_k^{(i)}\right)- \left(\lambda_{k-1}+\Delta \lambda_k^{(i)}\right) \bfv \right)\\
-%-\left(
-%    {\Delta \bfx_k^{(i)}}^{\text{T}}   \Delta \bfx_k^{(i)} 
-%  + {\Delta \lambda_k^{(i)}}^2 \psi^2 \bfv^{\text{T}}\bfv - \Delta l^2
-%\right)
-%\end{array}\right].
-%\end{eqnarray}
-%
-%La regla para actualizar la solución en cada iteración se desprende de la Ecuación~\eqref{ec13}:
-%%
-%\begin{equation}\label{ec15}
-%\begin{cases}
-%	\Delta \bfx_k^{(i+1)}=\Delta \bfx_k^{(i)} + \delta \bfx_k^{(i)}\\
-%	\Delta \lambda_k^{(i+1)}=\Delta \lambda_k^{(i)}+\delta \lambda_k^{(i)}
-%\end{cases}
-%\end{equation}
-%
-%Como en cualquier método iterativo, se debe proporcionar un punto de arranque y algún criterio de parada para terminar las iteraciones. %
-%%
-%Respecto al criterio de parada, se usarán criterios iguales a los usados en Newton-Raphson (ver Sección~\ref{Iter}). %
-%%
-%Respecto al punto de inicio de la iteración, se deben definir valores $\Delta \bfx_k^{(0)}$ y $\Delta \lambda_k^{(0)}$. %
-%%
-%Una posible opción es considerarlos igual a una fracción de los incrementos dados por el método de Euler Hacia Adelante (ver la Sección~\ref{FEuler}).
-%
-%Un punto adicional por comentar que surge de analizar la Figura \ref{fig:fig5}, es que el círculo que queda definido por la restricción de Longitud de Arco corta a la curva de carga-desplazamiento en dos puntos, uno avanza la solución y el otro la retrocede. Dado lo anterior, es posible que la iteración converja al punto que hace que la solución retroceda en lugar de avanzar. Una manera de controlar esto es estudiando a medida que avanza la solución numérica si se pasó un punto crítico ($\text{Det}(\bfF_x)=0$) y en ese caso estudiar la necesidad de cambiar el signo del punto de arranque dado por Euler Hacia Adelante.
-%
-%Una observación final del método presentado es que la matriz del sistema lineal dado en la Ecuación~\eqref{ec14} que debe ser resuelto en cada iteración es no simétrica y eso presenta una desventaja económica en cuanto a la resolución numérica del sistema. 
-%
-%En el Capítulo~\ref{cap2GNA} se describe una implementación del Método de Longitud de Arco para $n$ grados de libertad que salva estas deficiencias. El mismo permite realizar primero un paso de tipo N-R y luego determinar el incremento de Longitud de Arco a partir de la solución de una ecuación polinómica de segundo grado. Se deben utilizar criterios adicionales para decidir cuál de las dos raíces del polinomio corresponde al avance de la solución.
-%
-%\subsubsection{Ejemplo Numérico 3: Solución con Método de Longitud de Arco}
-%
-%Se resuelve nuevamente la ecuación no lineal vista en el ejemplo dado en la Sección~\ref{ej1}.
-%%
-%\begin{equation}
-%x-\frac{3}{2}x^2+\frac{1}{2}x^3-\lambda=0
-%\end{equation}
-%
-%En este caso se fijan los parámetros del método de Longitud de Arco con los valores: radio de Arco: $\Delta l = 0.083$, factor de escala de cargas: $\psi = 1$ y pasos de Método de Longitud de Arco: $k=1,2,...,50$.
-%
-%Esto resulta en la solución numérica indicada con círculos negros en la Figura~\ref{fig:fig6}.
-%
-%\begin{figure}[htb]
-%	\centering
-%	\resizebox{\textwidth}{!}{\input{sourcesJBBG/Fig6Epscargabaja}}
-%	\caption{Soluciones Numéricas con Método de Longitud de Arco.}
-%	\label{fig:fig6}
-%\end{figure}
-%
-%Notar que el método de Longitud de Arco utilizado logra pasar por dos puntos críticos, uno en $x\simeq 0.5$ y otro en $x\simeq 1.5$.
-%
-%También se puede observar en la Figura \ref{fig:fig6} que los puntos que componen la solución mediante el procedimiento de Longitud de Arco se encuentran equiespaciadas en la longitud de la curva correspondiente a la solución exacta. Se debe notar que para que dichos puntos parezcan equiespaciados, el gráfico debe tener el mismo escalado de ejes que la métrica usada como definición de longitud de arco en la Ecuación~\eqref{ec11}.
-%
-%El código de Octave utilizado para generar la solución numérica se presenta en el Código~\ref{cod:EjNum3}.
-%
-%\cajaactividad{
-%	Estudie cómo cambiar el código dado para poder resolver un sistema de ecuaciones no lineales en $\mathbb{R}^n$.}
-%
-%%\bigskip
-%
-%\lstinputlisting[caption = {Solución con Método de Longitud de Arco - Ejemplo Numérico 3.}\label{cod:EjNum3}]{sourcesJBBG/ArcLength1dof.m}
+\begin{small}
+\begin{eqnarray}\label{ec12b}
+\bff\!\left(\bfx_{k-1}+\Delta \bfx_k^{(i)}\right)\!-\!\left(\lambda_{k-1}+\Delta \lambda_k^{(i)}\right)\!\bfv\!+\!\bfF_x\!\left(\bfx_{k-1} +\Delta \bfx_k^{(i)}\right) \delta \bfx_k^{(i)} - \delta \lambda_k^{(i)} \bfv =\!0\\
+{\Delta \bfx_k^{(i)}}^T \Delta \bfx_k^{(i)} + {\Delta \lambda_k^{(i)}}^2 \psi^2 \bfv^T\bfv - \Delta l^2 +
+2{\Delta \bfx_k^{(i)}}^T\delta \bfx_k^{(i)} + 2\psi^2\bfv^T\bfv\Delta \lambda_k^{(i)}\delta \lambda_k^{(i)} = 0
+\end{eqnarray}
+%
+\end{small}
+con los incrementos iterativos definidos como
+\begin{equation}\label{ec13}
+		\delta \bfx_k^{(i)}=\Delta \bfx_k^{(i+1)}-\Delta \bfx_k^{(i)} \qquad \text{y} \qquad
+		\delta \lambda_k^{(i)}=\Delta \lambda_k^{(i+1)}-\Delta \lambda_k^{(i)}		.
+\end{equation}
+
+La versión linealizada de la Ecuación~\eqref{ec12} se traduce en el siguiente sistema lineal a ser resuelto en cada iteración del método:
+%
+\begin{eqnarray}\label{ec14}
+\left[\begin{array}{cc}
+\bfF_x\left(\bfx_{k-1} +\Delta \bfx_k^{(i)}\right) & -\bfv\\ 
+2 \left(\Delta \bfx_k^{(i)}\right)^{\text{T}} &  2\psi^2\bfv^{\text{T}}\bfv\Delta \lambda_k^{(i)} 
+\end{array}\right] \cdot 
+\left[\begin{array}{c} 
+\delta \bfx_k^{(i)} \\
+\delta \lambda_k^{(i)} 
+\end{array}
+\right] = \\ 
+\dots 
+\left[\begin{array}{c}
+-\left( \bff\left(\bfx_{k-1}+\Delta \bfx_k^{(i)}\right)- \left(\lambda_{k-1}+\Delta \lambda_k^{(i)}\right) \bfv \right)\\
+-\left(
+    {\Delta \bfx_k^{(i)}}^{\text{T}}   \Delta \bfx_k^{(i)} 
+  + {\Delta \lambda_k^{(i)}}^2 \psi^2 \bfv^{\text{T}}\bfv - \Delta l^2
+\right)
+\end{array}\right].
+\end{eqnarray}
+
+La regla para actualizar la solución en cada iteración se desprende de la Ecuación~\eqref{ec13}:
+%
+\begin{equation}\label{ec15}
+\begin{cases}
+	\Delta \bfx_k^{(i+1)}=\Delta \bfx_k^{(i)} + \delta \bfx_k^{(i)}\\
+	\Delta \lambda_k^{(i+1)}=\Delta \lambda_k^{(i)}+\delta \lambda_k^{(i)}
+\end{cases}
+\end{equation}
+
+Como en cualquier método iterativo, se debe proporcionar un punto de arranque y algún criterio de parada para terminar las iteraciones. %
+%
+Respecto al criterio de parada, se usarán criterios iguales a los usados en Newton-Raphson (ver Sección~\ref{Iter}). %
+%
+Respecto al punto de inicio de la iteración, se deben definir valores $\Delta \bfx_k^{(0)}$ y $\Delta \lambda_k^{(0)}$. %
+%
+Una posible opción es considerarlos igual a una fracción de los incrementos dados por el método de Euler Hacia Adelante (ver la Sección~\ref{FEuler}).
+
+Un punto adicional por comentar que surge de analizar la Figura \ref{fig:fig5}, es que el círculo que queda definido por la restricción de Longitud de Arco corta a la curva de carga-desplazamiento en dos puntos, uno avanza la solución y el otro la retrocede. Dado lo anterior, es posible que la iteración converja al punto que hace que la solución retroceda en lugar de avanzar. Una manera de controlar esto es estudiando a medida que avanza la solución numérica si se pasó un punto crítico ($\text{Det}(\bfF_x)=0$) y en ese caso estudiar la necesidad de cambiar el signo del punto de arranque dado por Euler Hacia Adelante.
+
+Una observación final del método presentado es que la matriz del sistema lineal dado en la Ecuación~\eqref{ec14} que debe ser resuelto en cada iteración es no simétrica y eso presenta una desventaja económica en cuanto a la resolución numérica del sistema. 
+
+En el Capítulo~\ref{cap2GNA} se describe una implementación del Método de Longitud de Arco para $n$ grados de libertad que salva estas deficiencias. El mismo permite realizar primero un paso de tipo N-R y luego determinar el incremento de Longitud de Arco a partir de la solución de una ecuación polinómica de segundo grado. Se deben utilizar criterios adicionales para decidir cuál de las dos raíces del polinomio corresponde al avance de la solución.
+
+\subsubsection{Ejemplo Numérico 3: Solución con Método de Longitud de Arco}
+
+Se resuelve nuevamente la ecuación no lineal vista en el ejemplo dado en la Sección~\ref{ej1}.
+%
+\begin{equation}
+x-\frac{3}{2}x^2+\frac{1}{2}x^3-\lambda=0
+\end{equation}
+
+En este caso se fijan los parámetros del método de Longitud de Arco con los valores: radio de Arco: $\Delta l = 0.083$, factor de escala de cargas: $\psi = 1$ y pasos de Método de Longitud de Arco: $k=1,2,...,50$.
+
+Esto resulta en la solución numérica indicada con círculos negros en la Figura~\ref{fig:fig6}.
+
+\begin{figure}[htb]
+	\centering
+	\resizebox{\textwidth}{!}{\input{../fig/Fig6Epscargabaja}}
+	\caption{Soluciones Numéricas con Método de Longitud de Arco.}
+	\label{fig:fig6}
+\end{figure}
+
+Notar que el método de Longitud de Arco utilizado logra pasar por dos puntos críticos, uno en $x\simeq 0.5$ y otro en $x\simeq 1.5$.
+
+También se puede observar en la Figura \ref{fig:fig6} que los puntos que componen la solución mediante el procedimiento de Longitud de Arco se encuentran equiespaciadas en la longitud de la curva correspondiente a la solución exacta. Se debe notar que para que dichos puntos parezcan equiespaciados, el gráfico debe tener el mismo escalado de ejes que la métrica usada como definición de longitud de arco en la Ecuación~\eqref{ec11}.
+
+El código de Octave utilizado para generar la solución numérica se presenta en el Código~\ref{cod:EjNum3}.
+
+\cajaactividad{
+	Estudie cómo cambiar el código dado para poder resolver un sistema de ecuaciones no lineales en $\mathbb{R}^n$.}
+
+%\bigskip
+
+\lstinputlisting[caption = {Solución con Método de Longitud de Arco - Ejemplo Numérico 3.}\label{cod:EjNum3}]{../src/ArcLength1dof.m}

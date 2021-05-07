@@ -1,0 +1,72 @@
+%% Creator: Inkscape inkscape 0.92.5, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'esquemaIterNR.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{866.63393082bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.77777905)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{esquemaIterNR.pdf}}%
+    \put(-0.00287414,0.05370452){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $(0,0)$\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{esquemaIterNR.pdf}}%
+    \put(0.49299342,0.77413208){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37246005\unitlength}\raggedright Recta tangente\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{esquemaIterNR.pdf}}%
+    \put(-0.00110828,0.66107249){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37364249\unitlength}\raggedright $\lambda_k \bfv$\end{minipage}}}%
+    \put(0.9233917,0.03571526){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x$\end{minipage}}}%
+    \put(0.69829665,0.05725176){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.01418896\unitlength}\raggedright \end{minipage}}}%
+    \put(0.03017145,0.76224563){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37364249\unitlength}\raggedright $\lambda \bfv$\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{esquemaIterNR.pdf}}%
+    \put(0.34857467,0.04732496){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x_k^{(1)}$\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{esquemaIterNR.pdf}}%
+    \put(0.17771602,0.04629465){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x_k^{(0)}$\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{esquemaIterNR.pdf}}%
+    \put(0.61939112,0.51132588){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37364249\unitlength}\raggedright $f(x)$\end{minipage}}}%
+  \end{picture}%
+\endgroup%

@@ -1,6 +1,6 @@
 tex/*.pdf
 *.aux
-*synctex..gz
+*.synctex.gz
 *.log
 *.out
 *.bbl
