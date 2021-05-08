@@ -1,0 +1,68 @@
+%% Creator: Inkscape inkscape 0.92.2, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'graficos_consitutivas.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{233.19377757bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.46804974)%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{graficos_consitutivas.pdf}}%
+    \put(0.4896256,0){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{ }}}%
+    \put(0.47254229,0.03207984){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$-\varepsilon$}}}%
+    \put(0.05644798,0.34842673){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$-\sigma^C$}}}%
+    \put(0.96970943,0.16431014){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\varepsilon$}}}%
+    \put(0.71094513,0.37020554){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\sigma^D$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{graficos_consitutivas.pdf}}%
+    \put(0.7177515,0.31646899){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$f_{yd}$}}}%
+    \put(-0.0019671,0.25808333){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$-0.85 \,.\,f_{cd}$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{graficos_consitutivas.pdf}}%
+    \put(0.28146934,0.02580407){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$-2$\textperthousand}}}%
+    \put(0.36881532,0.02711517){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$-3.5$\textperthousand}}}%
+    \put(0.72614625,0.49650742){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.74432269\unitlength}\raggedright  \end{minipage}}}%
+    \put(0.84792877,0.16198317){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\varepsilon_y$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{graficos_consitutivas.pdf}}%
+  \end{picture}%
+\endgroup%
