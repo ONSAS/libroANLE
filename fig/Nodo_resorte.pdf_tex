@@ -1,6 +1,6 @@
 %% Creator: Inkscape inkscape 0.92.5, www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
-%% Accompanies image file 'PTV_partic.pdf' (pdf, eps, ps)
+%% Accompanies image file 'Nodo_resorte.pdf' (pdf, eps, ps)
 %%
 %% To include the image in your LaTeX document, write
 %%   \input{<filename>.pdf_tex}
@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{157.54303852bp}%
+    \setlength{\unitlength}{218.25545248bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,15 +50,14 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.58189114)%
+  \begin{picture}(1,0.79101291)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
-    \put(0,0){\includegraphics[width=\unitlength,page=1]{PTV_partic.pdf}}%
-    \put(-0.00631146,0.25244963){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.88671193\unitlength}\raggedright $\bff_1$\end{minipage}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=2]{PTV_partic.pdf}}%
-    \put(0.38547338,0.60058386){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.88671193\unitlength}\raggedright $\bff_2$\end{minipage}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=3]{PTV_partic.pdf}}%
-    \put(0.69685363,0.42934736){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.88671193\unitlength}\raggedright $\bff_3$\end{minipage}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=4]{PTV_partic.pdf}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{Nodo_resorte.pdf}}%
+    \put(0.25226408,0.28598158){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.64005408\unitlength}\raggedright $k_y$\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{Nodo_resorte.pdf}}%
+    \put(0.18326776,0.65149764){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.64005408\unitlength}\raggedright $k_x$\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{Nodo_resorte.pdf}}%
+    \put(0.66656006,0.32149786){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\bff_{\text{ext},j}$\end{tabular}}}}%
   \end{picture}%
 \endgroup%
