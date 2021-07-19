@@ -75,7 +75,7 @@ u(:,2) = u0; % u(0)
 Meff = a0*M+a1*C;   Keff = (K-a2*M);   M2 = a0*M-a1*C;
 
 % Comienza Marcha en el Tiempo usando Diferencia Centrada
-t(1) = -dt;   t(2) = t0;   k=2;
+t(1) = t0-dt;   t(2) = t0;   k=2;
 while t<tf
     feff = ft(t(k)) - Keff*u(:,k) - M2*u(:,k-1);
     u(:,k+1) = Meff\feff;
