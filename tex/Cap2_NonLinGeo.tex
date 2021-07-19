@@ -722,13 +722,13 @@ En la configuración indeformada, la barra tiene largo $l_o$ y el área de su se
 Se define la deformación unitaria ingenieril rotada como:
 %
 \begin{equation}\label{RotEngStrain}
-\varepsilon_E = \frac{l_n-l_o}{l_o}
+\varepsilon_E = \frac{l_n-l_o}{l_o}.
 \end{equation}
 
-Notar que la deformación unitaria se mide respecto de una dirección que rota en conjunto con la barra y no respecto de ejes globales cartesianos fijos. Usando la geometría dada en la Figura~\ref{fig:nonlinstrainm}:
+Notar que la deformación unitaria se mide respecto de una dirección que rota en conjunto con la barra y no respecto de ejes globales cartesianos fijos (ver Figura~\ref{fig:nonlinstrainm}). El largo deformado puede ser escrito como:
 %
 \begin{equation}\label{ln}
-l_n = \left((z+w)^2+x^2\right)^{1/2}
+l_n = \left((z+w)^2+x^2\right)^{1/2}.
 \end{equation}
 
 Se calcula la variación virtual de la deformación unitaria ingenieril rotada usando las definiciones dadas por las Ecuaciones \eqref{RotEngStrain} y \eqref{ln}.
@@ -737,19 +737,31 @@ Se calcula la variación virtual de la deformación unitaria ingenieril rotada u
 \delta \varepsilon_E = \frac{\partial \varepsilon_E}{\partial w} \delta w = \frac{\partial \varepsilon_E}{\partial l_n}\frac{\partial l_n}{\partial w}\delta w =	\frac{1}{l_o}\frac{2(z+w)}{2l_n}\delta w = \frac{(z+w)}{l_n l_o}\delta w
 \end{equation}
 
-Usando la Ecuación~\eqref{VirtEngStrain} en la Ecuación~\eqref{PTVBielaSStrain} y llamando la tensión en la barra como $\sigma_E$:
+Usando la Ecuación~\eqref{VirtEngStrain} en la Ecuación~\eqref{PTVBielaSStrain} se obtiene la siguiente expresión del PTV:
 %
 \begin{equation}
-P_E = \frac{\sigma_EA_o(z+w)}{l_n}.
+\sigma_E \frac{(z+w)}{l_o l_n } \delta w A_o l_o  = P_E \delta w,
 \end{equation}
-
-Usando una relación constitutiva con módulo elástico constante $E$ ($\sigma_E = E \varepsilon_E$) y expresando todo en función de la variable $w$:
+%
+donde la tensión fue llamada $\sigma_E$. %
+%
+Usando que esta identidad se cumple para todo $\delta w$, sustituyendo la tensión en la barra por $E \varep_E$ y usando la definición de la deformación, se tiene:
+%
+\begin{equation}
+  E A_o \frac{ \left( \sqrt{ (w+z)^2 + x^2 } - l_o \right) }{ l_o }
+               \frac{ (z+w) }{ \sqrt{(w+z)^2+x^2} } = P_E,
+\end{equation}
+%
+por lo tanto
 %
 \begin{equation}\label{EqRotEngStrain}
-P_E = \frac{EA_o(z+w)\left(\sqrt{(w+z)^2+x^2}-l_o\right)}{l_o\sqrt{(w+z)^2+x^2}}.
+\boxed{
+  P_E( w ) = \frac{EA_o(z+w)\left(\sqrt{(w+z)^2+x^2}-l_o\right)}{l_o\sqrt{(w+z)^2+x^2}}.
+}
 \end{equation}
 
-Notar que la expresión de la Ecuación~\eqref{EqRotEngStrain} es no lineal respecto de $w$ y sin duda un tanto compleja.
+La expresión de la Ecuación~\eqref{EqRotEngStrain} es no lineal con respecto a $w$ y su evaluación numérica debe ser realizada con cierto cuidado para evitar errores debidos a \href{https://en.wikipedia.org/wiki/Catastrophic_cancellation}{\textit{Cancelación Catastrófica}}.
+
 
 \subsection{Deformación Unitaria de Green}
 
@@ -780,7 +792,9 @@ P_G = \frac{\sigma_EA_o(z+w)}{l_o}
 Usando una relación constitutiva con módulo elástico constante $E$ ($\sigma_G = E \varepsilon_G$) y expresando todo en función de la variable $w$:
 %
 \begin{equation}\label{EqGreenStrain}
-P_G = \frac{EA_o(z+w)\left(2zw+w^2\right)}{2l_o^3}
+	\boxed{
+P_G(w) = \frac{EA_o(z+w)\left(2zw+w^2\right)}{2l_o^3}
+}
 \end{equation}
 
 Notar que la expresión de la Ecuación~\eqref{EqGreenStrain} es bastante más simple que la obtenida con la deformación unitaria ingenieril rotada. Además, se puede ver que si $l_n\simeq l_o$ entonces tanto las deformaciones unitarias como las relaciones de equilibrio coinciden. En conclusión, en hipótesis de pequeñas deformaciones unitarias los resultados obtenidos con ambas deformaciones unitarias coincidirán de manera muy aproximada.
@@ -825,7 +839,9 @@ Se asume ahora que se trabaja bajo pequeñas deformaciones y por lo tanto: $A_o 
 Se asume una relación constitutiva con módulo elástico constante $E$ ($\sigma_L = E \varepsilon_L$) y luego se expresa todo en función de la variable $w$:
 %
 \begin{equation}\label{EqLogStrain}
-P_L = \frac{E(z+w)A_ol_o}{(z+w)^2+x^2}\ln\left(\frac{\sqrt{(z+w)^2+x^2}}{l_o}\right)
+	\boxed{
+P_L(w) = \frac{E(z+w)A_ol_o}{(z+w)^2+x^2}\ln\left(\frac{\sqrt{(z+w)^2+x^2}}{l_o}\right)
+}
 \end{equation}
 
 Notar que la expresión de la Ecuación~\eqref{EqLogStrain} es nuevamente bastante compleja en comparación con la dada por la deformación unitaria de Green.

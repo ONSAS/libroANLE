@@ -9,6 +9,9 @@
 % License details: creativecommons.org/licenses/by-sa/4.0 .
 % ============================================================
 
+% agregado por bug con xwatermark https://tex.stackexchange.com/questions/566088/xwatermark-throws-error
+\RequirePackage[2020-02-02]{latexrelease}
+
 \documentclass[spanish,twoside,openright,10pt]{book}
 
 % preambulo
@@ -90,7 +93,7 @@ The use of general descripitive names, resgistered names, trademarks, etc. in th
 
 \noindent
 \begin{footnotesize}
-Documento producido usando software libre: \LaTeX, TeXstudio, Geany, Inkscape y GNU-Octave.
+Documento producido usando \href{https://es.wikipedia.org/wiki/Software_libre}{software libre}: \LaTeX, TeXstudio, Geany, Inkscape, GNU-Octave y Linux.
 \end{footnotesize}
 
 \tableofcontents
@@ -109,14 +112,13 @@ Documento producido usando software libre: \LaTeX, TeXstudio, Geany, Inkscape y 
 % --- Capitulo 3 - Nolinealidad material ---
 \input{Cap3_NonLinMat.tex}
 
-
 % ------ Capitulo 4 - Dinamica ---------
 \input{Cap4_Dinamica.tex}
 
 %\appendix
 %\renewcommand\chaptername{Apéndice}
 
-%\input{sourcesJPZ/Ape_retic} % Autor JPZ. Formulacion de Reticulados equivalentes a Viga Timoshenko.
+%\input{sourcesJPZ/Ape_retic}
 
 %\input{sourcesJPZ/Ape_ONSAS} % ONSAS
 %
