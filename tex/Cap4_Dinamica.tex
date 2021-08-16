@@ -528,7 +528,7 @@ En el Algoritmo~\ref{PCNewmark} se presenta un Pseudo-Código del Método de New
 		\STATE Definir: Condiciones iniciales: $\bfu_{0}$, $\dot{\bfu}_{0}$
 		\STATE Calcular: $\ddot{\bfu}_{0}\leftarrow \bfM^{-1}(\bff_{ext,0} - \bfC \dot{\bfu}_0 - \bfK \bfu_0)$
 		\STATE Definir: $\Delta t$, $\delta$ y $\alpha$ tal que: $\delta \geq 0.5$ y $\alpha \geq 0.25(0.5+\delta^2)$.
-		\STATE Calcular: $a_0\leftarrow1/(\alpha\Delta t^2)$, $a_1\leftarrow\delta/(\alpha\Delta t)$, $a_2\leftarrow1/(\alpha\Delta t)$, $a_3\leftarrow1/(2\alpha-1)$
+		\STATE Calcular: $a_0\leftarrow1/(\alpha\Delta t^2)$, $a_1\leftarrow\delta/(\alpha\Delta t)$, $a_2\leftarrow1/(\alpha\Delta t)$, $a_3\leftarrow \left( 1/(2\alpha) - 1 \right)$
 		\STATE Calcular $a_4\leftarrow\delta/\alpha-1$, $a_5\leftarrow \Delta t/2(\delta/\alpha-2)$, $a_6\leftarrow\Delta t(1-\delta)$ y $a_7\leftarrow \delta \Delta t$
 		\STATE Calcular y factorizar: $\hat{\bfK}\leftarrow \bfK + a_0\bfM+a_1\bfC$
 		\STATE $t \leftarrow 0$
