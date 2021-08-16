@@ -699,3 +699,119 @@ El código de Octave utilizado para generar la solución numérica se presenta e
 %\bigskip
 
 \lstinputlisting[caption = {Solución con Método de Longitud de Arco - Ejemplo Numérico 3.}\label{cod:EjNum3}]{../src/ArcLength1dof.m}
+
+
+
+
+
+
+
+\section{Ejercicios}
+
+%Estas l\'{\i}neas crean el entorno numerado "exercise"
+\newcounter{numEjer}[section]
+\newenvironment{exercise}[1][]{\addtocounter{numEjer}{1} \noindent \textbf{Ejercicio \arabic{numEjer} #1}}{}
+
+
+
+
+%--------------- EJ1 ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	En este ejercicio se usará el Método de Heun como alternativa a Euler Hacia Adelante para calcular una solución puramente Incremental.  El Método de Heun queda definido por:
+	%
+	\begin{equation*}
+		\text{Heun}
+		\begin{cases} 
+			\bfp_{k+1} = \bfx_k + \Delta \lambda \cdot \bfh(\bfx_k,\lambda_k) \\
+			\bfx_{k+1}= \bfx_k + \Delta \lambda \left(\bfh(\bfx_k,\lambda_k) + \bfh(\bfp_{k+1},\lambda_{k+1}) \right)/2\cdot  \\
+			\bfx_0=\bfx(0)
+		\end{cases}
+	\end{equation*}
+	
+	Se pide:
+	\begin{itemize}
+		\item[i)] Utilizar el método de Heun para resolver el Ejemplo Numérico 1 con el mismo incremento $\Delta \lambda$ (sugerencia: utilizar el Código~\ref{cod:ejnonlin} como base para su implementación.
+		%
+		\item[ii)] Comparar la solución de Euler Hacia Adelante con la obtenida en el ítem anterior. Investigue cual es el orden del error cometido por Heun en cada paso y comparar contra el dado presentado para Euler Hacia Adelante.
+	\end{itemize}
+\end{exercise}
+
+% ------------ EJ2 ---------------------------------------------
+\bigskip
+\begin{exercise}
+	
+	Generar mediante el Método de Newton-Raphson tres estimaciones de $\sqrt{2}$ que se expresen como fracciones de números enteros ($\sqrt{2}\simeq p/q$). Realizar el desarrollo y todos los cálculos manualmente.
+	
+	La primera estimación deberá utilizar enteros de un dígito, la segunda enteros de dos dígitos y la tercera de tres dígitos.
+	
+	Evaluar los errores absolutos de cada una de las estimaciones y verificar que la convergencia ocurre con orden 2.
+	
+	\smallskip
+	
+	\textit{Pregunta Recretiva:} \textquestiondown Existe una mejor aproximación para $\sqrt{2}$ que se exprese como el cociente de dos enteros de dos digitos que la hallada? 
+	\bigskip
+\end{exercise}
+
+
+% ------------ EJ2 -------------------------------------------
+
+\begin{exercise}
+	
+	Resolver el siguiente sistema de ecuaciones no-lineales mediante Newton-Raphson. El sistema de ecuaciones corresponde al ejemplo con dos grados de libertad de la Sección 1.3 de \citep{crisfield1996non}.
+	
+	$$
+	\bff(x)-\lambda \bfv = 0
+	$$
+	%
+	con $\bfx=(x_1,x_2)^T$, $\lambda \in \mathbb{R}^+$, $\bfv=(1,0)^T$
+	
+	$$\bff(\bfx)= \left(\begin{array}{l}
+		- \frac{1}{2} x_2^2 - \epsilon x_2 + x_1 \\
+		(\epsilon+x_2)\left(\frac{1}{2}x_2^2+\epsilon x_2 -x_1\right)+x_2 
+	\end{array}\right)$$
+	
+	\bigskip
+	
+	Resolver para valores: $\epsilon=1/10$, $\epsilon=1/100$ y $\epsilon=1/1000$. 
+	
+	Dar soluciones para los valores de $\lambda=\{0;0.05;0.10;...;0.95;1.00\}$
+	
+\end{exercise}
+
+
+
+\bigskip
+\begin{exercise}
+
+Las siguientes preguntas buscan que se investigue la velocidad y orden de convergencia del método de Newton-Raphson. Asuma en todos los casos que se considera ecuaciones no-lineales de la forma
+	$f(x)=0$ con $f:\mathbb{R}\rightarrow \mathbb{R}$.
+	\begin{itemize}
+		\item[i)] Dar un ejemplo en el cual la iteración de N-R diverge de la raíz buscada.
+		
+		\item[ii)] Dar un ejemplo en el cual la iteración de N-R se mantiene en un bucle infinito, sin diverger ni converger a la raíz buscada.
+		
+		\item[iii)] ¿Puede dar un ejemplo en el cual N-R no converge a la raíz buscada con orden 2 sino con orden 1? Verificar numéricamente el orden para el ejemplo propuesto.
+	\end{itemize}
+	
+\end{exercise}
+
+
+\bigskip
+\begin{exercise}
+	
+	En este ejercicio se plantea trabajar con un método cuasi-Newton y evaluar su orden de convergencia.
+	\begin{itemize}
+		\item[i)] Resolver el problema presentado en el Ejemplo Numérico 2 utilizando el Método de la Secante.
+		
+		\item[ii)] Evaluar numéricamente el orden de convergencia del Método de la Secante usando la iteración generada en el item anterior. Compare el valor estimado de orden de convergencia contra el valor teórico dado en las notas del curso.
+		
+	\end{itemize}
+	
+\end{exercise}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
