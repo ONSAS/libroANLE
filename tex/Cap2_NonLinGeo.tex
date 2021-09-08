@@ -2162,6 +2162,212 @@ El análisis de elementos como cables o tensores es realizado considerando un co
 
 
 
+\section{Ejercicios}
+
+
+
+%--------------- EJ1 ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	Probar la condición de estabilidad para $V$ diferenciable para el caso de $n$ grados de libertad. La prueba es similar a la dada en las notas para un grado de libertad, pero trabajando en varias variables.
+	
+	$$\text{Estabilidad } \Leftarrow \left. \textbf{H}_V  \right|_{\hat{q}} \text{ es definida positiva.}$$
+	
+\end{exercise}
+
+%--------------- EJ2 ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	Hallar las ecuaciones de equilibrio y determinar la carga crítica $P^C$ para las estructuras dadas en las notas:
+	\begin{itemize}
+		\item Caso de Punto Límite (Figura 2.2 de las notas)
+		\item Caso de Bifurcación Simétrica Inestable (Figura 2.4 de las notas)
+		\item Caso de Bifurcación Asimétrica (Figura 2.5 de las notas)
+	\end{itemize}
+\end{exercise}
+
+%--------------- EJ3 ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	Estudiar mediante el Principio de Mínima Energía Potencial Total las configuraciones de equilibrio del sistema discreto formado por barras rígidas dado en la Figura \ref{fig:Ej3a} y clasifique la estabilidad del mismo.
+	
+	La unión entre barras rígidas transmite cargas normales, permite deslizamiento lateral sin fricción entre ellas y mantiene las barras paralelas en todo momento.
+	En la situación decargada ($P=0$) la estructura se encuentra perfectamente recta ($\theta=0$).
+	
+	Notar que el sistema se encuentra traccionado. ¿Considera posible una bifurcación o inestabilidad en presencia de tracciones?
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=.60\linewidth]{Pr2_BifTension}
+		\caption{Sistema Discreto Sometido a Tensión}
+		\label{fig:Ej3a}
+	\end{figure}
+
+	Una vez resuelto el problema, recomendamos ver el siguiente video:
+	
+	\begin{center}
+			\url{https://www.youtube.com/watch?v=EKngs1vvcJU&t=92s}.		
+	\end{center}
+
+	
+
+\end{exercise}
+
+%--------------- EJ4 ----------------------------------------------------------------------
+
+\begin{exercise}
+
+Se plantea analizar el pandeo de una versión discreta de una columna inextensible. La misma está formada por tres segmentos rígidos unidos por resortes de giro de constante $k$, tal como se muestra en la Figura \ref{fig:Ej3}. La columna es perfectamente recta en su configuración inicial.
+
+\begin{enumerate}
+	\item[i)] Determinar las cargas y modos de deformación correspondientes a las configuraciones de equilibrio inestable de la estructura.
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=.35\linewidth]{P2_EJ3}
+		\caption{Columna con dos resortes de giro}
+		\label{fig:Ej3}
+	\end{figure}
+	
+	\item[ii)] Utilice la carga crítica hallada para aproximar la carga crítica de Euler. Se sugiere usar la relación Momento-Curvatura: $M/EI=\theta'$.
+	
+\end{enumerate}
+
+\end{exercise}
+
+%--------------- EJ5 ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	Hallar las ecuaciones de equilibrio, los puntos críticos y estudiar la estabilidad de las curvas de carga-desplazamiento para el caso de Bifurcación Simétrica Inestable (Figura 2.4 de las notas) con una imperfección angular inicial $\epsilon$.
+\end{exercise}
+
+%--------------- EJ6 ----------------------------------------------------------------------
+
+
+
+\begin{exercise}
+	
+	Se define la configuración de la columna inextensible de largo ($L$) mediante la función $w:[0,L]\rightarrow \mathbb{R}$. Es decir, $w(x)$ da el desplazamiento lateral de la columna respecto de la posición vertical recta.
+	
+	Las condiciones de borde de la columna son:
+	
+	\begin{itemize}
+		\item Apoyo en los extremos: $w(0)=0$ y $w(L)=0$.
+		\item Momento Nulo en los extremos: $w''(0)=0$ y $w''(L)=0$.
+	\end{itemize}
+	
+	Dadas las siguientes expresiones para la energía elástica interna ($U$) de flexión y el descenso ($\Delta$) del extremo superior de la columna:
+	
+	\begin{equation}
+		U[w] = \int_{0}^{L} \frac{EI}{2}\frac{{w''(s)}^2}{1-w'(s)^2} ds \simeq \frac{1}{2}\int_{0}^{L} EI{w''(x)}^2 dx
+	\end{equation}
+	
+	\begin{equation}
+	\Delta[w] = \int_{0}^{L} 1-\sqrt{1-w'(s)^2} ds \simeq \int_{0}^{L} \frac{w'(x)^2}{2} dx
+	\end{equation}
+	
+	Se pide:
+	
+	\begin{enumerate}
+		\item[i)] Justifique las expresiones dadas para la energía elástica interna ($U$) y el descenso del extremo superior de la columna ($\Delta$).
+		
+		\item[ii)] Deducir mediante el Principio de Mínima Energía Potencial la E.D.O. que gobierna el equilibrio de la columnas inextensibles en compresión.
+		
+		\item[iii)] Transformar el problema de minimización continuo en uno discreto al proponer una deformada de la forma $\hat{w}(x)=qx(x-L)$. ¿La deformada verifica todas las condiciones de borde? Estime la carga crítica a partir de dicha $\hat{w}(x)$.
+	\end{enumerate}
+
+	
+\end{exercise}
+
+
+%--------------- EJ6b ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	Se determinará, mediante el Principio de Mínima Energía Potencial Total, una aproximación de la carga crítica del \textit{Roorda Frame} dado en la Figura \ref{fig:Ej6b}.
+	
+		\begin{figure}[h!]
+		\centering
+		\includegraphics[width=.4\linewidth]{RoordaFrame}
+		\caption{Estructura Tipo \textit{Roorda Frame}}
+		\label{fig:Ej6b}
+	\end{figure}
+	
+	Las barras son inextensibles, de acero ($E=210000$ MPa) y tienen sección rectangular ($a=10\text{mm}$ y $b=50\text{mm}$). Las mismas experimentan flexión según su inercia débil.
+	
+	Utilizar funciones cúbicas para expresar la deformación lateral $w(x)$ de cada barra. En particular, llamado $\theta_A$ y $\theta_B$ a los giros en los extremos $A$ y $B$ respectivamente, se sugiere la expresión:
+	
+	$$w(x) = \theta_A L \frac{x}{L}\left(1-\frac{x}{L}\right)^2 - \theta_B L \left(\frac{x}{L}\right)^2 \left( 1-\frac{x}{L} \right)$$
+	
+	Se pide:
+	
+	\begin{enumerate}
+		\item[i)] Estimar la carga crítica y el modo asociado usando el PMEPT y las funciones de deflexión lateral sugeridas.
+		
+		\item[ii)] Calcular mediante el ábaco de Jackson \& Mooreland la carga crítica de la estructura considerada. Compare contra la carga crítica estimada en i).
+		
+		\item[iii)] \textquestiondown Qué relación opina que existe entre la estimación de carga crítica realizada y el Método de Elementos Finitos? Si lo entiende necesario, compare el resultado obtenido contra cálculos usando algún \textit{software} comercial (o académico) variando la cantidad de elementos por barra.
+	\end{enumerate}
+	
+	
+\end{exercise}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\pagebreak
+
+
+\begin{exercise}
+	
+	Mostrar que el PTV para una partícula implica el equilibrio dado por la Ley de Newton. Es decir:
+	
+	$$\delta W_{ext}=0  \quad \forall \delta u \quad  \Longrightarrow \quad \sum_i \textbf{f}_i = 0$$
+
+\end{exercise}
+
+
+\begin{exercise}
+	
+	Se pide calcular el descenso de una viga simplemente apoyada con carga uniforme utilizando el PTV. Se desprecia la deformación por cortante, se asumen pequeños desplazamientos y material elástico lineal (Módulo de Elasticidad: $E$ y Segundo Momento de Inercia: $I_y$).
+	
+	\begin{enumerate}
+		\item[1)] Realizar el cálculo asumiendo una deformada expresada como serie trigonométrica: $w(x)=\sum_{i=0}^N q_i \sin((2i+1)\pi x/L)$. Estimar el descenso central usando 1,2 y 3 términos de la serie.
+		
+		\item[2)] Realizar el cálculo asumiendo una deformada dada por un polinomio de orden 4. El cálculo es más simple si se elije aquel polinomio que verifica todas las condiciones de contorno (desplazamientos y momentos nulos). Analizar los resultados.
+	\end{enumerate}
+	
+\end{exercise}
+
+
+%--------------- EJ8 ----------------------------------------------------------------------
+\begin{exercise}
+	
+	En el ejemplo de la barra rígida simplemente apoyada, visto en la Sección 2.2.2 de las notas, usar el PTV para determinar:
+	\begin{itemize}
+		\item Las tres reacciones de los apoyos usando solamente un desplazamiento virtual (movimiento de cuerpo rígido).
+		
+		\item El momento flector resistido por la barra rígida en el centro del vano.
+	\end{itemize}
+\end{exercise}
+
+%--------------- EJ9 ----------------------------------------------------------------------
+\begin{exercise}
+	
+	Repetir el Ejercicio 5 usando el PTV para hallar la ecuación de equilibrio de la estructura. Verificar que se obtiene la misma ecuación de equilibrio que usando el Principio de Mínima Energía Potencial.
+\end{exercise}
+
+
+
+
+
 
 
 
