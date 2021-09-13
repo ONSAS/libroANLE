@@ -2160,6 +2160,7 @@ El análisis de elementos como cables o tensores es realizado considerando un co
 
 
 
+\clearpage
 
 
 \section{Ejercicios}
@@ -2184,9 +2185,11 @@ El análisis de elementos como cables o tensores es realizado considerando un co
 	
 	Hallar las ecuaciones de equilibrio y determinar la carga crítica $P^C$ para las estructuras dadas en las notas:
 	\begin{itemize}
-		\item Caso de Punto Límite (Figura 2.2 de las notas)
-		\item Caso de Bifurcación Simétrica Inestable (Figura 2.4 de las notas)
-		\item Caso de Bifurcación Asimétrica (Figura 2.5 de las notas)
+		\item Caso de Punto Límite (Figura~\ref{fig:fig9})
+
+
+		\item Caso de Bifurcación Simétrica Inestable (Figura~\ref{fig:fig11})
+		\item Caso de Bifurcación Asimétrica (Figura~\ref{fig:fig12})
 	\end{itemize}
 \end{exercise}
 
@@ -2209,18 +2212,13 @@ El análisis de elementos como cables o tensores es realizado considerando un co
 		\label{fig:Ej3a}
 	\end{figure}
 
-	Una vez resuelto el problema, recomendamos ver el siguiente video:
+	Se recomienta ver el video disponible en el siguiente enlace, luego de resuelto el ejercicio:  \href{https://www.youtube.com/watch?v=EKngs1vvcJU\&t=92s}{youtube.com/watch?v=EKngs1vvcJU\&t=92s}.
 	
-	\begin{center}
-			\url{https://www.youtube.com/watch?v=EKngs1vvcJU&t=92s}.		
-	\end{center}
-
-	
-
 \end{exercise}
 
 %--------------- EJ4 ----------------------------------------------------------------------
 
+\bigskip
 \begin{exercise}
 
 Se plantea analizar el pandeo de una versión discreta de una columna inextensible. La misma está formada por tres segmentos rígidos unidos por resortes de giro de constante $k$, tal como se muestra en la Figura \ref{fig:Ej3}. La columna es perfectamente recta en su configuración inicial.
@@ -2252,7 +2250,7 @@ Se plantea analizar el pandeo de una versión discreta de una columna inextensib
 %--------------- EJ6 ----------------------------------------------------------------------
 
 
-
+\bigskip
 \begin{exercise}
 	
 	Se define la configuración de la columna inextensible de largo ($L$) mediante la función $w:[0,L]\rightarrow \mathbb{R}$. Es decir, $w(x)$ da el desplazamiento lateral de la columna respecto de la posición vertical recta.
@@ -2325,40 +2323,46 @@ Se plantea analizar el pandeo de una versión discreta de una columna inextensib
 %\pagebreak
 
 
-\begin{exercise}
-	
-	Mostrar que el PTV para una partícula implica el equilibrio dado por la Ley de Newton. Es decir:
-	
-	$$\delta W_{ext}=0  \quad \forall \delta u \quad  \Longrightarrow \quad \sum_i \textbf{f}_i = 0$$
+%\begin{exercise}
+%	
+%	Mostrar que el PTV para una partícula implica el equilibrio dado por la Ley de Newton. Es decir:
+%	
+%	$$\delta W_{ext}=0  \quad \forall \delta u \quad  \Longrightarrow \quad \sum_i \textbf{f}_i = 0$$
+%
+%\end{exercise}
+%
+%
+%\begin{exercise}
+%	
+%	Se pide calcular el descenso de una viga simplemente apoyada con carga uniforme utilizando el PTV. Se desprecia la deformación por cortante, se asumen pequeños desplazamientos y material elástico lineal (Módulo de Elasticidad: $E$ y Segundo Momento de Inercia: $I_y$).
+%	
+%	\begin{enumerate}
+%		\item[1)] Realizar el cálculo asumiendo una deformada expresada como serie trigonométrica: $w(x)=\sum_{i=0}^N q_i \sin((2i+1)\pi x/L)$. Estimar el descenso central usando 1,2 y 3 términos de la serie.
+%		
+%		\item[2)] Realizar el cálculo asumiendo una deformada dada por un polinomio de orden 4. El cálculo es más simple si se elije aquel polinomio que verifica todas las condiciones de contorno (desplazamientos y momentos nulos). Analizar los resultados.
+%	\end{enumerate}
+%	
+%\end{exercise}
+%
+%
+%%--------------- EJ8 ----------------------------------------------------------------------
+%\begin{exercise}
+%	
+%	En el ejemplo de la barra rígida simplemente apoyada, visto en la Sección 2.2.2 de las notas, usar el PTV para determinar:
+%	\begin{itemize}
+%		\item Las tres reacciones de los apoyos usando solamente un desplazamiento virtual (movimiento de cuerpo rígido).
+%		
+%		\item El momento flector resistido por la barra rígida en el centro del vano.
+%	\end{itemize}
+%\end{exercise}
 
-\end{exercise}
 
 
-\begin{exercise}
-	
-	Se pide calcular el descenso de una viga simplemente apoyada con carga uniforme utilizando el PTV. Se desprecia la deformación por cortante, se asumen pequeños desplazamientos y material elástico lineal (Módulo de Elasticidad: $E$ y Segundo Momento de Inercia: $I_y$).
-	
-	\begin{enumerate}
-		\item[1)] Realizar el cálculo asumiendo una deformada expresada como serie trigonométrica: $w(x)=\sum_{i=0}^N q_i \sin((2i+1)\pi x/L)$. Estimar el descenso central usando 1,2 y 3 términos de la serie.
-		
-		\item[2)] Realizar el cálculo asumiendo una deformada dada por un polinomio de orden 4. El cálculo es más simple si se elije aquel polinomio que verifica todas las condiciones de contorno (desplazamientos y momentos nulos). Analizar los resultados.
-	\end{enumerate}
-	
-\end{exercise}
 
 
-%--------------- EJ8 ----------------------------------------------------------------------
-\begin{exercise}
-	
-	En el ejemplo de la barra rígida simplemente apoyada, visto en la Sección 2.2.2 de las notas, usar el PTV para determinar:
-	\begin{itemize}
-		\item Las tres reacciones de los apoyos usando solamente un desplazamiento virtual (movimiento de cuerpo rígido).
-		
-		\item El momento flector resistido por la barra rígida en el centro del vano.
-	\end{itemize}
-\end{exercise}
 
-%--------------- EJ9 ----------------------------------------------------------------------
+
+
 \begin{exercise}
 	
 	Repetir el Ejercicio 5 usando el PTV para hallar la ecuación de equilibrio de la estructura. Verificar que se obtiene la misma ecuación de equilibrio que usando el Principio de Mínima Energía Potencial.
