@@ -862,9 +862,11 @@ Si se compara la relación de equilibrio dada por la Ecuación~\eqref{EqNewton} 
 %
 Por otro lado, comparando con las tensiones usadas con las otras medidas de deformaciones: $\sigma_E = \sigma A_n / A_o$ y $\sigma_G = \sigma A_nl_o/(A_ol_n)$.
 
-Por lo tanto las tensión que obtenemos usando la deformación de Green necesita ser corregida para obtener la tensión de real o de Cauchy. La tensión obtenida al usar la deformación unitaria de Green se llama la Segunda Tensión de Piola-Kirchoff y tiene generalización en forma de tensor para sólidos continuos.
+Por lo tanto la tensión que se obtiene usando la deformación de Green debe ser corregida para obtener la tensión real o de Cauchy. %
+%
+La tensión obtenida al usar la deformación unitaria de Green se llama la Segunda Tensión de Piola-Kirchoff y tiene generalización en forma de tensor para sólidos continuos.
 
-Como se mencionó anteriormente, si verifica que las deformaciones unitarias son pequeñas, entonces los largos de barras y áreas de barras pueden considerarse como aproximadamente constantes durante la deformación. Esto resulta en que $\sigma_G \simeq \sigma$ y de esta forma, con buen grado de aproximación, no se requiere corrección alguna para las tensiones.
+Como se mencionó anteriormente, si se verifica que las deformaciones unitarias son pequeñas, entonces los largos de barras y áreas de barras pueden considerarse como aproximadamente constantes durante la deformación. Esto resulta en que $\sigma_G \simeq \sigma$ y de esta forma, con buen grado de aproximación, no se requiere corrección alguna para las tensiones.
 
 A continuación, para comparar numéricamente las relaciones de equilibrio obtenidas, se asumen valores concretos para los parámetros de la estructura y se calculan los valores de $q$ para cada medida de deformación considerada. Los valores asumidos son: $x=2500$, $A_0=100$, $E=5\times10^5$, $z=2500$. Los resultados se ven el la Figura \ref{fig:nonlindef}.
 
@@ -876,15 +878,17 @@ A continuación, para comparar numéricamente las relaciones de equilibrio obten
 \end{figure}
 
 
-Se puede ver como en las posiciones con pequeñas deformaciones los resultados de las distintas medidas de deformación coinciden, es decir cerca de $w=0$ y cerca de $w=5000$. Mientras que en las posiciones con mayores deformaciones unitarias, los resultados dados por las distintas medidas de deformación difieren. Siendo la de Green la que presenta el comportamiento más flexible.
+Se puede ver cómo en las posiciones con pequeñas deformaciones los resultados de las distintas medidas de deformación coinciden (es decir para $w \approx 0$ y $w\approx5000$), mientras que en las posiciones con mayores deformaciones unitarias, los resultados dados por las distintas medidas de deformación difieren. %
+%
+La tensión de Green se corresponde con el comportamiento más flexible.
 
 Cabe indicar que en el cálculo de $\sigma_L$ se asumió que el volumen de la barra era constante.
 
 Adicionalmente, se utilizó la misma relación constitutiva con un módulo $E$ fijo para todas las deformaciones unitarias vistas. Es claro que imponer la misma relación lineal a distintas medidas de tensión y deformación resulta en distintas predicciones en la hipótesis de grandes deformaciones unitarias. Un tratamiento más detallado de estos temas corresponde al análisis con grandes deformaciones unitarias, lo cual está fuera del alcance de este curso.
 
-Como conclusión a los conceptos presentados en este capítulo, se vieron distintas medidas de deformación unitarias no lineales respecto de los desplazamientos. Cada una se relaciona a través del PTV a una medida de tensión conjugada. Se vieron las equivalencias tanto entre medidas de deformación como entre medidas de tensión y se introdujo la medida de tensión ''real'' de Cauchy. La equivalencia tanto entre medidas de tensiones y medidas de deformaciones fue mostrada para el caso de pequeñas deformaciones unitarias.
+Como conclusión a los conceptos presentados en este capítulo, se vieron distintas medidas de deformación unitarias no lineales respecto de los desplazamientos. Cada una se relaciona a través del PTV a una medida de tensión conjugada. Se vieron las equivalencias tanto entre medidas de deformación como entre medidas de tensión y se introdujo la medida de tensión ``real'' de Cauchy. La equivalencia tanto entre medidas de tensiones y medidas de deformaciones fue mostrada para el caso de pequeñas deformaciones unitarias.
 
-En secciones siguientes, se utilizará la deformación de Green como la base de desarrollo de elementos finitos de barra para grandes desplazamientos y rotaciones pero pequeñas deformaciones unitarias.
+%En secciones siguientes, se utilizará la deformación de Green como la base de desarrollo de elementos finitos de barra para grandes desplazamientos y rotaciones, manteniendo pequeñas deformaciones unitarias.
 
 El código de Octave usado para generar la Figura~\ref{fig:nonlindef} se presenta en el Código~\ref{cod:nonlinstrain}.
 
@@ -938,10 +942,11 @@ Considerando en este caso que se tiene una estructura reticulada plana formada p
 u(x^e) = \bfN_{loc}^e(x^e) \bfu_{loc}^e,
 \qquad
 \bfN_{loc}^e = \left[ \begin{matrix}
-\frac{\ell^e - x^e}{\ell^e} & 0 & \frac{x^e}{\ell^e} & 0
+\frac{\ell_0^e - x^e}{\ell_0^e} & 0 & \frac{x^e}{\ell_0^e} & 0
 \end{matrix} \right],
 \end{equation}
-donde $\bfu^e$ es el vector de desplazamientos nodales del elemento (o barra) $e$, $\ell^e$ es el largo del elemento y $x^e\in[0,\ell^e]$ es una coordenada auxiliar local del elemento. %
+%
+donde $\bfu^e$ es el vector de desplazamientos nodales del elemento (o barra) $e$, $\ell_0^e$ es el largo del elemento y $x^e\in[0,\ell_0^e]$ es una coordenada auxiliar local del elemento en la configuración de referencia. %
 %
 A pesar de que otras interpolaciones pueden ser consideradas, son utilizadas funciones lineales, las cuales son adecuadas para problemas de barras con fuerza de volumen aplicadas despreciables.
 % -------------------------
@@ -954,7 +959,7 @@ Aplicando la relación lineal entre desplazamientos y deformación (ingenieril) 
 \quad
 \text{con}
 \quad
-\bfb_{L,loc}^e = \frac{1}{\ell^e} \left[ \begin{matrix}
+\bfb_{L,loc}^e = \frac{1}{\ell_0^e} \left[ \begin{matrix}
 -1 & 0 & 1 & 0
 \end{matrix} \right].
 \end{equation}
@@ -981,7 +986,7 @@ Sustituyendo en la Ecuación~\eqref{eqn:expeps} se obtiene la expresión:
 \begin{equation}\label{eqn:exprepslin}
 \varepsilon^e =  \bfb_L^e \bfu^e,
 \qquad
-\bfb_L^e = \frac{1}{\ell^e} \left[ \begin{matrix}
+\bfb_L^e = \frac{1}{\ell_0^e} \left[ \begin{matrix}
 -\cos(\phi^e) & -\sin(\phi^e) & \cos(\phi^e) & \sin(\phi^e)
 \end{matrix} \right],
 \end{equation}
@@ -998,11 +1003,11 @@ Se está en condiciones ahora de sustituir las expresiones en el principio de tr
 %
 \begin{equation}
 \delta W_{\text{int}}(\bfu^e) %
-= \int_{\ell^e}  \delta \varepsilon^e \, \sigma^e \, \dif x %
+= \int_{\ell_0^e}  \delta \varepsilon^e \, \sigma^e \, \dif x %
 %
-= \int_{\ell^e} \left( \delta \bfu^e\right)^{\text{T}} \left( \bfb_L^e\right)^{\text{T}} E A \bfb_L^e \bfu^e \, \dif x  %
+= \int_{\ell_0^e} \left( \delta \bfu^e\right)^{\text{T}} \left( \bfb_L^e\right)^{\text{T}} E A \bfb_L^e \bfu^e \, \dif x  %
 %
-= \left( \delta \bfu^e \right)^{\text{T}} \bff^e_{\text{int}}(\bfu^e) 
+= \left( \delta \bfu^e \right)^{\text{T}} \bff^e_{\text{int}}(\bfu^e),
 \end{equation}
 %
 donde fue definido el vector de fuerzas internas del elemento $\bff^e_{\text{int}}(\bfu^e)$. %
@@ -1044,7 +1049,8 @@ Los grados de libertad de esos nodos en el vector de desplazamientos globales se
 %
 En una implementación del MEF es de utilidad contar con una función que permita calcular los grados de libertad vinculados a un conjunto arbitrario de nodos. %
 %
-En la herramienta ONSAS se utiliza una función para dicho fin, llamada \textit{nodes2dofs}, que es presentada en el Código~\ref{cod:nodes2dofs}.
+En la herramienta ONSAS se utiliza una función para dicho fin, llamada \textit{nodes2dofs}, cuyo código se sugiere mirar.
+
 
 El principio de trabajos virtuales establece entonces la igualdad entre el trabajo virtual interno y el trabajo virtual externo:
 \begin{equation}
@@ -1072,17 +1078,21 @@ En esta sección se aplica el método de Newton-Raphson a la resolución de las 
 
 Tal como se vió en la Sección~\ref{Sec:PTVBielas}, al analizar bielas la única componente del tensor de tensiones que realiza trabajo es la axial. %
 %
-Considerando la Ecuación~\eqref{PTVBielaSStrain} y las hipótesis de pequeños cambios de área $A\approx A_0$ y de longitud $\ell\approx \ell_0$, se obtiene la siguiente expresión del PTV para bielas:
+Considerando la Ecuación~\eqref{PTVBielaSStrain} y asumiendo que la sección transversal del elemento es uniforme con área $A_0$ se obtiene la siguiente expresión del PTV para bielas:
 %
 \begin{equation}\label{eqn:ptvbielaA0}
-A_0 \int_{\ell_0} \sigma \delta \varepsilon \, \dif x = \delta \bfu^{\text{T}} \bff_{\text{ext}}   \qquad \forall \delta \bfu \in \mcV
+A_0 \int_{\ell_0} \sigma(x_0) \delta \varepsilon \, \dif x_0 = \delta \bfu^{\text{T}} \bff_{\text{ext}}   \qquad \forall \delta \bfu \in \mcV
 \end{equation}
 %
-donde $\sigma$ representa la tensión de Green en cada punto y $\bff_{\text{ext}}$ las fuerzas externas nodales, que en el caso de un único elemento estaría dada por:
+donde $\sigma(x_0)$ representa la tensión de Green en cada punto con coordenadas locales de referencia $x_0$ y $\bff_{\text{ext}}$ las fuerzas externas nodales. %
+%
+En el caso de un único elemento las fuerzas externas estarían dadas por:
 %
 \begin{equation}
 \bff_{\text{ext}} = \left[ f_{\text{ext},1,x}, f_{\text{ext},1,y}, f_{\text{ext},2,x}, f_{\text{ext},2,y} \right]^{\text{T}}.
 \end{equation}
+
+Respecto a las tensiones, para elementos de biela, sometidos a fuerzas en los nodos, la deformación axial y la tensión es uniforme, por lo que se puede omitir la dependencia de $x_0$.
 
 En la \autoref{fig:truss1f} se muestra un elemento de barra en la configuración de referencia y en la configuración deformada de equilibrio correspondiente. %
 %
@@ -1513,7 +1523,7 @@ Sustituyendo en la Ecuación~\eqref{eqn:sistderivf} y realizando también el ens
 }
 \end{equation}
 
-En la herramienta ONSAS los procesos de ensamblado de la matriz tangente y del vector de fuerzas internas son realizados en la función \textit{assembly} presentada en el Código~\ref{cod:assembly}.
+En la herramienta ONSAS los procesos de ensamblado de la matriz tangente y del vector de fuerzas internas son realizados en la función \textit{assembler}.
 
 \subsubsection{Criterios de parada}
 En cada iteración el sistema es resuelto, los valores $\bfu$ son actualizados, $\sigma^k$ y $\bff_{\text{int}}$ son calculados y se evalúa si se verifican las condiciones de parada. %
