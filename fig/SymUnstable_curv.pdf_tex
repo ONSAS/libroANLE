@@ -1,4 +1,4 @@
-%% Creator: Inkscape inkscape 0.92.5, www.inkscape.org
+%% Creator: Inkscape 1.1 (c4e8f9ed74, 2021-05-24), www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'SymUnstable_curv.pdf' (pdf, eps, ps)
 %%
@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{795.21534bp}%
+    \setlength{\unitlength}{728.60712497bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,19 +50,19 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.58541796)%
+  \begin{picture}(1,0.63849388)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{SymUnstable_curv.pdf}}%
-    \put(0.32342565,0.04913007){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.30411097\unitlength}\raggedright $(0,0)$\end{minipage}}}%
-    \put(0.66766335,0.03892286){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.30411097\unitlength}\raggedright $\theta$\end{minipage}}}%
-    \put(0.64382328,-0.01078684){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.01546327\unitlength}\raggedright \end{minipage}}}%
-    \put(0.3339829,0.59013355){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.40719947\unitlength}\raggedright $P$\end{minipage}}}%
-    \put(0.47594312,0.19706193){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.72300219\unitlength}\raggedright {\small con imperf.}\end{minipage}}}%
+    \put(0.35636907,0.05149117){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.33191236\unitlength}\raggedright $(0,0)$\end{minipage}}}%
+    \put(0.73207647,0.04035084){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.33191236\unitlength}\raggedright $\theta$\end{minipage}}}%
+    \put(0.70605698,-0.01390325){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.0168769\unitlength}\end{minipage}}}%
+    \put(0.36789144,0.64195241){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.44442506\unitlength}\raggedright $P$\end{minipage}}}%
+    \put(0.52282946,0.21294676){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.789098\unitlength}\raggedright {\small con imperf.}\end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{SymUnstable_curv.pdf}}%
-    \put(0.31730869,0.44683145){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.40719947\unitlength}\raggedright $P^c$\end{minipage}}}%
+    \put(0.36686711,0.4732043){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.44442506\unitlength}\raggedright $P^c$\end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{SymUnstable_curv.pdf}}%
-    \put(0.44236728,0.5668175){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.72300219\unitlength}\raggedright {\small punto de bifurcación}\end{minipage}}}%
-    \put(-0.00471645,0.48316907){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.72300219\unitlength}\raggedright {\small sin imperf.}\end{minipage}}}%
+    \put(0.48618416,0.61650485){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.789098\unitlength}\raggedright {\small punto de bifurcación}\end{minipage}}}%
+    \put(-0.00177132,0.52520939){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.789098\unitlength}\raggedright {\small sin imperf.}\end{minipage}}}%
   \end{picture}%
 \endgroup%

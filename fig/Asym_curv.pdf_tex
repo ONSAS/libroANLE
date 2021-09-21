@@ -1,4 +1,4 @@
-%% Creator: Inkscape inkscape 0.92.5, www.inkscape.org
+%% Creator: Inkscape 1.1 (c4e8f9ed74, 2021-05-24), www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'Asym_curv.pdf' (pdf, eps, ps)
 %%
@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{927.69981bp}%
+    \setlength{\unitlength}{861.09159497bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,20 +50,20 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.62271765)%
+  \begin{picture}(1,0.67106883)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{Asym_curv.pdf}}%
-    \put(0.33793224,0.0333643){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.260681\unitlength}\raggedright $(0,0)$\end{minipage}}}%
-    \put(0.76422694,0.04023591){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.260681\unitlength}\raggedright $\theta$\end{minipage}}}%
-    \put(0.64381625,-0.00549899){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.01325497\unitlength}\raggedright \end{minipage}}}%
-    \put(0.37150182,0.6106705){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.34904746\unitlength}\raggedright $P$\end{minipage}}}%
-    \put(0.5220026,0.62546502){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.61975051\unitlength}\raggedright {\small punto de bifurcación}\end{minipage}}}%
+    \put(0.36692923,0.0371388){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.28084551\unitlength}\raggedright $(0,0)$\end{minipage}}}%
+    \put(0.8261992,0.04454195){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.28084551\unitlength}\raggedright $\theta$\end{minipage}}}%
+    \put(0.69647436,-0.0047307){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.01428028\unitlength}\end{minipage}}}%
+    \put(0.40309552,0.65910149){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37604741\unitlength}\raggedright $P$\end{minipage}}}%
+    \put(0.56523803,0.67504042){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.66769021\unitlength}\raggedright {\small punto de bifurcación}\end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{Asym_curv.pdf}}%
-    \put(0.50334488,0.47565042){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.34904746\unitlength}\raggedright $P^c$\end{minipage}}}%
+    \put(0.54513707,0.51363718){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37604741\unitlength}\raggedright $P^c$\end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{Asym_curv.pdf}}%
-    \put(0.5473503,0.23490338){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.61975051\unitlength}\raggedright {\small con imperf.}\end{minipage}}}%
-    \put(-0.0040429,0.3990107){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.61975051\unitlength}\raggedright {\small sin imperf.}\end{minipage}}}%
+    \put(0.59254646,0.25426757){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.66769021\unitlength}\raggedright {\small con imperf.}\end{minipage}}}%
+    \put(-0.00149879,0.43106913){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.66769021\unitlength}\raggedright {\small sin imperf.}\end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{Asym_curv.pdf}}%
   \end{picture}%
 \endgroup%
