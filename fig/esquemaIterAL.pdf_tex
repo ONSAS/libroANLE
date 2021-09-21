@@ -1,4 +1,4 @@
-%% Creator: Inkscape inkscape 0.92.5, www.inkscape.org
+%% Creator: Inkscape 1.1 (c4e8f9ed74, 2021-05-24), www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'esquemaIterAL.pdf' (pdf, eps, ps)
 %%
@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{866.63393082bp}%
+    \setlength{\unitlength}{882.9071366bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,21 +50,21 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.77777905)%
+  \begin{picture}(1,0.7616855)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{esquemaIterAL.pdf}}%
-    \put(-0.00287414,0.05370452){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $(0,0)$\end{minipage}}}%
+    \put(0.01561022,0.05095667){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27390617\unitlength}\raggedright $(0,0)$\end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{esquemaIterAL.pdf}}%
-    \put(0.59054248,0.74871021){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37246005\unitlength}\raggedright radio: $\Delta \ell$\end{minipage}}}%
-    \put(-0.00110828,0.60463628){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37364249\unitlength}\raggedright $\lambda_k \bfv$\end{minipage}}}%
-    \put(0.9233917,0.03571526){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x$\end{minipage}}}%
-    \put(0.69829665,0.05725176){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.01418896\unitlength}\raggedright \end{minipage}}}%
-    \put(0.03017145,0.76224563){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37364249\unitlength}\raggedright $\lambda \bfv$\end{minipage}}}%
-    \put(0.75211131,0.05089315){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27904944\unitlength}\raggedright $x_k$\end{minipage}}}%
+    \put(0.59808935,0.73315244){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.36559509\unitlength}\raggedright radio: $\Delta \ell$\end{minipage}}}%
+    \put(-0.00134473,0.59173399){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.36675574\unitlength}\raggedright $\lambda_{k-1} \bfv$\end{minipage}}}%
+    \put(0.9248037,0.03329898){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27390617\unitlength}\raggedright $x$\end{minipage}}}%
+    \put(0.70385747,0.05443854){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.01392743\unitlength}\end{minipage}}}%
+    \put(0.05484247,0.74643838){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.36675574\unitlength}\raggedright $\lambda \bfv$\end{minipage}}}%
+    \put(0.75668024,0.04819712){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27390617\unitlength}\raggedright $x_{k-1}$\end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{esquemaIterAL.pdf}}%
-    \put(0.48668934,0.2455312){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37364249\unitlength}\raggedright $s_k$\end{minipage}}}%
-    \put(0.40288814,0.65724635){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37246005\unitlength}\raggedright $\bff(\bfx)$\end{minipage}}}%
+    \put(0.49615037,0.23924772){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.36675574\unitlength}\raggedright $s_k$\end{minipage}}}%
+    \put(0.41389374,0.64337438){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.36559509\unitlength}\raggedright $\bff(\bfx)$\end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{esquemaIterAL.pdf}}%
   \end{picture}%
 \endgroup%
