@@ -2,20 +2,20 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    id="svg4670"
    width="1212"
    height="912"
    viewBox="0 0 1212 912"
    sodipodi:docname="SymUnstable_curv.svg"
-   inkscape:version="0.92.2 5c3e80d, 2017-08-06">
+   inkscape:version="1.1 (c4e8f9ed74, 2021-05-24)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <metadata
      id="metadata4676">
     <rdf:RDF>
@@ -24,7 +24,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -229,19 +228,20 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="3200"
-     inkscape:window-height="1605"
+     inkscape:window-width="1920"
+     inkscape:window-height="979"
      id="namedview4672"
      showgrid="false"
-     inkscape:zoom="1.4638158"
-     inkscape:cx="672.77146"
-     inkscape:cy="561.08932"
+     inkscape:zoom="1.0350741"
+     inkscape:cx="644.88138"
+     inkscape:cy="476.29441"
      inkscape:window-x="0"
-     inkscape:window-y="55"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg4670" />
+     inkscape:current-layer="svg4670"
+     inkscape:pagecheckerboard="0" />
   <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3.77952766;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:12, 12;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Arrow1Lend);font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
      d="m 633.73286,428.16368 c 0,-179.88104 0,-179.88104 0,-179.88104"
      id="path4680"
      inkscape:connector-curvature="0" />
@@ -261,7 +261,8 @@
          height="129.79776"
          x="495.96405"
          y="503.47864" /></flowRegion><flowPara
-       id="flowPara4994">$(0,0)$</flowPara></flowRoot>  <flowRoot
+       id="flowPara4994">$(0,0)$</flowPara></flowRoot>
+  <flowRoot
      transform="translate(397.59189,289.54961)"
      xml:space="preserve"
      id="flowRoot4988-36"
@@ -272,17 +273,19 @@
          height="129.79776"
          x="495.96405"
          y="503.47864" /></flowRegion><flowPara
-       id="flowPara4994-9">$\theta$</flowPara></flowRoot>  <flowRoot
+       id="flowPara4994-9">$\theta$</flowPara></flowRoot>
+  <flowRoot
      xml:space="preserve"
      id="flowRoot1554"
-     style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-height:125%;letter-spacing:0px;word-spacing:0px"><flowRegion
+     style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
        id="flowRegion1556"><rect
          id="rect1558"
          width="16.395506"
          height="43.0382"
          x="868.27863"
          y="845.7348" /></flowRegion><flowPara
-       id="flowPara1560" /></flowRoot>  <flowRoot
+       id="flowPara1560" /></flowRoot>
+  <flowRoot
      transform="translate(43.794806,-294.89198)"
      xml:space="preserve"
      id="flowRoot4988-0-9-3-3"
@@ -293,7 +296,8 @@
          height="89.492111"
          x="495.96405"
          y="503.47864" /></flowRegion><flowPara
-       id="flowPara4994-6-2-9-5">$P$</flowPara></flowRoot>  <flowRoot
+       id="flowPara4994-6-2-9-5">$P$</flowPara></flowRoot>
+  <flowRoot
      transform="translate(194.3134,121.87679)"
      xml:space="preserve"
      id="flowRoot4988-3-2"
@@ -304,20 +308,21 @@
          height="82.44632"
          x="495.96405"
          y="503.47864" /></flowRegion><flowPara
-       id="flowPara4994-2-2">{\small con imperf.}</flowPara></flowRoot>  <path
+       id="flowPara4994-2-2">{\small con imperf.}</flowPara></flowRoot>
+  <path
      style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Lend)"
      d="M 712.93345,291.57764 642.08191,415.87843"
      id="path1000-9"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="cc" />
   <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:12,12;stroke-opacity:1;stroke-dashoffset:0"
-     d="m 631.6873,424.91947 c 169.6713,2.43293 317.67283,102.17979 388.72,193.72137"
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:12, 12;stroke-dashoffset:0;stroke-opacity:1"
+     d="m 631.77434,427.8291 c 169.6713,2.43293 317.58579,99.35622 388.63296,190.8978"
      id="path2990"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="cc" />
   <flowRoot
-     transform="translate(26.115358,-142.95061)"
+     transform="translate(42.799701,-130.95721)"
      xml:space="preserve"
      id="flowRoot4988-0-9-3-3-6"
      style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
@@ -327,7 +332,8 @@
          height="89.492111"
          x="495.96405"
          y="503.47864" /></flowRegion><flowPara
-       id="flowPara4994-6-2-9-5-9">$P^c$</flowPara></flowRoot>  <circle
+       id="flowPara4994-6-2-9-5-9">$P^c$</flowPara></flowRoot>
+  <circle
      style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:3.77999997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
      id="path2997"
      cx="632.80493"
@@ -404,7 +410,8 @@
          height="82.44632"
          x="495.96405"
          y="503.47864" /></flowRegion><flowPara
-       id="flowPara4994-2-2-1">{\small punto de bifurcación}</flowPara></flowRoot>  <flowRoot
+       id="flowPara4994-2-2-1">{\small punto de bifurcación}</flowPara></flowRoot>
+  <flowRoot
      transform="translate(-315.32375,-181.47892)"
      xml:space="preserve"
      id="flowRoot4988-3-2-2"
@@ -415,4 +422,5 @@
          height="82.44632"
          x="495.96405"
          y="503.47864" /></flowRegion><flowPara
-       id="flowPara4994-2-2-9">{\small sin imperf.}</flowPara></flowRoot></svg>
+       id="flowPara4994-2-2-9">{\small sin imperf.}</flowPara></flowRoot>
+</svg>

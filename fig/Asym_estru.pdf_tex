@@ -1,4 +1,4 @@
-%% Creator: Inkscape inkscape 0.92.5, www.inkscape.org
+%% Creator: Inkscape 1.1 (c4e8f9ed74, 2021-05-24), www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'Asym_estru.pdf' (pdf, eps, ps)
 %%
@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{390.95071146bp}%
+    \setlength{\unitlength}{390.56023483bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,18 +50,18 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.89041735)%
+  \begin{picture}(1,0.89130758)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{Asym_estru.pdf}}%
-    \put(0.87213882,0.50723273){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35732201\unitlength}\raggedright $\theta$\end{minipage}}}%
+    \put(0.8906116,0.57740496){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35767925\unitlength}\raggedright $\theta$\end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{Asym_estru.pdf}}%
-    \put(0.82838989,0.88984134){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35732201\unitlength}\raggedright $P$\end{minipage}}}%
+    \put(0.83055101,0.89073099){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35767925\unitlength}\raggedright $P$\end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{Asym_estru.pdf}}%
-    \put(0.42984386,0.51133867){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35732201\unitlength}\raggedright $K$\end{minipage}}}%
+    \put(0.43160652,0.5118499){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35767925\unitlength}\raggedright $K$\end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{Asym_estru.pdf}}%
-    \put(-0.00254336,0.51133867){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35732201\unitlength}\raggedright $L$\end{minipage}}}%
-    \put(0.4651542,0.09504578){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35732201\unitlength}\raggedright $L$\end{minipage}}}%
+    \put(-0.00121299,0.5118499){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35767925\unitlength}\raggedright $L$\end{minipage}}}%
+    \put(0.46695217,0.09514081){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35767925\unitlength}\raggedright $L$\end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=5]{Asym_estru.pdf}}%
   \end{picture}%
 \endgroup%
