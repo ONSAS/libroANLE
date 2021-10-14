@@ -90,7 +90,7 @@ Por ejemplo, si se estudia una estructura metálica soldada y se sabe que una es
 
 Una formulación usual para la matriz $\bfC$ es un tipo de amortiguamiento proporcional conocido como amortiguamiento de Rayleigh, ver \citep{clough1993dynamics}:
 %
-\begin{equation}
+\begin{equation} \label{eqn:amorRayl}
 	\bfC = \eta \bfM + \chi \bfK.
 \end{equation}
 
@@ -454,7 +454,8 @@ En el Código~\ref{cod:Blast} se presenta la implementación de GNU-Octave utili
 
 \lstinputlisting[caption = {Ejemplo Numérico - Método Diferencia Centrada.}\label{cod:Blast}]{../src/Explicit_Edificio_Blast_V0.m}
 
-\subsection{Método de Newmark - Implícito}
+\subsection{Método de Newmark - Implícito} \label{sec:newmarkLineal}
+
 El Método de Newmark es en realidad una familia de métodos, ya que se cuenta con dos parámetros ($\alpha$ y $\delta$) mediante los cuales se pueden obtener una variedad de métodos, con distintos comportamientos en cuanto a estabilidad y precisión.
 
 Se comenzará formulando el método en su forma general, es decir sin especificar valores para los parámetros, aunque más adelante el análisis de estabilidad numérica y el ejemplo numérico dado corresponderán al caso de Newmark, también conocido como Método de Trapecio.
@@ -869,4 +870,166 @@ Para que la solución sea correcta se debe iterar hasta obtener convergencia del
 Tal como se indicó al comienzo de esta sección, si el paso temporal es suficientemente corto como para que la estructura se comporte de forma aproximadamente lineal durante varios instantes de tiempo, entonces Newmark presentará un comportamiento estable. A pesar de esto, es posible seleccionar pasos temporales suficientemente largos como para que los análisis de estabilidad numérica, hechos en la hipótesis de dinámica lineal, pierdan validez y el método presente inestabilidad numérica. %
 %
 Se puede ver un ejemplo de este tipo de comportamiento en el Capítulo 24 del libro \citep{Crisfield1997}.
+
+
+
+
+\section{Ejercicios}
+
+\begin{exercise}
+	
+En el planteo de las ecuaciones de movimiento de una estructura, la disipación viscosa fue definida en base a una matriz de amortiguamiento $\bfC$. En particular, se definió el amortiguamiento de Rayleigh en la Ecuación~\eqref{eqn:amorRayl}.
+
+\textbf{Se pide:}
+\begin{itemize}
+		\item[i)] Deducir la relación entre amortiguamiento crítico en el modo $i$ ($\xi_i$) y la frecuencia natural del modo $i$ ($\omega_i$) en la hipótesis de amortiguamiento de Rayleigh. Hacer un croquis de dicha relación.
+		\item[ii)] Deducir los valores de $\eta$ y $\chi$ de manera de lograr amortiguamientos críticos $\xi_1$ y $\xi_2$ en las frecuencias $\omega_1$ y $\omega_2$ respectivamente.
+	\end{itemize}
+	
+\end{exercise}
+
+% ------------ EJ2 -------------------------------------------
+
+%\begin{exercise}
+%	En el método de Diferencia Centrada se utilizaron Cocientes Incrementales para aproximar las derivadas en el tiempo de los desplazamientos. 
+%	
+%	Se pide deducir los errores de truncamiento $O(\Delta t^p)$ para los cocientes incrementales:
+%	
+%	\begin{equation}\label{DifCenAccel}
+%		\ddot{\bfu}_t = \frac{\bfu_{t+\Delta t}-2\bfu_{t}+\bfu_{t-\Delta t}}{\Delta t ^2} + O(\Delta t^p)
+%	\end{equation}
+%	
+%	\begin{equation}\label{DifCenVel}
+%		\dot{\bfu}_t = \frac{\bfu_{t+\Delta t}-\bfu_{t-\Delta t}}{2\Delta t} + O(\Delta t^p)
+%	\end{equation}
+%	
+%\end{exercise}
+
+%-------------- EJ3 --------------------------
+
+\bigskip
+\begin{exercise}
+	
+	La estabilidad numérica del Método de Diferencia Centrada requiere que el paso de integración en el tiempo sea menor que un valor crítico $\Delta t_{crit}$. Esto es equivalente a afirmar que dicho método es condicionalmente estable. Para el caso sin amortiguamiento, se mostró que $\Delta t_{crit} = T_{min}/\pi$.
+	
+	Dado el Método de Diferencia Centrada, se pide:
+	
+	\begin{itemize}
+		\item[i)] Hallar la matriz $\bfA$ en el caso de un sistema con amortiguamiento. $\ddot{x}_t + 2\omega\xi\dot{x}_t+\omega^2 x_t=0$.
+		\item[ii)] Deducir o evaluar numéricamente (tabular o graficar) el valor $\Delta t_{crit}$ en función de $\xi$ para la matriz $\bfA$ hallada en el ítem anterior.
+		\item[iii)] \textquestiondown Es la condición de estabilidad hallada más o menos estricta que la del caso sin amortiguamiento?
+	\end{itemize}
+	
+	
+\end{exercise}
+
+%--------------- EJ4 ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	Tal como se vió en la Sección~\ref{sec:newmarkLineal} el método de Newmark con $\alpha=1/4$ y $\delta=1/2$, también conocido como Método del Trapecio, es incondicionalmente estable. En este ejercicio se pide reproducir la gráfica de $\rho(\bfA)$ en función de $\Delta t / T$.
+	
+	%, que se repite a continuación:
+	%
+	%\begin{figure}[htb]
+	%	\centering
+	%	\includegraphics[width=.74\linewidth]{pr4/stabNewmark}
+	%	\caption{Estabilidad de variantes del Método de Newmark}
+	%	\label{fig:stabnewmark}
+	%\end{figure}
+	
+\end{exercise}
+
+%--------------- EJ5 ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	Fue presentado un ejemplo de dinámica de un edificio bajo cargas sísmicas. El edificio corresponde al del ejemplo de carga explosiva visto. En este ejercicio se pide analizar dicha estructura bajo la acción sísmica. Los datos de aceleración del terreno se pueden descargar de la carpeta \textit{Ejemplo sismo} del  \href{https://eva.fing.edu.uy/course/view.php?id=1043}{sitio EVA del curso ANLE}.
+	
+	\begin{itemize}
+		
+		\item[i)] Ajustar el amortiguamiento de Rayleigh de la estructura de manera de tener 5\% de amortiguamiento crítico en 25 rad/s y 106 rad/s.
+		
+		\item[i)] Reproducir la gráfica de la solución dinámica de la estructura bajo carga de sismo dada en las notas.
+		%	, que se repite a continuación:
+		%	
+		%	\begin{figure}[htb]
+			%		\centering
+			%		\includegraphics[width=.73\linewidth]{pr4/sismo}
+			%		\caption{Dinámica de edificio bajo carga sísmica}
+			%		\label{fig:sismo}
+			%	\end{figure}
+		
+		\item[ii)] Calcular y presentar gráficamente las fuerzas de corte experimentadas por los pilares de cada uno de los tres niveles en función del tiempo.
+		
+	\end{itemize}
+	
+\end{exercise}
+
+%--------------- EJ6 ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	Se considera una péndulo elástico bajo la acción de la gravedad como se muestra en la \autoref{fig:pendulo}. El mismo consiste de una barra tipo biela (largo indeformado: $2\text{ m}$, módulo de Young: $E=210 \text{ GPa}$, diámetro: $10 \text{ mm}$), con un extremo articulado y el otro sujeto a una masa concentrada ($m=214 \text{ kg}$).
+
+		\begin{figure}[htb]
+	\centering
+	\includegraphics[width=.45\linewidth]{pendulo}
+	\caption{Esquema de péndulo elástico}
+	\label{fig:pendulo}
+\end{figure}
+
+
+	
+	\begin{itemize}
+		\item[i)] Deducir la ecuación de movimiento del sistema. Usar la deformación de Green para determinar el vector de fuerzas internas del elemento de biela.
+		
+		$$\bfM \ddot{\bfu}_t + \bff_{int}(\bfu_t)=\bff_{ext,t}$$
+		
+		\item[ii)] Estimar de forma analítica:
+		\begin{itemize}
+			\item[a)] El período de oscilación del péndulo, en la hipótesis de pequeña amplitud.
+			\item[b)] El período de vibración axial del péndulo.
+			\item[c)] La fuerza máxima esperada en la biela para las condiciones iniciales dadas en el ítem iii).
+		\end{itemize}
+		
+		\item[iii)] Implementar en Octave la solución de la dinámica del sistema mediante el Método de Diferencia Centrada. 
+		
+		\begin{itemize}
+			\item La condición inicial corresponde a la masa en reposo con la biela horizontal y sin estiramiento alguno.
+			\item Seleccione $\Delta t$ a partir de los cálculos realizados en el ítem ii). Evalúe y comente sobre la estabilidad numérica variando $\Delta t$.
+			\item Compare la fuerza máxima  obtenida en la biela para la solución numérica contra la de la estimación analítica.
+		\end{itemize}
+				
+	\end{itemize}
+	
+\end{exercise}
+
+%--------------- EJ7 ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	En este ejercicio se busca estudiar la carga cuasi-estática de la cercha de Von Mises. Dicha estructura fue vista en teórico en la sección de dinámica no lineal.
+	
+	\begin{itemize}
+		\item[1)] Modificar el código dado en teórico de manera de poder cargar la estructura gradualmente. Se debe implementar la siguiente función $\bff_{ext,t}$:
+		
+		\begin{figure}[htb]
+			\centering
+			\includegraphics[width=.5\linewidth]{fextt}
+			\caption{Carga progresiva de la estructura.}
+			\label{fig:fextt}
+		\end{figure}
+		
+		\item[2)] Justificar y deducir cuál sería un período de carga ($t^*$) adecuado para modelar de manera aproximada la carga cuasi-estática de la estructura.
+		
+		\item[3)] Usando el período de carga ($t^*$) y valores de masa progresivamente mayores, realizar los correspondientes análisis dinámicos hasta hallar el valor de masa mínimo que genera la inestabilidad tipo \textit{snap-through}.
+		
+		\item[4)] Calcular, utilizando el principio de Mínima Energía Potencial Total, el valor de carga crítica de la cercha de Von Mises considerada en este ejercicio y comparar dicho valor con el hallado en 3).
+	\end{itemize}
+\end{exercise}	
 
