@@ -689,6 +689,7 @@ Las deformaciones virtuales $\delta \bfu \in \mcV$ deberán ser suaves y cinemá
 
 
 
+
 \section{Medidas No Lineales de Deformación} \label{sec:nlsm}
 
 En esta sección se presentan medidas de deformación no lineales respecto de los desplazamientos. Las mismas se presentan en el contexto de una barra tipo biela, pero estas medidas de deformación se generalizan también al caso de cuerpos sólidos continuos. %
@@ -708,7 +709,7 @@ La estructura mediante la cual se van a plantear las medidas de deformación no 
 \begin{figure}[htb]
 	\centering
 	\def\svgwidth{0.6\textwidth}
-\input{../fig/NonLinStrainM_modif.pdf_tex}
+	\input{../fig/NonLinStrainM_modif.pdf_tex}
 	\caption{Estructura de Referencia para Medidas de Deformación No-Lineales.}
 	\label{fig:nonlinstrainm}
 \end{figure}
@@ -722,25 +723,25 @@ En la configuración indeformada, la barra tiene largo $l_o$ y el área de su se
 Se define la deformación unitaria ingenieril rotada como:
 %
 \begin{equation}\label{RotEngStrain}
-\varepsilon_E = \frac{l_n-l_o}{l_o}.
+	\varepsilon_E = \frac{l_n-l_o}{l_o}.
 \end{equation}
 
 Notar que la deformación unitaria se mide respecto de una dirección que rota en conjunto con la barra y no respecto de ejes globales cartesianos fijos (ver Figura~\ref{fig:nonlinstrainm}). El largo deformado puede ser escrito como:
 %
 \begin{equation}\label{ln}
-l_n = \left((z+w)^2+x^2\right)^{1/2}.
+	l_n = \left((z+w)^2+x^2\right)^{1/2}.
 \end{equation}
 
 Se calcula la variación virtual de la deformación unitaria ingenieril rotada usando las definiciones dadas por las Ecuaciones \eqref{RotEngStrain} y \eqref{ln}.
 %
 \begin{equation}\label{VirtEngStrain}
-\delta \varepsilon_E = \frac{\partial \varepsilon_E}{\partial w} \delta w = \frac{\partial \varepsilon_E}{\partial l_n}\frac{\partial l_n}{\partial w}\delta w =	\frac{1}{l_o}\frac{2(z+w)}{2l_n}\delta w = \frac{(z+w)}{l_n l_o}\delta w
+	\delta \varepsilon_E = \frac{\partial \varepsilon_E}{\partial w} \delta w = \frac{\partial \varepsilon_E}{\partial l_n}\frac{\partial l_n}{\partial w}\delta w =	\frac{1}{l_o}\frac{2(z+w)}{2l_n}\delta w = \frac{(z+w)}{l_n l_o}\delta w
 \end{equation}
 
 Usando la Ecuación~\eqref{VirtEngStrain} en la Ecuación~\eqref{PTVBielaSStrain} se obtiene la siguiente expresión del PTV:
 %
 \begin{equation}
-\sigma_E \frac{(z+w)}{l_o l_n } \delta w A_o l_o  = P_E \delta w,
+	\sigma_E \frac{(z+w)}{l_o l_n } \delta w A_o l_o  = P_E \delta w,
 \end{equation}
 %
 donde la tensión fue llamada $\sigma_E$. %
@@ -748,16 +749,16 @@ donde la tensión fue llamada $\sigma_E$. %
 Usando que esta identidad se cumple para todo $\delta w$, sustituyendo la tensión en la barra por $E \varep_E$ y usando la definición de la deformación, se tiene:
 %
 \begin{equation}
-  E A_o \frac{ \left( \sqrt{ (w+z)^2 + x^2 } - l_o \right) }{ l_o }
-               \frac{ (z+w) }{ \sqrt{(w+z)^2+x^2} } = P_E,
+	E A_o \frac{ \left( \sqrt{ (w+z)^2 + x^2 } - l_o \right) }{ l_o }
+	\frac{ (z+w) }{ \sqrt{(w+z)^2+x^2} } = P_E,
 \end{equation}
 %
 por lo tanto
 %
 \begin{equation}\label{EqRotEngStrain}
-\boxed{
-  P_E( w ) = \frac{EA_o(z+w)\left(\sqrt{(w+z)^2+x^2}-l_o\right)}{l_o\sqrt{(w+z)^2+x^2}}.
-}
+	\boxed{
+		P_E( w ) = \frac{EA_o(z+w)\left(\sqrt{(w+z)^2+x^2}-l_o\right)}{l_o\sqrt{(w+z)^2+x^2}}.
+	}
 \end{equation}
 
 La expresión de la Ecuación~\eqref{EqRotEngStrain} es no lineal con respecto a $w$ y su evaluación numérica debe ser realizada con cierto cuidado para evitar errores debidos a \href{https://en.wikipedia.org/wiki/Catastrophic_cancellation}{\textit{Cancelación Catastrófica}}.
@@ -768,7 +769,7 @@ La expresión de la Ecuación~\eqref{EqRotEngStrain} es no lineal con respecto a
 Se define la deformación unitaria de Green como:
 %
 \begin{equation}\label{GreenStrain}
-\varepsilon_G = \frac{l_n^2 - l_o^2}{2l_o^2} = \frac{2zw+w^2}{2l_o^2}
+	\varepsilon_G = \frac{l_n^2 - l_o^2}{2l_o^2} = \frac{2zw+w^2}{2l_o^2}
 \end{equation}
 
 \cajaactividad{
@@ -780,21 +781,21 @@ Dado el resultado de la actividad anterior se ve que para pequeñas deformacione
 Se calcula la variación virtual de la deformación de Green usando las definiciones dadas por las Ecuaciones \eqref{GreenStrain} y \eqref{ln}, obteniendo
 %
 \begin{equation}\label{VirtGreenStrain}
-\delta \varepsilon_G = \frac{\partial \varepsilon_G}{\partial l_n}\frac{\partial l_n}{\partial w}\delta w =	\frac{2l_n}{2l_o^2}\frac{2(z+w)}{2l_n}\delta w = \frac{(z+w)}{l_o^2}\delta w.
+	\delta \varepsilon_G = \frac{\partial \varepsilon_G}{\partial l_n}\frac{\partial l_n}{\partial w}\delta w =	\frac{2l_n}{2l_o^2}\frac{2(z+w)}{2l_n}\delta w = \frac{(z+w)}{l_o^2}\delta w.
 \end{equation}
 
 Usando la Ecuación \eqref{VirtGreenStrain} en la Ecuación~\eqref{PTVBielaSStrain} del PTV y llamando la tensión en la barra como $\sigma_G$:
 %
 \begin{equation}
-P_G = \frac{\sigma_EA_o(z+w)}{l_o}
+	P_G = \frac{\sigma_EA_o(z+w)}{l_o}
 \end{equation}
 
 Usando una relación constitutiva con módulo elástico constante $E$ ($\sigma_G = E \varepsilon_G$) y expresando todo en función de la variable $w$:
 %
 \begin{equation}\label{EqGreenStrain}
 	\boxed{
-P_G(w) = \frac{EA_o(z+w)\left(2zw+w^2\right)}{2l_o^3}
-}
+		P_G(w) = \frac{EA_o(z+w)\left(2zw+w^2\right)}{2l_o^3}
+	}
 \end{equation}
 
 Notar que la expresión de la Ecuación~\eqref{EqGreenStrain} es bastante más simple que la obtenida con la deformación unitaria ingenieril rotada. Además, se puede ver que si $l_n\simeq l_o$ entonces tanto las deformaciones unitarias como las relaciones de equilibrio coinciden. En conclusión, en hipótesis de pequeñas deformaciones unitarias los resultados obtenidos con ambas deformaciones unitarias coincidirán de manera muy aproximada.
@@ -804,14 +805,14 @@ Notar que la expresión de la Ecuación~\eqref{EqGreenStrain} es bastante más s
 La deformación unitaria Logarítmica Rotada puede ser definida mediante la siguiente relación incremental:
 %
 \begin{equation}\label{IncrLogStrain}
-\delta \varepsilon = \frac{\delta l}{l},
+	\delta \varepsilon = \frac{\delta l}{l},
 \end{equation}
 %
 donde $l$ es la longitud en una configuración deformada dada y $\delta l$ es una variación de dicha longitud. %
 La expresión de la deformación es obtenida integrando estas variaciones de deformación dadas por la Ecuación~\eqref{IncrLogStrain}:
 %
 \begin{equation}\label{LogStrain}
-\varepsilon_L = \int_{l_o}^{l_n}\delta \varepsilon = \ln\left(\frac{l_n}{l_o}\right).
+	\varepsilon_L = \int_{l_o}^{l_n}\delta \varepsilon = \ln\left(\frac{l_n}{l_o}\right).
 \end{equation}
 
 \cajaactividad{
@@ -825,13 +826,13 @@ La expresión de la deformación es obtenida integrando estas variaciones de def
 Se calcula la variación virtual de la deformación logarítmica rotada usando las definiciones (\ref{IncrLogStrain}) y (\ref{ln}).
 %
 \begin{equation}\label{VirtLogStrain}
-\delta \varepsilon_L = \frac{\delta l_n}{l_n} = \frac{1}{l_n}\frac{\partial l_n}{\partial w}\delta w = \frac{1}{l_n} \frac{2(z+w)}{2l_n}\delta w = \frac{(z+w)}{l_n^2}\delta w
+	\delta \varepsilon_L = \frac{\delta l_n}{l_n} = \frac{1}{l_n}\frac{\partial l_n}{\partial w}\delta w = \frac{1}{l_n} \frac{2(z+w)}{2l_n}\delta w = \frac{(z+w)}{l_n^2}\delta w
 \end{equation}
 
 Usando la Ecuación~\eqref{VirtLogStrain} y la Ecuación~\eqref{PTVBielaLStrain}, dado que la variación virtual de la deformación logarítmica está referida a la configuración deformada, y llamando la tensión en la barra como $\sigma_L$, se obtiene:
 %
 \begin{equation}\label{EqLogLargeStrain}
-P_L = \frac{\sigma_L(z+w)A_nl_n}{l_n^2}.
+	P_L = \frac{\sigma_L(z+w)A_nl_n}{l_n^2}.
 \end{equation}
 
 Se asume ahora que se trabaja bajo pequeñas deformaciones y por lo tanto: $A_o \simeq A_n$ y también $l_o \simeq l_n$, lo cual permite asumir que el volumen de la barra no cambia al llegar a la configuración deformada: $l_o A_o \simeq l_n A_n$. 
@@ -840,8 +841,8 @@ Se asume una relación constitutiva con módulo elástico constante $E$ ($\sigma
 %
 \begin{equation}\label{EqLogStrain}
 	\boxed{
-P_L(w) = \frac{E(z+w)A_ol_o}{(z+w)^2+x^2}\ln\left(\frac{\sqrt{(z+w)^2+x^2}}{l_o}\right)
-}
+		P_L(w) = \frac{E(z+w)A_ol_o}{(z+w)^2+x^2}\ln\left(\frac{\sqrt{(z+w)^2+x^2}}{l_o}\right)
+	}
 \end{equation}
 
 Notar que la expresión de la Ecuación~\eqref{EqLogStrain} es nuevamente bastante compleja en comparación con la dada por la deformación unitaria de Green.
@@ -853,7 +854,7 @@ Antes de pasar a la comparación numérica de las relaciones de equilibrio obten
 Proyectando la fuerza axial de la barra en la configuración deformada según la dirección vertical e igualando a la fuerza externa $P$ se obtiene:
 %
 \begin{equation}\label{EqNewton}
-P = \sigma A_n \frac{w+z}{l_n}
+	P = \sigma A_n \frac{w+z}{l_n}
 \end{equation}
 
 La tensión axial de la barra definida como fuerza axial sobre área de la barra en la configuración deformada ($\sigma = F / A_n$) se denomina tensión de Cauchy y se puede considerar como la tensión axial ''real'' de la barra. Esta es la tensión que es relevante del punto de vista ingenieril ya que tiene un claro significado físico.
@@ -893,6 +894,17 @@ Como conclusión a los conceptos presentados en este capítulo, se vieron distin
 El código de Octave usado para generar la Figura~\ref{fig:nonlindef} se presenta en el Código~\ref{cod:nonlinstrain}.
 
 \lstinputlisting[caption = {Medidas de deformación no lineales - Gráfico comparativo.}\label{cod:nonlinstrain}]{../src/MedidasDefNoLineal.m}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2170,10 +2182,10 @@ El análisis de elementos como cables o tensores es realizado considerando un co
 
 
 
-\clearpage
 
 
 \section{Ejercicios}
+
 
 
 
@@ -2196,8 +2208,8 @@ El análisis de elementos como cables o tensores es realizado considerando un co
 	Hallar las ecuaciones de equilibrio y determinar la carga crítica $P^C$ para las estructuras dadas en las notas:
 	\begin{itemize}
 		\item Caso de Punto Límite (Figura~\ref{fig:fig9})
-
-
+		
+		
 		\item Caso de Bifurcación Simétrica Inestable (Figura~\ref{fig:fig11})
 		\item Caso de Bifurcación Asimétrica (Figura~\ref{fig:fig12})
 	\end{itemize}
@@ -2221,7 +2233,7 @@ El análisis de elementos como cables o tensores es realizado considerando un co
 		\caption{Sistema Discreto Sometido a Tensión}
 		\label{fig:Ej3a}
 	\end{figure}
-
+	
 	Se recomienta ver el video disponible en el siguiente enlace, luego de resuelto el ejercicio:  \href{https://www.youtube.com/watch?v=EKngs1vvcJU\&t=92s}{youtube.com/watch?v=EKngs1vvcJU\&t=92s}.
 	
 \end{exercise}
@@ -2230,23 +2242,23 @@ El análisis de elementos como cables o tensores es realizado considerando un co
 
 \bigskip
 \begin{exercise}
-
-Se plantea analizar el pandeo de una versión discreta de una columna inextensible. La misma está formada por tres segmentos rígidos unidos por resortes de giro de constante $k$, tal como se muestra en la Figura \ref{fig:Ej3}. La columna es perfectamente recta en su configuración inicial.
-
-\begin{enumerate}
-	\item[i)] Determinar las cargas y modos de deformación correspondientes a las configuraciones de equilibrio inestable de la estructura.
 	
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=.35\linewidth]{P2_EJ3}
-		\caption{Columna con dos resortes de giro}
-		\label{fig:Ej3}
-	\end{figure}
+	Se plantea analizar el pandeo de una versión discreta de una columna inextensible. La misma está formada por tres segmentos rígidos unidos por resortes de giro de constante $k$, tal como se muestra en la Figura \ref{fig:Ej3}. La columna es perfectamente recta en su configuración inicial.
 	
-	\item[ii)] Utilice la carga crítica hallada para aproximar la carga crítica de Euler. Se sugiere usar la relación Momento-Curvatura: $M/EI=\theta'$.
+	\begin{enumerate}
+		\item[i)] Determinar las cargas y modos de deformación correspondientes a las configuraciones de equilibrio inestable de la estructura.
+		
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=.35\linewidth]{P2_EJ3}
+			\caption{Columna con dos resortes de giro}
+			\label{fig:Ej3}
+		\end{figure}
+		
+		\item[ii)] Utilice la carga crítica hallada para aproximar la carga crítica de Euler. Se sugiere usar la relación Momento-Curvatura: $M/EI=\theta'$.
+		
+	\end{enumerate}
 	
-\end{enumerate}
-
 \end{exercise}
 
 %--------------- EJ5 ----------------------------------------------------------------------
@@ -2279,7 +2291,7 @@ Se plantea analizar el pandeo de una versión discreta de una columna inextensib
 	\end{equation}
 	
 	\begin{equation}
-	\Delta[w] = \int_{0}^{L} 1-\sqrt{1-w'(s)^2} ds \simeq \int_{0}^{L} \frac{w'(x)^2}{2} dx
+		\Delta[w] = \int_{0}^{L} 1-\sqrt{1-w'(s)^2} ds \simeq \int_{0}^{L} \frac{w'(x)^2}{2} dx
 	\end{equation}
 	
 	Se pide:
@@ -2291,7 +2303,7 @@ Se plantea analizar el pandeo de una versión discreta de una columna inextensib
 		
 		\item[iii)] Transformar el problema de minimización continuo en uno discreto al proponer una deformada de la forma $\hat{w}(x)=qx(x-L)$. ¿La deformada verifica todas las condiciones de borde? Estime la carga crítica a partir de dicha $\hat{w}(x)$.
 	\end{enumerate}
-
+	
 	
 \end{exercise}
 
@@ -2303,14 +2315,14 @@ Se plantea analizar el pandeo de una versión discreta de una columna inextensib
 	
 	Se determinará, mediante el Principio de Mínima Energía Potencial Total, una aproximación de la carga crítica del \textit{Roorda Frame} dado en la Figura \ref{fig:Ej6b}.
 	
-		\begin{figure}[h!]
+	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=.4\linewidth]{RoordaFrame}
 		\caption{Estructura Tipo \textit{Roorda Frame}}
 		\label{fig:Ej6b}
 	\end{figure}
 	
-	Las barras son inextensibles, de acero ($E=210000$ MPa) y tienen sección rectangular ($a=10\text{mm}$ y $b=50\text{mm}$). Las mismas experimentan flexión según su inercia débil.
+	Las barras son inextensibles, de acero ($E=210000$ MPa) y tienen sección rectangular ($a=10 \text{ mm}$ y $b=50\text{ mm}$). Las mismas experimentan flexión según su inercia débil.
 	
 	Utilizar funciones cúbicas para expresar la deformación lateral $w(x)$ de cada barra. En particular, llamado $\theta_A$ y $\theta_B$ a los giros en los extremos $A$ y $B$ respectivamente, se sugiere la expresión:
 	
@@ -2334,42 +2346,37 @@ Se plantea analizar el pandeo de una versión discreta de una columna inextensib
 
 
 %\begin{exercise}
-%	
-%	Mostrar que el PTV para una partícula implica el equilibrio dado por la Ley de Newton. Es decir:
-%	
-%	$$\delta W_{ext}=0  \quad \forall \delta u \quad  \Longrightarrow \quad \sum_i \textbf{f}_i = 0$$
-%
-%\end{exercise}
+	%	
+	%	Mostrar que el PTV para una partícula implica el equilibrio dado por la Ley de Newton. Es decir:
+	%	
+	%	$$\delta W_{ext}=0  \quad \forall \delta u \quad  \Longrightarrow \quad \sum_i \textbf{f}_i = 0$$
+	%
+	%\end{exercise}
 %
 %
 %\begin{exercise}
-%	
-%	Se pide calcular el descenso de una viga simplemente apoyada con carga uniforme utilizando el PTV. Se desprecia la deformación por cortante, se asumen pequeños desplazamientos y material elástico lineal (Módulo de Elasticidad: $E$ y Segundo Momento de Inercia: $I_y$).
-%	
-%	\begin{enumerate}
-%		\item[1)] Realizar el cálculo asumiendo una deformada expresada como serie trigonométrica: $w(x)=\sum_{i=0}^N q_i \sin((2i+1)\pi x/L)$. Estimar el descenso central usando 1,2 y 3 términos de la serie.
-%		
-%		\item[2)] Realizar el cálculo asumiendo una deformada dada por un polinomio de orden 4. El cálculo es más simple si se elije aquel polinomio que verifica todas las condiciones de contorno (desplazamientos y momentos nulos). Analizar los resultados.
-%	\end{enumerate}
-%	
-%\end{exercise}
+	%	
+	%	Se pide calcular el descenso de una viga simplemente apoyada con carga uniforme utilizando el PTV. Se desprecia la deformación por cortante, se asumen pequeños desplazamientos y material elástico lineal (Módulo de Elasticidad: $E$ y Segundo Momento de Inercia: $I_y$).
+	%	
+	%	\begin{enumerate}
+		%		\item[1)] Realizar el cálculo asumiendo una deformada expresada como serie trigonométrica: $w(x)=\sum_{i=0}^N q_i \sin((2i+1)\pi x/L)$. Estimar el descenso central usando 1,2 y 3 términos de la serie.
+		%		
+		%		\item[2)] Realizar el cálculo asumiendo una deformada dada por un polinomio de orden 4. El cálculo es más simple si se elije aquel polinomio que verifica todas las condiciones de contorno (desplazamientos y momentos nulos). Analizar los resultados.
+		%	\end{enumerate}
+	%	
+	%\end{exercise}
 %
 %
 %%--------------- EJ8 ----------------------------------------------------------------------
 %\begin{exercise}
-%	
-%	En el ejemplo de la barra rígida simplemente apoyada, visto en la Sección 2.2.2 de las notas, usar el PTV para determinar:
-%	\begin{itemize}
-%		\item Las tres reacciones de los apoyos usando solamente un desplazamiento virtual (movimiento de cuerpo rígido).
-%		
-%		\item El momento flector resistido por la barra rígida en el centro del vano.
-%	\end{itemize}
-%\end{exercise}
-
-
-
-
-
+	%	
+	%	En el ejemplo de la barra rígida simplemente apoyada, visto en la Sección 2.2.2 de las notas, usar el PTV para determinar:
+	%	\begin{itemize}
+		%		\item Las tres reacciones de los apoyos usando solamente un desplazamiento virtual (movimiento de cuerpo rígido).
+		%		
+		%		\item El momento flector resistido por la barra rígida en el centro del vano.
+		%	\end{itemize}
+	%\end{exercise}
 
 
 
@@ -2379,12 +2386,236 @@ Se plantea analizar el pandeo de una versión discreta de una columna inextensib
 \end{exercise}
 
 
+\bigskip
 
 
+\begin{exercise}
+	
+	En este ejercicio se pide verificar la validez de las siguientes equivalencias dadas en la Sección 2.3 de las notas del curso.
+	\bigskip
+	
+	\textit{Equivalencias entre medidas de deformación:}
+	
+	\begin{itemize}
+		\item $\varepsilon_G = \varepsilon_E(1+\varepsilon_E/2)$
+		\item $\varepsilon_L = \ln(1+\varepsilon_E)$
+		\item $\varepsilon_L = \frac{1}{2}\ln(1+2\varepsilon_G)$
+	\end{itemize}
+	
+	\textit{Equivalencias entre medidas de tensión:}
+	
+	\begin{itemize}
+		\item $\sigma_E = \sigma A_n / A_o$
+		\item $\sigma_G = \sigma A_n l_o / (A_o l_n)$
+	\end{itemize}
+	
+\end{exercise}
 
 
+\bigskip
 
 
+\begin{exercise}
+
+Considere una viga simplemente apoyada sometida al peso de un fluido como se muestra en la \autoref{fig:ejPonding}. El recinto del fluido es llenado de forma tal que la cota es mantenida en $h$, incluso cuando la viga es deformada. %
+%
+La viga tiene rigidez flexional $EI$, largo $\ell$ y ancho $b$.
+
+\begin{figure}[htb]
+	\centering
+\includegraphics[width=0.95\textwidth]{ejPonding}
+\caption{Diagrama de viga con carga de fluido.}
+\label{fig:ejPonding}
+\end{figure}
 
 
+Se considera que la viga tiene una rigidez tal que es razonable considerar una elástica con pequeños giros, sin embargo, se debe considerar el desplazamiento $w(x)$ en el cálculo de la presión. Como aproximación de la solución se admite válido utilizar funciones sinusoidales de la forma:
+$$
+w(x)=A\sin\left( \pi \frac{x}{\ell} \right).
+$$
+
+\textbf{Se pide:}
+
+	\begin{enumerate}
+	\item[i)]  Deducir la expresión del trabajo virtual de las fuerzas internas en función de $w$ y $\delta w$, a partir de la energía potencial.
+	\item[ii)] Utilizar el PTV para determinar el descenso máximo de la viga.
+	\item[iii)] Escribir el descenso de la parte anterior como el producto del descenso de primer orden (lineal) por un factor a determinar. Estudiar dicho factor.
+	\end{enumerate}
+\end{exercise}
+
+%\bigskip
+%
+%
+%%--------------- EJ11 ----------------------------------------------------------------------
+%
+%\begin{exercise}
+%	
+%	Utilizar el código dado en la Sección 2.3 de las notas del curso para estudiar cómo al cambiar $z$ mejora la aproximación de las curvas de carga desplazamiento obtenidas para las distintas medidas de deformación no-lineal bajo la hipótesis de módulo de elasticidad constante ($E$) para todos los casos. 
+%	
+%	Identificar para qué valor de deformación unitaria la aproximación entre todas las medidas de deformación pasa a ser razonable en el ejemplo visto.
+%\end{exercise}
+%
+%%--------------- EJ12 ----------------------------------------------------------------------
+%
+%%\bigskip
+%%\begin{exercise}
+%%	\textbf{(Ejercicio Posgrado)} 
+%%	
+%%	En este ejercicio se introduce el tensor de deformaciones de Green y se verifica la invarianza del mismo frente a rotaciones de cuerpo rígido del sólido bajo estudio.
+%%	
+%%	Trabajando en un conjunto de ejes cartesianos fijos, un punto $P$ del sólido en su configuración inicial es dado por $\bfx_0$ y el mismo punto en la configuración deformada está dado por $\bfx_t=\chi(x_0,t)$.
+%%	
+%%	El desplazamiento del punto P se define como: $\bfu_t = \bfx_t - \bfx_0$. Y un diferencial de posición en la configuración deformada se relaciona a uno en la configuración inicial mediante:
+%%	
+%%	$$\dif \bfx_t = \dfrac{\partial \bfx_t}{\partial \bfx_0} \dif \bfx_0$$
+%%	
+%%	En base a lo anterior se definen el gradiente de deformaciones como: $\bfF = \dfrac{\partial \bfx_t}{\partial \bfx_0}$ y la matriz de derivadas del desplazamiento como: $\bfD = \dfrac{\partial \bfu_t}{\partial \bfx_0}$.
+%%	
+%%	Se pide:
+%%	
+%%	\begin{enumerate}
+%%		\item[i)] Mostrar que: $\bfD = \bfF - \bfI$
+%%		\item[ii)] Deducir el tensor de deformaciones de Green ($\bfE$) escribiéndolo tanto en función de $\bfF$ como de $\bfD$. 
+%%		
+%%		\textbf{Sugerencia: }Partir de: $\dif{\bfx_t}^T\dif\bfx_t-\dif\bfx_0^T\dif\bfx_0$ y recordar la definición de Deformación de Green uni-axial vista en la Sección 2.3.3 de las notas del curso: $l_t^2 - l_0^2 = 2 l_0 \varepsilon_G l_0$.
+%%		
+%%		\item[iii)] Asumir que el sólido es sometido a una deformación tal que la posición de un punto $P$ cualquiera en el estado deformado corresponde a una rotación rígida respecto del origen de coordenadas del punto $P$ en la configuración inicial ($\bfx_t = \bfR \bfx_0$). 
+%%		
+%%		Evaluar el tensor de deformación de Green ($\bfE$) para esta deformación asumiendo una rotación en el plano $x-y$. Evaluar también el tensor de deformaciones infinitesimal visto en elasticidad lineal. Comparar ambos resultados y comentar sobre el efecto de movimientos de cuerpo rígido sobre los mismos.
+%%	\end{enumerate}
+%%\end{exercise}
+%
+%
+%\bigskip
+%
+%\begin{exercise}
+%	
+%	Considerando la Sección~2.4 de las notas del curso:
+%	\begin{enumerate}
+%		\item[i)] Demostrar que $\textbf{b}_1$ es igual a $\textbf{b}_L$
+%		\item[ii)] Demostrar que $\textbf{K}_{T1}$ es igual a $\textbf{K}_L$.
+%		\item[iii)] Demostrar que para una barra dada $e$, las fuerzas internas $\bff^e_{int}$ de cada nodo son colineales con la barra. 
+%	\end{enumerate}
+%\end{exercise}
+%
+%
+%\bigskip
+%
+%
+%\begin{exercise}
+%	
+%	En el curso, al igual que en el ejercicio siguiente, se asume que el gradiente de una función $g$ real escalar es un vector fila donde la entrada $i$-ésima es la derivada parcial $\partial g(\bfx) / \partial x_i$ y que el gradiente de una función vectorial $f(\bfx):\bbR^n \rightarrow \bbR^m$ (formada por $m$ funciones escalares $f_j (\bfx)$) es una matriz donde la entrada de la fila $p$ y la columna $q$ está dada por:
+%	\begin{equation} 
+%		\left( \frac{\partial f}{\partial \bfx}  \right)_{pq} = \frac{\partial f_p}{ \partial x_q}
+%	\end{equation} 
+%	
+%	\begin{enumerate}
+%		\item[i)]
+%		Sean $\bfx$, $\bfb$ y $\bff(\bfx)$ son vectores columna de $n$ entradas, $\bfA$ una matriz de tamaño $n\times n$ (no necesariamente simétrica) y $a$, $g(\bfx)$ son escalares, demostrar las siguientes identidades:
+%		
+%		\begin{enumerate}
+%			\item $\dfrac{\partial \bfx^T \bfb}{\partial \bfx} = \bfb^T$
+%			\item $\dfrac{\partial \bfb^T \bfx}{\partial \bfx} = \bfb^T$
+%			\item $\dfrac{\partial \bfA \bfx}{\partial \bfx} = \bfA$
+%			\item $\dfrac{\partial \bfx^T \bfA \bfx }{\partial \bfx} = \bfx^T \bfA  + \bfx^T \bfA^T $
+%			\item $\dfrac{\partial \| \bfx \|^2 }{\partial \bfx} = 2 \bfx^T$
+%			\item $\dfrac{\partial a \bfx }{\partial \bfx} = a \bfI$  \quad (siendo $\bfI$ la matriz identidad)
+%			\item $\dfrac{\partial g(\bfx)\bff(\bfx)}{\partial \bfx} = \bff(\bfx)\dfrac{\partial g(\bfx)}{\partial \bfx}+g(\bfx)\dfrac{\partial \bff(\bfx)}{\partial \bfx} \quad \text{con}\quad g:\mathbb{R}^n\rightarrow \mathbb{R} \quad \text{y}\quad \bff:\mathbb{R}^n\rightarrow \mathbb{R}^n$
+%		\end{enumerate}
+%		
+%		\item[ii)] Usando las relaciones anteriores mostrar que se cumplen las siguientes relaciones vistas en el Capítulo 2 de las notas:
+%		
+%		\begin{itemize}
+%			\item Dado $\varepsilon(\bfu^e)=({(\bfx^e)}^T\bfG^e\bfu^e+\frac{1}{2}{(\bfu^e)}^T\bfG^e\bfu^e)/l_0^2$ se cumple: 
+%			
+%			$$\dfrac{\partial \varepsilon(\bfu^e)}{\partial \bfu^e} = \frac{1}{l_0^2}({(\bfx^e)}^T\bfG^e + {(\bfu^e)}^T\bfG^e)$$
+%			
+%			\item Dado $\bff^e_{int}(\bfu^e)=A_0\int_{l_0}\sigma(\bfu^e) \bfb^e(\bfu)^T dx$ se cumple:
+%			
+%			$$ \dfrac{\partial \bff^e_{int}(\bfu^e)}{\partial \bfu^e} = A_0\int_{l_0} \bfb^e(\bfu^e)^T \dfrac{\partial \sigma(\bfu^e)}{\partial \bfu^e}+ \sigma(\bfu^e)\dfrac{\partial \bfb^e(\bfu^e)^T}{\partial \bfu^e} dx  $$
+%			
+%		\end{itemize}
+%		
+%	\end{enumerate}
+%\end{exercise}
+%
+%
+%\bigskip
+%
+%
+%\begin{exercise}
+%	
+%	A través de modificaciones del Código 2.3 se pide: 
+%	\begin{enumerate}
+%		\item[i)] Resolver el problema de la Sección 3.1 del artículo de Li \& Khandelwal. Utilizar los ángulos considerados en el artículo (65$^\circ$) y también $85^\circ$. Comparar los resultados para los distintos ángulos y verificar usando el NSA.
+%		
+%		\item[ii)] Establecer si existe relación entre el punto límite de la carga fuerza-desplazamiento y el punto de pérdida de rigidez del elemento de barra de Green dado por la medida de deformación y la relación constitutiva. %
+%		
+%		\item[iii)] Modificar el código para tomar en cuenta el criterio de parada en fuerzas residuales en lugar de convergencia en desplazamientos. %
+%		%
+%		Resolver el problema de Von Mises ingresando las fuerzas externas en diferentes unidades. Analizar si hay cambios en la cantidad de iteraciones requeridas por el método para encontrar la solución.
+%		
+%		\item[iv)] Demostrar que si existen resortes lineales en los nodos, la matriz de constantes elásticas de resortes $\textbf{K}_S$ puede ser sumada a la matriz $\textbf{K}_T$ y considerada para calcular el término adicional de fuerzas internas.
+%		
+%		\item[v)] Modificar el código para resolver considerando carga incremental y un resorte de constante $k$ variable. Reproducir el comportamiento mostrado en la Figura 1.2 de la Sección 1.2 del libro de Crisfield volumen 1.
+%	\end{enumerate}
+%\end{exercise}
+%
+%\bigskip
+%
+%
+%%
+%%\begin{exercise}
+%%	
+%%	Utilizando el código NSA y las equivalencias entre reticulados y vigas, obtener las curvas fuerza-desplazamiento post-críticas de:
+%%	\begin{enumerate}
+%%		\item[i)] Una barra bi-articulada con carga axial de compresión $P$ con excentricidad en dicha carga igual a $e$.
+%%		\item[ii)] La estructura considerada en el Ejercicio 7 del Práctico 2a: \textit{Roorda Frame}. Reproducir el comportamiento mostrado en la Figura 4.7 del libro \textit{Elastic Stability Phenomena} de Thompson y Hunt considerando que la carga tiene una excentricidad $e$ hacia la derecha o hacia la izquierda. Utilizar el archivo input disponible en el sitio EVA.
+%%	\end{enumerate}
+%%\end{exercise}
+%%
+%
+%\begin{exercise}
+%	
+%	Se considera la estructura de barras articuladas que se muestra en la Figura \ref{fig:EjLBA}. La estructura es perfecta, es decir completamente horizontal cuando $P=0$.
+%	
+%	\begin{figure}[htb]
+%		\centering
+%		\includegraphics[width=1\linewidth]{EjercicioLBA}
+%		\caption{Estructura Perfecta (Horizontal cuando $P=0$)}
+%		\label{fig:EjLBA}
+%	\end{figure}
+%	
+%	Todas las barras tienen largo $L$, área $A$ y módulo de elasticidad $E$. Ambos resortes tienen constante $k$.
+%	
+%	Se pide:
+%	
+%	\begin{enumerate}
+%		\item[i)] Determinar la carga crítica de pandeo y su modo asociado mediante el Principio de Mínima Energía Potencial Total. Asumir para esta parte que las barras son infinitamente rígidas a directa.
+%		
+%		\item[ii)] Determinar, mediante cálculos manuales, la carga crítica de pandeo y modo asociado mediante un análisis \textit{LBA} usando barras de Green. Comparar esta solución contra la obtenida en el ítem anterior.
+%		
+%		\textbf{Sugerencias:} 
+%		
+%		\begin{itemize}
+%			\item Ensamblar solamente los términos de las matrices correspondientes a los grados de libertad libres (matriz global 5x5). 
+%			
+%			\item Reordenar filas y columnas de las matrices previo al cálculo del determinante a fin de desacoplar los modos de pandeo buscados.
+%		\end{itemize}
+%		
+%		\item[iii)] Modelar la estructura en ONSAS usando los parámetros: $L=1000$, $E=2.1\times 10^5$, $A=100$ y $K=2100$. Verificar la carga crítica y modo asociado determinados en el ítem anterior. Incorporar una imperfección y analizar la estructura mediante \textit{Arc-Length}. Clasificar la estabilidad post-critica de la estructura.
+%		
+%	\end{enumerate}
+%	
+%\end{exercise}
+%
+%\begin{exercise}
+%
+%	Utilizando los modelos de ONSAS desarrollados en el Ejercicio 7 de este práctico, determinar las cargas y modos de pandeo mediante \textit{LBA} y compararlos contra los valores teóricos de pandeo (para \textit{Roorda Frame} utilizar resultados del Ejercicio 7 del Práctico 2a).
+%\end{exercise}
+%
+%
+%
+%
+%
 
