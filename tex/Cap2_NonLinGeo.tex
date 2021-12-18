@@ -89,7 +89,7 @@ Se puede mostrar que la condición de equilibrio estático correspondiente a est
 %
 La ventaja de formular el equilibrio mediante el Principio de Mínima Energía Potencial Total es que dicho procedimiento es significativamente más sencillo y sistemático que el de Newton. Sin embargo, se puede argumentar que se pierde cierta cuota de intuición con lo cual la segunda ley de Newton sigue teniendo un importante valor.
 
-\cajaconcepto{Axioma 2}{	$\hat{\bfq}$ es Estable $\Leftrightarrow$ $V(\bfq)$ es tiene un mínimo relativo estricto en $\hat{\bfq}$}
+\cajaconcepto{Axioma 2}{	$\hat{\bfq}$ es Estable $\Leftrightarrow$ $V(\bfq)$ tiene un mínimo relativo estricto en $\hat{\bfq}$}
 
 La definición de estabilidad del equilibrio estático dada por la expresión anterior es particularmente simple de estudiar, especialmente si se compara contra la alternativa de estudiar la estabilidad de las soluciones de las ecuaciones dinámicas del sistema frente a perturbaciones respecto de los equilibrios estáticos.
 
@@ -219,7 +219,7 @@ Una bifurcación simétrica estable corresponde a una situación en la cual una 
 
 El pandeo de columnas elásticas pertenece a esta categoría. %
 %
-En la Figura~\ref{fig:bifsima} se puede ver una versión discreta de ese tipo de estructura. En estos casos, al alcanzarse la bifurcación las estructuras logran mantener la carga aunque sea con grandes deformaciones (ej. regla elástica en compresión). %
+En la Figura~\ref{fig:bifsima} se puede ver una versión discreta de ese tipo de estructura. En estos casos, al alcanzarse la bifurcación las estructuras logran mantener la carga aunque sea con grandes desplazamientos (ej. regla elástica en compresión). %
 %
 En la Figura \ref{fig:bifsimb} se muestra la curva carga-desplazamiento correspondiente. %
 %
@@ -562,7 +562,7 @@ Se plantea un desplazamiento virtual cinemáticamente admisible de la estructura
 
 Usando las relaciones cinemáticas
 $$
-w=L(\sin(\alpha)-\sin(\theta))  \quad \text{y} \quad u=2L(\cos(\theta)-\cos(\alpha),
+w=L(\sin(\alpha)-\sin(\theta))  \quad \text{y} \quad u=2L(\cos(\theta)-\cos(\alpha)),
 $$
 
 se pueden escribir todos los desplazamientos virtuales en función de $\delta \theta$:
@@ -787,7 +787,7 @@ Se calcula la variación virtual de la deformación de Green usando las definici
 Usando la Ecuación \eqref{VirtGreenStrain} en la Ecuación~\eqref{PTVBielaSStrain} del PTV y llamando la tensión en la barra como $\sigma_G$:
 %
 \begin{equation}
-	P_G = \frac{\sigma_EA_o(z+w)}{l_o}
+	P_G = \frac{\sigma_GA_o(z+w)}{l_o}
 \end{equation}
 
 Usando una relación constitutiva con módulo elástico constante $E$ ($\sigma_G = E \varepsilon_G$) y expresando todo en función de la variable $w$:
@@ -1230,7 +1230,7 @@ Se puede ahora calcular la variación de la deformación $\delta\varep$ debida a
 \delta \varep =  \frac{\partial \varep}{\partial \bfu}(\bfu) \delta \bfu.
 \end{equation}
 
-Previo a realizar el cálculo se aclara que la notación considerada para gradientes de funciones escalares o vectoriales es dado por vectores fila, decir, dada una función vectorial $\bfg(\bfu) :\bbR^n \rightarrow \bbR^m $, se cumple:
+Previo a realizar el cálculo se aclara que la notación considerada para gradientes de funciones escalares o vectoriales es dado por vectores fila, es decir, dada una función vectorial $\bfg(\bfu) :\bbR^n \rightarrow \bbR^m $, se cumple:
 %
 \begin{equation}
 \bfg(\bfu+\delta\bfu) \approx \bfg(\bfu) + \frac{\partial \bfg }{\partial \bfu}(\bfu) \delta \bfu
@@ -1389,7 +1389,7 @@ Esta factorización permite escribir el trabajo interno en función de un único
 \delta  W_{ \text{int} } (\bfu) %
 %
 =
-\delta\bfu
+\delta\bfu^{\text{T}}
 \,
 \bff_{\text{int}},
 \end{equation}

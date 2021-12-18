@@ -383,7 +383,7 @@ Se define el paso del método de Newton-Raphson como $\Delta \bfx_k^{(i)}=\bfx_k
 \begin{equation}\label{NR2}
 \text{N-R}
 \begin{cases} 
-	\bfF_x(\bfx_k^{(i)})\Delta \bfx_k^{(i)} =-\left((\bff(\bfx_k^{(i)})-\lambda_k \bfv\right)\\
+	\bfF_x(\bfx_k^{(i)})\Delta \bfx_k^{(i)} =-\left(\bff(\bfx_k^{(i)})-\lambda_k \bfv\right)\\
 	\bfx_k^{(i+1)}=\bfx_k^{(i)}+\Delta \bfx_k^{(i)} \\
 	\bfx_k^{(0)}
 \end{cases}
@@ -419,7 +419,7 @@ La iteración de Newton-Raphson modificado puede ser escrita como:
 \begin{equation}\label{NRM}
 \text{N-R Modif.}
 \begin{cases} 
-\bfF_x(\bfx_k^{(0)})\Delta \bfx_k^{(i)} =-\left((\bff(\bfx_k^{(i)})-\lambda_k \bfv\right)\\
+\bfF_x(\bfx_k^{(0)})\Delta \bfx_k^{(i)} =-\left(\bff(\bfx_k^{(i)})-\lambda_k \bfv\right)\\
 \bfx_k^{(i+1)}=\bfx_k^{(i)}+\Delta \bfx_k^{(i)} \\
 \bfx_k^{(0)}
 \end{cases}
@@ -459,7 +459,7 @@ El Método de la Secante tiene orden de convergencia super-lineal ($\text{Orden}
 
 La generalización del Método de la Secante a sistemas de ecuaciones no lineales corresponde al Método de Broyden. %
 %
-En ese método, en lugar de la matriz tangente $\bfF_x$ utilizada en N-R, se utiliza una matriz secante que verifica una relación en los incrementos de $\bff(\bfx)$ y $\bfx$ de la forma: $\Delta \bff_k = \bfB_k \Delta \bfx_k$. La condición de matriz secante no es suficiente para definir la completamente y es ahí donde surgen distintas variantes. %
+En ese método, en lugar de la matriz tangente $\bfF_x$ utilizada en N-R, se utiliza una matriz secante que verifica una relación en los incrementos de $\bff(\bfx)$ y $\bfx$ de la forma: $\Delta \bff_k = \bfB_k \Delta \bfx_k$. La condición de matriz secante no es suficiente para definirla completamente y es ahí donde surgen distintas variantes. %
 %
 En la Sección 7.1.4 de \citep{quarteroni2007numeric} se presenta una definición más detallada del método. %
 
