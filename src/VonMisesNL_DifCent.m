@@ -1,5 +1,5 @@
 %%%   Dinamica No-Lineal: Cercha Von Mises (Barra de Green) %%%
-clc, clear all
+clc, clear all, close all
 
 %%% Parametros Estructura
 rho = 7850; % kg/m3 (acero)
@@ -12,7 +12,7 @@ Ac = .0254*.0032; %m2
 E  = 200000e6 %Pa (acero)
 kc = 3*E*Ic/Lc^3; %N/m
 mb = l0*Ac*rho; %kg
-m  = 1.4; %kg Pandeo incipiente en 1.4
+m  = 3; %kg Pandeo incipiente en 1.4
 c  = 2; %kg/s (amortiguamiento por friccion juntas y arrastre pesa)
 g  = 9.81; %m/s2
 
@@ -50,13 +50,14 @@ t(1) = t0-dt;  t(2) = t0;  k=2;
 
 epsg(k) = (u(1,k)^2+2*Lz*u(2,k)-2*Lx*u(1,k)+u(2,k)^2)/2/l0^2;
 
-while t<tf
+while t(end) < tf
     feff = ft(t(k)) -Fint(u(:,k)) +a2*M*u(:,k) - M2*u(:,k-1);
     u(:,k+1) = Meff\feff;
     acc(:,k) = a0*(u(:,k+1)-2*u(:,k)+u(:,k-1));
     vel(:,k) = a1*(u(:,k+1)-u(:,k-1));
     epsg(k+1) = (u(1,k+1)^2+2*Lz*u(2,k+1)-2*Lx*u(1,k+1)+u(2,k+1)^2)/2/l0^2;
     k=k+1;   t(k)=t(k-1)+dt;
+    t(end)
 end
 
 subplot(3,1,1)
@@ -71,3 +72,18 @@ subplot(3,1,3)
 plot(t(1:10:end),E*Ac*epsg(1:10:end))
 xlabel('t [s]'); ylabel('Directa [N]')
 axis([0 2 E*Ac*min(epsg)*1.1 E*Ac*max(epsg)*1.1]);
+
+system('rm out/*')
+figure
+grid on
+for i=1:500:size(u,2)
+  fprintf('ploting time %12.3e \n',t(i) )
+  u(:,i)
+  plot( [u(1,i) Lx 2*Lx-u(1,i) ] , [ 0 Lz+u(2,i) 0],'r-o')
+  %plot( [u(1,i) Lx ] , [ 0 Lz+u(2,i)],'r-o')
+  title( [ 'time: ' sprintf('%12.3e', t(i)) ' s'] )
+  axis( [ min(u(1,:)) -min(u(1,:))+2*Lx    min( [Lz+(min(u(2,:))) 0]) Lz+(max(u(2,:))) ] )
+  %axis( [ min(u(1,:)) -min(u(1,:))+2*Lx    0 Lz+(max(u(2,:))) ] )
+  print( [ 'out/vonmises_' sprintf('%05i',i) '.png'],'-dpng' )
+  %stop
+end
