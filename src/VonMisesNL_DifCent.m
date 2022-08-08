@@ -73,7 +73,7 @@ plot(t(1:10:end),E*Ac*epsg(1:10:end))
 xlabel('t [s]'); ylabel('Directa [N]')
 axis([0 2 E*Ac*min(epsg)*1.1 E*Ac*max(epsg)*1.1]);
 
-system('rm out/*')
+%system('rm out/*')
 figure
 grid on
 for i=1:500:size(u,2)
