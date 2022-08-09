@@ -3,7 +3,7 @@ clc, clear
 
 % Definicion de la estructura
 A     = 30; %m				Lado del Edificio
-e     = 0.25; %m			Espesor Losa Piso
+esp   = 0.25; %m			Espesor Losa Piso
 hv    = 0.7; %m			Altura Viga
 bv    = 0.3; %m			Ancho Viga
 muro  = 300; %kg/m2		Peso muro por uni. area
@@ -20,7 +20,7 @@ k = ncols * 12*E*I/H^3; %N/m
 K = k*[2 -1 0 ; -1 2 -1 ; 0 -1 1]; %N/m
 
 % Definicion de Matriz de Masa
-Mpiso  = 2500*(e*A^2+hv*bv*A*8); %kg
+Mpiso  = 2500 * ( esp*A^2+hv*bv*A*8 ) ; %kg
 Mpilar = 2500*ncols*a^2*H; %kg
 Mmuro  = muro*H*A*4*0.6; %kg
 Mint   = Mpiso + Mpilar + Mmuro;
@@ -75,8 +75,8 @@ u(:,2) = u0; % u(0)
 Meff = a0*M+a1*C;   Keff = (K-a2*M);   M2 = a0*M-a1*C;
 
 % Comienza Marcha en el Tiempo usando Diferencia Centrada
-t(1) = -dt;   t(2) = t0;   k=2;
-while t<tf
+t(1) = t0-dt;   t(2) = t0;   k=2;
+while t(end) < tf
     feff = ft(t(k)) - Keff*u(:,k) - M2*u(:,k-1);
     u(:,k+1) = Meff\feff;
     acc(:,k) = a0*(u(:,k+1)-2*u(:,k)+u(:,k-1));
@@ -108,3 +108,4 @@ set(labx, "FontSize", fontsize); set(laby, "FontSize", fontsize);
 set(gca, 'fontsize', fontsize )
 
 print('Explicit','-depslatex');
+%print('Explicit','-dpdflatex');
