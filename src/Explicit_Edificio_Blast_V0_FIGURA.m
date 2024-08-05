@@ -3,7 +3,7 @@ clc, clear
 
 % Definicion de la estructura
 A     = 30; %m				Lado del Edificio
-e     = 0.25; %m			Espesor Losa Piso
+esp   = 0.25; %m			Espesor Losa Piso
 hv    = 0.7; %m			Altura Viga
 bv    = 0.3; %m			Ancho Viga
 muro  = 300; %kg/m2		Peso muro por uni. area
@@ -20,7 +20,7 @@ k = ncols * 12*E*I/H^3; %N/m
 K = k*[2 -1 0 ; -1 2 -1 ; 0 -1 1]; %N/m
 
 % Definicion de Matriz de Masa
-Mpiso  = 2500*(e*A^2+hv*bv*A*8); %kg
+Mpiso  = 2500 * ( esp*A^2+hv*bv*A*8 ) ; %kg
 Mpilar = 2500*ncols*a^2*H; %kg
 Mmuro  = muro*H*A*4*0.6; %kg
 Mint   = Mpiso + Mpilar + Mmuro;
@@ -75,8 +75,8 @@ u(:,2) = u0; % u(0)
 Meff = a0*M+a1*C;   Keff = (K-a2*M);   M2 = a0*M-a1*C;
 
 % Comienza Marcha en el Tiempo usando Diferencia Centrada
-t(1) = -dt;   t(2) = t0;   k=2;
-while t<tf
+t(1) = t0-dt;   t(2) = t0;   k=2;
+while t(end) < tf
     feff = ft(t(k)) - Keff*u(:,k) - M2*u(:,k-1);
     u(:,k+1) = Meff\feff;
     acc(:,k) = a0*(u(:,k+1)-2*u(:,k)+u(:,k-1));
@@ -85,9 +85,10 @@ while t<tf
     t(k)=t(k-1)+dt;
 end
 
-subplot(1,2,1),    plot(t,pt(t)/1e3,'-b','linewidth',2)
-labx=xlabel('t [s]'), laby=ylabel('presion [kPa]')
-axis([t0,0.3*max(t),1.2*min(min(pt(t)/1e3)),1.2*max(max(pt(t)/1e3))])
+subplot(2,1,1), grid on
+plot(t,pt(t)/1e3,'-b','linewidth',2)
+labx=xlabel('t [s]'); laby=ylabel('presion [kPa]');
+axis([t0,1.1*max(t),1.2*min(min(pt(t)/1e3)),1.2*max(max(pt(t)/1e3))])
 %~ title('Presion por Explosion')
 fontsize = 13;
 
@@ -96,15 +97,16 @@ set(gca, 'fontsize', fontsize )
 
 fontsize = 15;
 
-subplot(1,2,2), hold on
+subplot(2,1,2), hold on, grid on
 plot(t,u(1,:),'-b','linewidth',2)
 plot(t,u(2,:),'r--','linewidth',2)
 plot(t,u(3,:),'-k','linewidth',2)
-hl = legend('$u_1$','$u_2$','$u_3$'), labx=xlabel('t [s]'), laby=ylabel('desplazamiento [m]')
+hl = legend('$u_1$','$u_2$','$u_3$'), labx=xlabel('t [s]'); laby=ylabel('desplazamiento [m]');
 axis([t0,1.1*max(t),1.5*min(min(u)),1.5*max(max(u))])
 %~ title('Respuesta de la Estructura')
 set(hl,'fontsize',13);
 set(labx, "FontSize", fontsize); set(laby, "FontSize", fontsize);
 set(gca, 'fontsize', fontsize )
 
-print('Explicit','-depslatex');
+print('../fig/Explicit','-dpdflatex');
+%print('Explicit','-dpdflatex');

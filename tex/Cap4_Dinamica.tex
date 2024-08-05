@@ -20,6 +20,8 @@ La presentación que aquí se realiza está basada en los capítulos 9 y 24 de l
 
 El presente capítulo consta a grandes rasgos de tres secciones. La primera presenta el planteo de las ecuaciones de movimiento de la estructura y describe sus componentes. La segunda sección presenta métodos de análisis dinámico y ejemplos para estructuras en régimen lineal. Finalmente, la tercera sección refiere a procedimientos de solución y ejemplos de estructuras no lineales.
 
+
+
 \section{Deducción de las Ecuaciones de Movimiento}\label{EcMov}
 
 Continuando con el material presentado en el Capítulo 2, se plantea a continuación la condición de equilibrio dinámico de una estructura compuesta por barras axiales con grandes desplazamientos y rotaciones pero pequeñas deformaciones unitarias.
@@ -99,6 +101,9 @@ Esta matriz de amortiguamiento permite fijar valores aproximados de amortiguamie
 Es claro que otros tipos de amortiguamiento pueden ser incorporados mediante la matriz $\bfC$, por ejemplo amortiguadores conectados a dos nodos dados de la estructura. %
 %
 En estas situaciones se puede perder la característica de amortiguamiento proporcional.
+
+
+
 
 
 \section{Dinámica Lineal}\label{DinLin}
@@ -388,6 +393,9 @@ En una estructura completa, todos los grados de libertad deben satisfacer esta c
 %
 siendo $T_{\text{min}}$ el menor período natural.
 
+
+
+
 \subsubsection{Ejemplo - Edificio Sometido a Carga de Explosión}\label{EjBlast}
 
 Se considera la estructura de un edificio de hormigón armado con tres niveles, conformada por pilares, vigas y losas. %
@@ -439,10 +447,11 @@ El resultado del análisis numérico se muestra en la Figura~\ref{fig:blast}.
 
 \begin{figure}[htb]
 	\centering
-	\resizebox{.97\linewidth}{!}{\input{../fig/Explicit}}
+	\resizebox{.9\linewidth}{!}{\input{../fig/Explicit.tex}}
 	\caption{Solución numérica de dinámica de edificio sometido a carga de explosión: historia de presiones considerada (izquierda) y respuesta de la estructura (derecha).}
 	\label{fig:blast}
 \end{figure}
+
 
 Se puede ver el período de reposo previo al impacto de la explosión, seguido por una respuesta dinámica gobernada por el modo fundamental con los otros modos aportando en menor medida a la respuesta. %
 %
