@@ -85,9 +85,10 @@ while t(end) < tf
     t(k)=t(k-1)+dt;
 end
 
-subplot(1,2,1),    plot(t,pt(t)/1e3,'-b','linewidth',2)
-labx=xlabel('t [s]'), laby=ylabel('presion [kPa]')
-axis([t0,0.3*max(t),1.2*min(min(pt(t)/1e3)),1.2*max(max(pt(t)/1e3))])
+subplot(2,1,1), grid on
+plot(t,pt(t)/1e3,'-b','linewidth',2)
+labx=xlabel('t [s]'); laby=ylabel('presion [kPa]');
+axis([t0,1.1*max(t),1.2*min(min(pt(t)/1e3)),1.2*max(max(pt(t)/1e3))])
 %~ title('Presion por Explosion')
 fontsize = 13;
 
@@ -96,16 +97,16 @@ set(gca, 'fontsize', fontsize )
 
 fontsize = 15;
 
-subplot(1,2,2), hold on
+subplot(2,1,2), hold on, grid on
 plot(t,u(1,:),'-b','linewidth',2)
 plot(t,u(2,:),'r--','linewidth',2)
 plot(t,u(3,:),'-k','linewidth',2)
-hl = legend('$u_1$','$u_2$','$u_3$'), labx=xlabel('t [s]'), laby=ylabel('desplazamiento [m]')
+hl = legend('$u_1$','$u_2$','$u_3$'), labx=xlabel('t [s]'); laby=ylabel('desplazamiento [m]');
 axis([t0,1.1*max(t),1.5*min(min(u)),1.5*max(max(u))])
 %~ title('Respuesta de la Estructura')
 set(hl,'fontsize',13);
 set(labx, "FontSize", fontsize); set(laby, "FontSize", fontsize);
 set(gca, 'fontsize', fontsize )
 
-print('Explicit','-depslatex');
+print('../fig/Explicit','-dpdflatex');
 %print('Explicit','-dpdflatex');

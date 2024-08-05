@@ -445,605 +445,600 @@ Se resuelve la dinámica mediante el Método de Diferencia Centrada. La selecci�
 %
 El resultado del análisis numérico se muestra en la Figura~\ref{fig:blast}.
 
+\begin{figure}[htb]
+	\centering
+	\resizebox{.7\linewidth}{!}{\input{../fig/Explicit.tex}}
+	\caption{Solución numérica de dinámica de edificio sometido a carga de explosión: historia de presiones considerada (izquierda) y respuesta de la estructura (derecha).}
+	\label{fig:blast}
+\end{figure}
 
-%\begin{center}
-%\resizebox{.2\linewidth}{!}{\input{../fig/Explicit.tex}}
-%\end{center}
+
+Se puede ver el período de reposo previo al impacto de la explosión, seguido por una respuesta dinámica gobernada por el modo fundamental con los otros modos aportando en menor medida a la respuesta. %
+%
+Se puede también confirmar que el grado de libertad con mayor amplitud es el correspondiente al tercer piso del edificio.
+
+\cajaactividad{Obtener los valores de la fuerza cortante en un pilar en función del tiempo.}
+
+En el Código~\ref{cod:Blast} se presenta la implementación de GNU-Octave utilizada para obtener la solución numérica presentada.
+
+\lstinputlisting[caption = {Ejemplo Numérico - Método Diferencia Centrada.}\label{cod:Blast}]{../src/Explicit_Edificio_Blast_V0.m}
+
+\subsection{Método de Newmark - Implícito} \label{sec:newmarkLineal}
+
+El Método de Newmark es en realidad una familia de métodos, ya que se cuenta con dos parámetros ($\alpha$ y $\delta$) mediante los cuales se pueden obtener una variedad de métodos, con distintos comportamientos en cuanto a estabilidad y precisión.
+
+Se comenzará formulando el método en su forma general, es decir sin especificar valores para los parámetros, aunque más adelante el análisis de estabilidad numérica y el ejemplo numérico dado corresponderán al caso de Newmark, también conocido como Método de Trapecio.
+
+\subsubsection{Formulación y Pseudo-código} \label{FormNewmarkLin}
+La familia de métodos de Newmark resulta de utilizar las siguientes aproximaciones de la velocidad y aceleración, basadas en desarrollos de Taylor. Para las velocidades se considera:
+%
+\begin{equation}\label{NewVelAprox}
+	\dot{\bfu}_{t+\Delta t} = \dot{\bfu}_t + [(1-\delta)\ddot{\bfu}_t + \delta\ddot{\bfu}_{t+\Delta t}]\Delta t,
+\end{equation}
+mientras que para las aceleraciones se utiliza:
+\begin{equation}\label{NewAccAprox}
+\bfu_{t+\Delta t} = \bfu_t + \dot{\bfu}_t\Delta t + [(1/2-\alpha)\ddot{\bfu}_t + \alpha\ddot{\bfu}_{t+\Delta t}]\Delta t^2.
+\end{equation}
+
+En las Ecuaciones \eqref{NewVelAprox} y \eqref{NewAccAprox} fueron introducidos los parámetros $\alpha$ y $\delta$. %
+%
+El Método del Trapecio se obtiene cuando: $\alpha = 1/4$ y $\delta = 1/2$.
+
+Newmark considera el equilibrio dinámico en el instante $t+\Delta t$. %
+%
+Manipulando las aproximaciones dadas en las Ecuaciones \eqref{NewVelAprox} y \eqref{NewAccAprox}, y sustituyendo en la ecuación de equilibrio se obtiene la siguiente ecuación:
+%
+\begin{equation}\label{Newmark1}
+	\hat{\bfK} \bfu_{t+\Delta t} = \hat{\bff}_{t+\Delta t},
+\end{equation}
+%
+donde $\hat{\bfK}$ está dada por:
+%
+\begin{equation}\label{Newmark2}
+	\hat{\bfK} = \bfK + \frac{1}{\alpha \Delta t^2} \bfM + \frac{\delta}{\alpha \Delta t} \bfC,
+\end{equation}
+%
+y  $\hat{\bff}_{t+\Delta t}$ está dado por:
+%
+\begin{equation}
+	\begin{split}
+	\hat{\bff}_{t+\Delta t} = \bff_{\text{ext},t+\Delta t} + \bfM &\left[\frac{1}{\alpha \Delta t^2}\bfu_{t}+
+	\frac{1}{\alpha \Delta t}\dot{\bfu}_{t}+\left(\frac{1}{2\alpha}-1\right)\ddot{\bfu}_{t}\right]\\
+	+&\bfC \left[\frac{\delta}{\alpha \Delta t}\bfu_{t}+ \left(\frac{\delta}{\alpha}-1\right)\dot{\bfu}_{t}+\frac{\Delta t}{2}\left(\frac{\delta}{\alpha}-2\right)\ddot{\bfu}_{t}\right]
+	\end{split}
+\end{equation}
+
+Resulta inmediato, a partir de la Ecuación~\eqref{Newmark1}, que Newmark requiere en cada paso la solución de un sistema lineal no trivial. %
+%
+Es por esto que se lo clasifica como un método implícito, en cada paso se debe resolver una ecuación implícita para hallar $\bfu_{t+\Delta t}$.
+
+Adicionalmente, se puede observar que las velocidades ($\dot{\bfu}_t$) y aceleraciones ($\ddot{\bfu}_t$) son requeridas para poder calcular $\hat{\bff}_{t+\Delta t}$, por lo tanto en cada paso se deben calcular dichos vectores. %
+%
+Las siguientes expresiones se obtienen directamente de las Ecuaciones \eqref{NewVelAprox} y \eqref{NewAccAprox}:
+%
+\begin{eqnarray}
+	\ddot{\bfu}_{t+\Delta t} &=& \frac{1}{\alpha \Delta t^2}(\bfu_{t+\Delta t}-\bfu_{t}) -
+	\frac{1}{\alpha \Delta t}\dot{\bfu}_t  - \left(\frac{1}{2 \alpha}-1\right)\ddot{\bfu}_t\\
+	\dot{\bfu}_{t+\Delta t} &=& \dot{\bfu}_t +\Delta t(1-\delta)\ddot{\bfu}_t +\Delta t \delta \ddot{\bfu}_{t+\Delta t}	\label{Newmark3}
+\end{eqnarray}
+
+Las Ecuaciones \eqref{Newmark1} a \eqref{Newmark3} son suficientes para poder llevar adelante el paso integración en el tiempo de Newmark. %
+%
+En el Algoritmo~\ref{PCNewmark} se presenta un Pseudo-Código del Método de Newmark.
+
+\begin{algorithm}
+	
+	\caption{Método de Newmark}
+	\label{PCNewmark}
+	
+	\begin{algorithmic}[1]
+		
+		\STATE Ensamblar: $\bfM$, $\bfK$ y $\bfC$ a nivel de estructura.
+		\STATE Definir: tiempo final de análisis dinámico: $t_f$
+		\STATE Definir: Condiciones iniciales: $\bfu_{0}$, $\dot{\bfu}_{0}$
+		\STATE Calcular: $\ddot{\bfu}_{0}\leftarrow \bfM^{-1}(\bff_{ext,0} - \bfC \dot{\bfu}_0 - \bfK \bfu_0)$
+		\STATE Definir: $\Delta t$, $\delta$ y $\alpha$ tal que: $\delta \geq 0.5$ y $\alpha \geq 0.25(0.5+\delta^2)$.
+		\STATE Calcular: $a_0\leftarrow1/(\alpha\Delta t^2)$, $a_1\leftarrow\delta/(\alpha\Delta t)$, $a_2\leftarrow1/(\alpha\Delta t)$, $a_3\leftarrow \left( 1/(2\alpha) - 1 \right)$
+		\STATE Calcular $a_4\leftarrow\delta/\alpha-1$, $a_5\leftarrow \Delta t/2(\delta/\alpha-2)$, $a_6\leftarrow\Delta t(1-\delta)$ y $a_7\leftarrow \delta \Delta t$
+		\STATE Calcular y factorizar: $\hat{\bfK}\leftarrow \bfK + a_0\bfM+a_1\bfC$
+		\STATE $t \leftarrow 0$
+		\WHILE{$t<t_f$}
+		\STATE Calcular: $\hat{\bff}_{t+\Delta t}\leftarrow \bff_{ext,t+\Delta t} +\bfM (a_0\bfu_t+a_2\dot{\bfu}_t+a_3\ddot{\bfu}_t)+\bfC (a_1\bfu_t+a_4\dot{\bfu}_t+a_5\ddot{\bfu}_t)$
+		\STATE Resolver: $\bfu_{t+\Delta t}\leftarrow \hat{\bfK}^{-1}\hat{\bff}_{t+\Delta t}$
+		\STATE Calcular aceleración: $\ddot{\bfu}_{t+\Delta t}\leftarrow a_0(\bfu_{t+\Delta t}-\bfu_{t})-a_2\dot{\bfu}_{t}-a_3\ddot{\bfu}_{t}$
+		\STATE Calcular velocidad: $\dot{\bfu}_{t+\Delta t}\leftarrow \dot{\bfu}_{t} + a_6\ddot{\bfu}_{t}+ a_7\ddot{\bfu}_{t+\Delta t}$
+		\STATE $t\leftarrow t+\Delta t$
+		\ENDWHILE
+		
+	\end{algorithmic}
+	
+\end{algorithm}
+
+A partir del Pseudo-Código presentado, se puede observar que, a diferencia del Método de Diferencia Centrada (en el cual se puede evitar resolver un sistema lineal costoso), en el Método de Newmark se debe resolver un sistema lineal con una matriz de coeficientes esparza en cada paso. %
+%
+Eso hace que el paso de Newmark sea significativamente más costoso que el de Diferencia Centrada.
+
+
+Sin embargo, Newmark tiene como beneficio el hecho que no hay restricción de paso mínimo por estabilidad numérica. Se mostrará en la siguiente sección que para ciertos valores de $\alpha$ y $\delta$ el método es incondicionalmente estable. %
+%
+En particular, el Método del Trapecio ($\alpha=1/4$, $\delta=1/2$) es incondicionalmente estable. Además, se puede verificar que en un sistema no amortiguado ($\bfC=0$) que vibra libremente ($\bff_{\text{ext},t}=0$) el Método del Trapecio conserva la energía mecánica total. Es decir que para cualquier $\Delta t$ elegido, se cumple:
+%
+\begin{equation}
+	E_t=\frac{\dot{\bfu}_t^T\bfM\dot{\bfu}_t}{2} + \frac{\bfu_t^T\bfK \bfu_t}{2}=\text{cte} \quad  \forall t.
+\end{equation} 
+
+
+\subsubsection{Estabilidad Numérica}
+
+Para evaluar la estabilidad numérica de Newmark, se debe estudiar la solución generada por numérica obtenida para el Problema Test visto en la Sección~\ref{DifCenStab}. %
+%
+Siguiendo un desarrollo similar al de dicha sección, se puede definir el vector $\hat{\bfx}_{t+\Delta t}=[\ddot{x}_{t+\Delta t},\dot{x}_{t+\Delta t},x_{t+\Delta t}]^T$ y resumir el resultado de aplicar Newmark al Problema test de la siguiente forma:
+%
+\begin{equation}
+\hat{\bfx}_{t+\Delta t} = \bfA 	\hat{\bfx}_{t}.
+\end{equation}
+
+La matriz $\bfA$, con $\beta = (1/(\omega^2\Delta t^2)+\alpha)^{-1}$, tiene la siguiente forma:
+%
+\begin{equation}\bfA=
+	\left[\begin{matrix}
+	-(1/2-\alpha)\beta & -\beta/\Delta t & -\beta/\Delta t^2 \\
+	\Delta t[1-\delta-(1/2-\alpha)\delta\beta] & 1-\beta\delta & -\beta\delta/\Delta t \\
+	\Delta t^2[1/2-\alpha-(1/2-\alpha)\alpha\beta] & \Delta t(1-\alpha\beta) & 1-\alpha\beta 
+	\end{matrix}\right].
+\end{equation}
+
+Se quiere evaluar la estabilidad del Método del Trapecio ($\alpha=1/4$, $\delta=1/2$). Usando dichos parámetros en la definición de $\bfA$ y $\beta$, se puede evaluar el radio espectral de $A$ para distintos valores de $\Delta t/T$ y verificar la estabilidad controlando que éste sea menor que 1.
+
+En la Figura~\ref{fig:stabnewmark} se muestra la evaluación numérica de $\rho(\bfA)$ para: el Método del Trapecio (trazo discontinuo rojo) y para otra variante de Método de Newmark conocida como Método de Aceleración Lineal (trazo continuo azul). %
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=.6\linewidth]{../fig/model3dof}
-%	\resizebox{.7\linewidth}{!}{\input{../fig/Explicit.tex}}
-%	\caption{Solución numérica de dinámica de edificio sometido a carga de explosión: historia de presiones considerada (izquierda) y respuesta de la estructura (derecha).}
-%	\label{fig:blast}
+	\resizebox{.75\linewidth}{!}{\input{../fig/stabNewmark}}
+	\caption{Estabilidad de variantes del Método de Newmark (Trapecio y Acel. Lineal).}
+	\label{fig:stabnewmark}
 \end{figure}
 
-%Se puede ver el período de reposo previo al impacto de la explosión, seguido por una respuesta dinámica gobernada por el modo fundamental con los otros modos aportando en menor medida a la respuesta. %
-%%
-%Se puede también confirmar que el grado de libertad con mayor amplitud es el correspondiente al tercer piso del edificio.
-%
-%\cajaactividad{Obtener los valores de la fuerza cortante en un pilar en función del tiempo.}
-%
-%En el Código~\ref{cod:Blast} se presenta la implementación de GNU-Octave utilizada para obtener la solución numérica presentada.
-%
-%\lstinputlisting[caption = {Ejemplo Numérico - Método Diferencia Centrada.}\label{cod:Blast}]{../src/Explicit_Edificio_Blast_V0.m}
-%
-%\subsection{Método de Newmark - Implícito} \label{sec:newmarkLineal}
-%
-%El Método de Newmark es en realidad una familia de métodos, ya que se cuenta con dos parámetros ($\alpha$ y $\delta$) mediante los cuales se pueden obtener una variedad de métodos, con distintos comportamientos en cuanto a estabilidad y precisión.
-%
-%Se comenzará formulando el método en su forma general, es decir sin especificar valores para los parámetros, aunque más adelante el análisis de estabilidad numérica y el ejemplo numérico dado corresponderán al caso de Newmark, también conocido como Método de Trapecio.
-%
-%\subsubsection{Formulación y Pseudo-código} \label{FormNewmarkLin}
-%La familia de métodos de Newmark resulta de utilizar las siguientes aproximaciones de la velocidad y aceleración, basadas en desarrollos de Taylor. Para las velocidades se considera:
-%%
-%\begin{equation}\label{NewVelAprox}
-%	\dot{\bfu}_{t+\Delta t} = \dot{\bfu}_t + [(1-\delta)\ddot{\bfu}_t + \delta\ddot{\bfu}_{t+\Delta t}]\Delta t,
-%\end{equation}
-%mientras que para las aceleraciones se utiliza:
-%\begin{equation}\label{NewAccAprox}
-%\bfu_{t+\Delta t} = \bfu_t + \dot{\bfu}_t\Delta t + [(1/2-\alpha)\ddot{\bfu}_t + \alpha\ddot{\bfu}_{t+\Delta t}]\Delta t^2.
-%\end{equation}
-%
-%En las Ecuaciones \eqref{NewVelAprox} y \eqref{NewAccAprox} fueron introducidos los parámetros $\alpha$ y $\delta$. %
-%%
-%El Método del Trapecio se obtiene cuando: $\alpha = 1/4$ y $\delta = 1/2$.
-%
-%Newmark considera el equilibrio dinámico en el instante $t+\Delta t$. %
-%%
-%Manipulando las aproximaciones dadas en las Ecuaciones \eqref{NewVelAprox} y \eqref{NewAccAprox}, y sustituyendo en la ecuación de equilibrio se obtiene la siguiente ecuación:
-%%
-%\begin{equation}\label{Newmark1}
-%	\hat{\bfK} \bfu_{t+\Delta t} = \hat{\bff}_{t+\Delta t},
-%\end{equation}
-%%
-%donde $\hat{\bfK}$ está dada por:
-%%
-%\begin{equation}\label{Newmark2}
-%	\hat{\bfK} = \bfK + \frac{1}{\alpha \Delta t^2} \bfM + \frac{\delta}{\alpha \Delta t} \bfC,
-%\end{equation}
-%%
-%y  $\hat{\bff}_{t+\Delta t}$ está dado por:
-%%
-%\begin{equation}
-%	\begin{split}
-%	\hat{\bff}_{t+\Delta t} = \bff_{\text{ext},t+\Delta t} + \bfM &\left[\frac{1}{\alpha \Delta t^2}\bfu_{t}+
-%	\frac{1}{\alpha \Delta t}\dot{\bfu}_{t}+\left(\frac{1}{2\alpha}-1\right)\ddot{\bfu}_{t}\right]\\
-%	+&\bfC \left[\frac{\delta}{\alpha \Delta t}\bfu_{t}+ \left(\frac{\delta}{\alpha}-1\right)\dot{\bfu}_{t}+\frac{\Delta t}{2}\left(\frac{\delta}{\alpha}-2\right)\ddot{\bfu}_{t}\right]
-%	\end{split}
-%\end{equation}
-%
-%Resulta inmediato, a partir de la Ecuación~\eqref{Newmark1}, que Newmark requiere en cada paso la solución de un sistema lineal no trivial. %
-%%
-%Es por esto que se lo clasifica como un método implícito, en cada paso se debe resolver una ecuación implícita para hallar $\bfu_{t+\Delta t}$.
-%
-%Adicionalmente, se puede observar que las velocidades ($\dot{\bfu}_t$) y aceleraciones ($\ddot{\bfu}_t$) son requeridas para poder calcular $\hat{\bff}_{t+\Delta t}$, por lo tanto en cada paso se deben calcular dichos vectores. %
-%%
-%Las siguientes expresiones se obtienen directamente de las Ecuaciones \eqref{NewVelAprox} y \eqref{NewAccAprox}:
-%%
-%\begin{eqnarray}
-%	\ddot{\bfu}_{t+\Delta t} &=& \frac{1}{\alpha \Delta t^2}(\bfu_{t+\Delta t}-\bfu_{t}) -
-%	\frac{1}{\alpha \Delta t}\dot{\bfu}_t  - \left(\frac{1}{2 \alpha}-1\right)\ddot{\bfu}_t\\
-%	\dot{\bfu}_{t+\Delta t} &=& \dot{\bfu}_t +\Delta t(1-\delta)\ddot{\bfu}_t +\Delta t \delta \ddot{\bfu}_{t+\Delta t}	\label{Newmark3}
-%\end{eqnarray}
-%
-%Las Ecuaciones \eqref{Newmark1} a \eqref{Newmark3} son suficientes para poder llevar adelante el paso integración en el tiempo de Newmark. %
-%%
-%En el Algoritmo~\ref{PCNewmark} se presenta un Pseudo-Código del Método de Newmark.
-%
-%\begin{algorithm}
-%	
-%	\caption{Método de Newmark}
-%	\label{PCNewmark}
-%	
-%	\begin{algorithmic}[1]
-%		
-%		\STATE Ensamblar: $\bfM$, $\bfK$ y $\bfC$ a nivel de estructura.
-%		\STATE Definir: tiempo final de análisis dinámico: $t_f$
-%		\STATE Definir: Condiciones iniciales: $\bfu_{0}$, $\dot{\bfu}_{0}$
-%		\STATE Calcular: $\ddot{\bfu}_{0}\leftarrow \bfM^{-1}(\bff_{ext,0} - \bfC \dot{\bfu}_0 - \bfK \bfu_0)$
-%		\STATE Definir: $\Delta t$, $\delta$ y $\alpha$ tal que: $\delta \geq 0.5$ y $\alpha \geq 0.25(0.5+\delta^2)$.
-%		\STATE Calcular: $a_0\leftarrow1/(\alpha\Delta t^2)$, $a_1\leftarrow\delta/(\alpha\Delta t)$, $a_2\leftarrow1/(\alpha\Delta t)$, $a_3\leftarrow \left( 1/(2\alpha) - 1 \right)$
-%		\STATE Calcular $a_4\leftarrow\delta/\alpha-1$, $a_5\leftarrow \Delta t/2(\delta/\alpha-2)$, $a_6\leftarrow\Delta t(1-\delta)$ y $a_7\leftarrow \delta \Delta t$
-%		\STATE Calcular y factorizar: $\hat{\bfK}\leftarrow \bfK + a_0\bfM+a_1\bfC$
-%		\STATE $t \leftarrow 0$
-%		\WHILE{$t<t_f$}
-%		\STATE Calcular: $\hat{\bff}_{t+\Delta t}\leftarrow \bff_{ext,t+\Delta t} +\bfM (a_0\bfu_t+a_2\dot{\bfu}_t+a_3\ddot{\bfu}_t)+\bfC (a_1\bfu_t+a_4\dot{\bfu}_t+a_5\ddot{\bfu}_t)$
-%		\STATE Resolver: $\bfu_{t+\Delta t}\leftarrow \hat{\bfK}^{-1}\hat{\bff}_{t+\Delta t}$
-%		\STATE Calcular aceleración: $\ddot{\bfu}_{t+\Delta t}\leftarrow a_0(\bfu_{t+\Delta t}-\bfu_{t})-a_2\dot{\bfu}_{t}-a_3\ddot{\bfu}_{t}$
-%		\STATE Calcular velocidad: $\dot{\bfu}_{t+\Delta t}\leftarrow \dot{\bfu}_{t} + a_6\ddot{\bfu}_{t}+ a_7\ddot{\bfu}_{t+\Delta t}$
-%		\STATE $t\leftarrow t+\Delta t$
-%		\ENDWHILE
-%		
-%	\end{algorithmic}
-%	
-%\end{algorithm}
-%
-%A partir del Pseudo-Código presentado, se puede observar que, a diferencia del Método de Diferencia Centrada (en el cual se puede evitar resolver un sistema lineal costoso), en el Método de Newmark se debe resolver un sistema lineal con una matriz de coeficientes esparza en cada paso. %
-%%
-%Eso hace que el paso de Newmark sea significativamente más costoso que el de Diferencia Centrada.
-%
-%
-%Sin embargo, Newmark tiene como beneficio el hecho que no hay restricción de paso mínimo por estabilidad numérica. Se mostrará en la siguiente sección que para ciertos valores de $\alpha$ y $\delta$ el método es incondicionalmente estable. %
-%%
-%En particular, el Método del Trapecio ($\alpha=1/4$, $\delta=1/2$) es incondicionalmente estable. Además, se puede verificar que en un sistema no amortiguado ($\bfC=0$) que vibra libremente ($\bff_{\text{ext},t}=0$) el Método del Trapecio conserva la energía mecánica total. Es decir que para cualquier $\Delta t$ elegido, se cumple:
-%%
-%\begin{equation}
-%	E_t=\frac{\dot{\bfu}_t^T\bfM\dot{\bfu}_t}{2} + \frac{\bfu_t^T\bfK \bfu_t}{2}=\text{cte} \quad  \forall t.
-%\end{equation} 
-%
-%
-%\subsubsection{Estabilidad Numérica}
-%
-%Para evaluar la estabilidad numérica de Newmark, se debe estudiar la solución generada por numérica obtenida para el Problema Test visto en la Sección~\ref{DifCenStab}. %
-%%
-%Siguiendo un desarrollo similar al de dicha sección, se puede definir el vector $\hat{\bfx}_{t+\Delta t}=[\ddot{x}_{t+\Delta t},\dot{x}_{t+\Delta t},x_{t+\Delta t}]^T$ y resumir el resultado de aplicar Newmark al Problema test de la siguiente forma:
-%%
-%\begin{equation}
-%\hat{\bfx}_{t+\Delta t} = \bfA 	\hat{\bfx}_{t}.
-%\end{equation}
-%
-%La matriz $\bfA$, con $\beta = (1/(\omega^2\Delta t^2)+\alpha)^{-1}$, tiene la siguiente forma:
-%%
-%\begin{equation}\bfA=
-%	\left[\begin{matrix}
-%	-(1/2-\alpha)\beta & -\beta/\Delta t & -\beta/\Delta t^2 \\
-%	\Delta t[1-\delta-(1/2-\alpha)\delta\beta] & 1-\beta\delta & -\beta\delta/\Delta t \\
-%	\Delta t^2[1/2-\alpha-(1/2-\alpha)\alpha\beta] & \Delta t(1-\alpha\beta) & 1-\alpha\beta 
-%	\end{matrix}\right].
-%\end{equation}
-%
-%Se quiere evaluar la estabilidad del Método del Trapecio ($\alpha=1/4$, $\delta=1/2$). Usando dichos parámetros en la definición de $\bfA$ y $\beta$, se puede evaluar el radio espectral de $A$ para distintos valores de $\Delta t/T$ y verificar la estabilidad controlando que éste sea menor que 1.
-%
-%En la Figura~\ref{fig:stabnewmark} se muestra la evaluación numérica de $\rho(\bfA)$ para: el Método del Trapecio (trazo discontinuo rojo) y para otra variante de Método de Newmark conocida como Método de Aceleración Lineal (trazo continuo azul). %
-%
-%\begin{figure}[htb]
-%	\centering
-%	\resizebox{.75\linewidth}{!}{\input{../fig/stabNewmark}}
-%	\caption{Estabilidad de variantes del Método de Newmark (Trapecio y Acel. Lineal).}
-%	\label{fig:stabnewmark}
-%\end{figure}
-%
-%Se puede observar que el Método del Trapecio es incondicionalmente estable, mientras que el método de aceleración lineal es condicionalmente estable.
-%
-%\subsubsection{Ejemplo - Edificio bajo Acción Sísmica}
-%
-%Finalmente, se presenta un ejemplo en el cual se realiza el análisis dinámico lineal del edificio definido en la Sección~\ref{EjBlast} bajo una acción sísmica. %
-%%
-%Para analizar el edificio sometido a movimientos sísmicos laterales de su base, es necesario definir coordenadas absolutas para expresar el movimiento del suelo y otras coordenadas relativas al referencial solidario al suelo.
-%
-%Los desplazamientos absolutos serán: $\bfu_{G,t}=x_{S,t}\boldsymbol{\iota} + \bfu_{t}$. Donde $\bfu_{G,t}$ son desplazamientos absolutos, $x_{S,t}\boldsymbol{\iota}$ indica la posición del suelo respecto del referencial absoluto y $\bfu_t$ son desplazamientos del edificio relativos al referencial solidario al suelo. Notar que el vector: $\boldsymbol{\iota}$, llamado vector de influencia, indica cómo influye el movimiento de suelo en cada uno de los grados de libertad de la estructura.
-%
-%Derivando dos veces respecto del tiempo se obtiene: $\ddot{\bfu}_{G,t}=\ddot{x}_{S,t}\boldsymbol{\iota} + \ddot{\bfu}_{t}$. 
-%
-%Finalmente, notando que las fuerzas internas y los efectos disipativos de la estructura dependen de los desplazamientos relativos $\bfu_t$ y de su derivada primera $\dot{\bfu}_t$, se llega a la ecuación de movimiento bajo acción sísmica:
-%%
-%\begin{equation}\label{EcMovLinSismo}
-%\bfM \ddot{\bfu}_t + \bfC \dot{\bfu}_t + \bfK \bfu_t = -\ddot{x}_{G,t}\bfM \boldsymbol{\iota},
-%\end{equation}
-%%
-%donde $\ddot{x}_{G,t}$ tiene el registro de aceleraciones de suelo medidos según una dirección dada.
-%
-%En el presente ejemplo, los datos de aceleración corresponden al sismo de Loma Prieta, ocurrido el 17 de octubre de 1987 en California, U.S.A. %\footnote{Obtenidos de \url{http://peer.berkeley.edu/products/strong_ground_motion_db.html}} 
-%
-%En la Figura~\ref{fig:LomaPrieta} se muestran los resultados de la solución de la dinámica del edificio para la aceleración de terreno elegida. %
-%Comparando los resultados obtenidos con los de la solución de la dinámica del edificio sometido a una detonación, se observa mayores desplazamientos en el caso del sismo.
-%
-%\begin{figure}[htb]
-%	\centering
-%	\resizebox{.95\linewidth}{!}{\input{../fig/sismo}}
-%	\caption{Solución numérica del movimiento del edificio bajo acción de sismo.}
-%	\label{fig:LomaPrieta}
-%\end{figure}
-%
-%
-%\section{Dinámica No Lineal}\label{DinNoLin}
-%
-%Luego de haber estudiado los procedimientos de solución de la ecuación de movimiento para una estructura sin considerar no linealidades, se puede pasar a estudiar los cambios necesarios para poder resolver la dinámica considerando no linealidades, es decir Dinámica No Lineal.
-%
-%Tal como fue presentada en la Sección \ref{EcMov}, la ecuación de movimiento para una estructura no lineal tiene un vector de fuerzas internas que es función de $\bfu_t$. Dicho vector puede contemplar no linealidad material, geométrica o de ambos tipos.
-%%
-%\begin{equation}
-%\bfM \ddot{\bfu}_t + \bfC \dot{\bfu}_t + \bff_{\text{int}}(\bfu_t) = \bff_{\text{ext},t}
-%\end{equation}
-%
-%Los procedimientos de solución explícitos e implícitos se deben ajustar al hecho de que el vector de fuerzas internas ya no es simplemente el producto de la matriz de rigidez por el vector de desplazamientos en el tiempo considerado. %
-%%
-%Este cambio tiene un efecto menor en el procedimiento correspondiente al Método de Diferencia Centrada, pero implica un cambio significativo en el procedimiento asociado al Método de Newmark.
-%
-%De manera resumida, en el caso de dinámica no lineal, se deberá asegurar que el equilibrio se verifica para cada instante de tiempo. En el caso de métodos explícitos eso es inmediato, pero en el caso de métodos implícitos esto requerirá de iteraciones de tipo N-R para asegurar dicho equilibrio.
-%
-%También cabe mencionar que los criterios de estabilidad numérica vistos para el caso de estructuras lineales no aplican de manera inmediata al caso no lineal. En particular, siempre y cuando el paso temporal ($\Delta t$) sea suficientemente corto, tal que la estructura mantenga un comportamiento aproximadamente lineal durante varios instantes de tiempo, los criterios de estabilidad tendrán cierto grado de validez. Se debe tomar en cuenta que los períodos de vibración relevantes para determinar la estabilidad numérica corresponden a la rigidez de la estructura a medida que transcurre el tiempo. Una estructura que se vuelve más rígida por efectos geométricos a medida que avanza el tiempo, tendrá, para el Método de Diferencia Centrada, un paso temporal crítico cada vez menor debido a dicho aumento de la rigidez.
-%
-%Para pasos temporales largos, tales que de un instante a otro el comportamiento de la estructura no puede considerarse aproximadamente lineal, los criterios de estabilidad no aplican y se pueden llegar a observar inestabilidades numéricas en métodos que se clasificaron como incondicionalmente estables para problemas lineales.
-%
-%\subsection{Método de Diferencia Centrada - Explícito}
-%
-%La deducción del método es idéntica a la presentada en la sección de dinámica lineal. Se busca determinar $\bfu_{t+\Delta t}$, para ello se considera el equilibrio dinámico en el tiempo $t$ y se usan los mismos cocientes incrementales para aproximar las derivadas primera y segunda de $\bfu_t$. En este caso se debe simplemente tomar en cuenta que las fuerzas internas están dadas por $\bff_{\text{int}}(\bfu_{t})$.
-%
-%Usando la Ecuación~\eqref{EcDifCent} se puede escribir,
-%%
-%\begin{equation}\label{EcDifCentNL}
-%\begin{split}
-%\left[\frac{1}{\Delta t^2}\bfM + \frac{1}{2\Delta t}\bfC \right] \bfu_{t+\Delta t} = \bff_{ext,t} - &\bff_{\text{int}}(\bfu_{t}) + \frac{2}{\Delta t ^2}\bfM \bfu_t \\
-%- & \left[\frac{1}{\Delta t^2}\bfM-\frac{1}{2\Delta t}\bfC\right] \bfu_{t-\Delta t}.
-%\end{split}
-%\end{equation}
-%
-%La Ecuación~\eqref{EcDifCentNL} provee la regla mediante la cual se calcula $\bfu_{t+\Delta t}$. Notar que en el caso de una estructura no lineal debemos en cada paso evaluar el vector de fuerzas internas en el instante de tiempo actual. Es claro que el método continúa siendo explícito. 
-%
-%Se destaca que sigue siendo necesario, tal como en la solución de problemas lineales, que la matriz de masa y eventualmente la de amortiguamiento sean diagonales de manera que la evaluación de $\bfu_{t+\Delta t}$ a partir de la Ecuación~\eqref{EcDifCentNL} sea computacionalmente económica.
-%
-%A partir del desarrollo anterior, se puede actualizar el procedimiento de solución del Método de Diferencia Centrada para el caso de estructuras no lineales tal como se muestra en el Algoritmo~\ref{PCDifCentNL}.
-%
-%\begin{algorithm}
-%	
-%	\caption{Método de Diferencia Centrada - No-Lineal}
-%	\label{PCDifCentNL}
-%	
-%	\begin{algorithmic}[1]
-%		
-%		\STATE Ensamblar: $\bfM$ y $\bfC$ a nivel de estructura.
-%		\STATE Definir: tiempo final de análisis dinámico: $t_f$
-%		\STATE Definir: Condiciones iniciales: $\bfu_{0}$, $\dot{\bfu}_{0}$
-%		\STATE Calcular: $\ddot{\bfu}_{0}\leftarrow \bfM^{-1}(\bff_{ext,t} - \bfC \dot{\bfu}_0 - \bff_{\text{int}}(\bfu_0))$
-%		\STATE Definir: $\Delta t$, considerar estabilidad numérica.
-%		\STATE Calcular: $a_0\leftarrow1/\Delta t^2$, $a_1\leftarrow1/(2\Delta t)$, $a_2\leftarrow2a_0$ y $a_3\leftarrow1/a_2$
-%		\STATE Calcular: $\bfu_{-\Delta t} \leftarrow \bfu_0 - \Delta t \dot{\bfu}_0 + a_3\ddot{\bfu}_0$
-%		\STATE Calcular y factorizar: $\hat{\bfM}\leftarrow a_0\bfM+a_1\bfC$
-%		\STATE $t \leftarrow 0$
-%		\WHILE{$t<t_f$}
-%		\STATE Calcular: $\hat{\bff}_t\leftarrow \bff_{ext,t} -\bff_{\text{int}}(\bfu_t) +a_2\bfM \bfu_t - (a_0\bfM-a_1\bfC)\bfu_{t-\Delta t}$
-%		\STATE Resolver: $\bfu_{t+\Delta t}\leftarrow \hat{\bfM}^{-1}\hat{\bff}_t$
-%		\STATE Calcular aceleración: $\ddot{\bfu}_{t}\leftarrow a_0(\bfu_{t+\Delta t}-2\bfu_{t}+\bfu_{t-\Delta t})$
-%		\STATE Calcular velocidad: $\dot{\bfu}_{t}\leftarrow a_1(\bfu_{t+\Delta t}-\bfu_{t-\Delta t})$
-%		\STATE $t\leftarrow t+\Delta t$
-%		\ENDWHILE
-%		
-%	\end{algorithmic}
-%	
-%\end{algorithm}
-%
-%En este momento es una buena idea comentar sobre la elección del paso temporal ($\Delta t$) para el Método de Diferencia Centrada en problemas no lineales. Tal como se mencionó anteriormente, la estabilidad numérica del método continúa restringiendo el paso temporal máximo que se puede usar. La elección del paso se vuelve más difícil en el caso de estructuras no lineales ya que el paso temporal crítico no es constante durante la solución. %
-%%
-%La rigidez de la estructura puede variar a lo largo del tiempo por efectos de rigidez geométrica o por no linealidad material. Si se espera que la estructura solamente se flexibilice a medida que transcurre el tiempo, un criterio razonable puede ser determinar el paso temporal en base a la rigidez inicial de la estructura. Si este no es el caso, se debe prever el efecto de la rigidización de la estructura en el paso temporal crítico y asegurar que el paso elegido no superará el valor crítico mínimo previsto.
-%
-%Al realizar análisis dinámicos de estructuras no lineales usando el Método de Diferencia centrada, la elección de un paso temporal demasiado largo en comparación con el mínimo paso temporal crítico previsto, puede llevar a acumular errores significativos durante aquellos instantes de tiempo en los cuales el paso temporal elegido superó al paso crítico. %
-%%
-%Esta acumulación acotada de errores es marcadamente distinta a la que se observa en análisis dinámicos lineales, en los cuales si se elije un paso temporal por encima del valor crítico, la solución diverge y el analista puede reconocer fácilmente que seleccionó un paso temporal erróneo.
-%
-%
-%\subsubsection{Ejemplo Dinámica No Lineal - Cercha de Von Mises}
-%
-%Se considera una cercha de tipo de Von Mises bajo la acción de una carga dinámica. %
-%%
-%La estructura consiste en dos columnas flexibles empotradas en la base y dos bielas articuladas que trabajan como puntales de la cercha tal como se muestra en la Figura~\ref{fig:GeomVM}. %
-%
-%Se coloca una masa $m$ suspendida de la cumbre de la cercha. %
-%%
-%Todas las barras de la cercha están formada por acero ($E=200 \text{ GPa}$) y sección rectangular ($a=3.2\text{mm}$ y $b=25.4\text{mm}$). %
-%%
-%Los parámetros que definen la geometría son: $L_c = 240 $ mm, $L_x= 187$ mm y $L_z=84$ mm. %
-%%
-%Esta estructura es la utilizada por el profesor A. Wadee en la presentación referida al inicio del Capítulo 2 de este documento.
-%
-%\begin{figure}[htb]
-%	\centering
-%	\def\svgwidth{0.7\textwidth}
-%\input{../fig/misses_truss_Cap4.pdf_tex}
-%	\caption{Geometría de Cercha de Von Mises.}
-%	\label{fig:GeomVM}
-%\end{figure}
-%
-%La forma de cargar la estructura consiste en suspender la masa en la configuración indeformada y luego dejarla libre. Esto implica que el vector de deformación inicial es nulo y también lo es el vector de velocidades inicial.
-%
-%Dada la simetría axial, respecto al eje vertical, presente en la estructura y las cargas aplicadas, se modela la mitad izquierda de la estructura. %
-%%
-%De esta forma solo se debe analizar una biela de Green con condición de borde deslizante vertical en el extremo derecho y deslizante horizontal con resorte en el extremo izquierdo tal como se muestra en la Figura~\ref{fig:ModelVM}. %
-%%
-%La constante elástica del resorte está dado por la rigidez flexional de los pilares.
-%
-%\begin{figure}[htb]
-%	\centering
-%	\def\svgwidth{0.6\textwidth}
-%\input{../fig/misses_truss_Cap4_simetr.pdf_tex}
-%	\caption{Modelo de Cálculo de Cercha de Von Mises.}
-%	\label{fig:ModelVM}
-%\end{figure}
-%
-%El vector de desplazamientos es considerado $\bfu_t = (u_{1,t}, u_{2,t})^\text{T}$ y por lo tanto la ecuación dinámica está dada por:
-%%
-%\begin{equation}
-%\bfM \ddot{\bfu}_t + \bfC \dot{\bfu}_t + \bff_{\text{int}}(\bfu_t)=\bff_{ext,t}.
-%\end{equation}	
-%%
-%Dado que se está analizando media estructura la matriz de masa es igual a:
-%%
-%$$\bfM = \left[\begin{array}{cc}m_b& 0\\ 0& (m_b+m)/2\end{array}\right],$$
-%%
-%donde $m_b$ es la masa de una biela o columna y $m$ es la masa suspendida del centro de la cercha. Dicha masa se considera rígidamente vinculada a la cercha en la dirección vertical.
-%
-%Se considera que existe amortiguamiento, para lo cual se introduce una constante $c$ empírica de amortiguamiento de manera de reproducir un amortiguamiento realista de la estructura. %
-%%
-%Se usa $c$ para el grado de libertad de movimiento vertical y $c/10$ para el de movimiento horizontal, por lo que la matriz $\bfC$ está dada por:
-%$$\bfC = \left[\begin{array}{cc}c/10& 0\\ 0& c\end{array}\right].$$
-%%
-%A través de estos amortiguamientos se pretende introducir el arrastre de la pesa debido al aire y la fricción existente en las bisagras que forman las articulaciones de la cercha en el modelo.
-%
-%Para resolver la dinámica de esta estructura se aplica el Método de Diferencia Centrada, el cual requiere que el usuario calcule únicamente el vector de fuerzas internas. %
-%%
-%En lo que sigue se deducirá $\bff_{\text{int}}(\bfu_t)$ asumiendo que las bielas son de tipo Green y que la columna se puede modelar como un resorte lineal horizontal de constante $k_c$,  donde $k_c$ está dado por la rigidez flexional $3 E I_c / L_c^3$.
-%
-%El vector de fuerzas internas de la biela se deduce usando el PTV. Evaluando el trabajo virtual interno se tiene:
-%%
-%\begin{equation}
-%\delta W_{\text{int}}=\delta\bfu^T \bff_{\text{int}}(\bfu_t)= \int_{l_0} \sigma_t \delta\varepsilon_G A dx + \delta\bfu^T\bfK_s \bfu_t,
-%\end{equation}
-%%
-%donde el segundo sumando del trabajo virtual interno corresponde al trabajo virtual interno de la fuerza realizada por el resorte horizontal de constante $k_c$.
-%
-%La deformación unitaria de Green para la biela está dada por:
-%%
-%\begin{equation}
-%\varepsilon_G = \frac{l_t^2 - l_0^2}{2 l_0^2}.
-%\end{equation}
-%
-%Se asume una relación constitutiva elástica lineal entre tensión y deformación de Green, válido para pequeñas deformaciones unitarias pero grandes desplazamientos y rotaciones.
-%%
-%\begin{equation}
-%\sigma = E \varepsilon_G.
-%\end{equation}
-%
-%Los largos de barra iniciales (de referencia) y actuales (deformada) se pueden escribir como:
-%%
-%\begin{equation}
-%l_0 ^2 = L_x^2+ L_z^2 \quad \text{y} \quad 
-%l_t ^2 = (L_x-u_{1,t})^2+ (L_z+u_{2,t})^2,
-%\end{equation}
-%respectivamente, con lo cual la deformación de Green se reduce a:
-%%
-%\begin{equation}
-%\varepsilon_G = \frac{-2 L_x u_{1,t}+2 L_z u_{2,t} + u_{1,t}^2 + u_{2,t}^2}{2 (L_x^2+L_z^2)}.
-%\end{equation}
-%
-%Se procede a calcular la variación de la deformación de Green ($\delta \varepsilon_G$):
-%%
-%\begin{eqnarray}
-%	\delta \varepsilon_G &=& \dfrac{1}{L_x^2+L_z^2}\left[ (-L_x + u_1)\delta u_1 + (L_z+u_2)\delta u_2 \right] \\
-%	 &=& \delta\bfu^T  \left[\begin{array}{c} -L_x + u_{1,t}\\ L_z + u_{2,t}\end{array}\right] \dfrac{1}{l_0^2},
-%\end{eqnarray}
-%con lo cual, el vector de fuerzas internas para la barra de Green y el resorte lineal resulta:
-%%
-%\begin{equation}
-%\begin{split}
-%	\bff_{\text{int}}(\bfu_t) = \dfrac{E A l_0(u_{1,t}^2 + u_{2,t}^2 -2 L_x u_{1,t}+2 L_z u_{2,t})}{2 l_0^4} &\left[\begin{array}{c} -L_x + u_{1,t}\\ L_z + u_{2,t}\end{array}\right] \\ +& \left[\begin{array}{c} k_c u_{1,t}\\ 0\end{array}\right].
-%\end{split}
-%\end{equation}
-%
-%Finalmente, la fuerza externa dinámica aplicada sobre la cercha resulta en un vector $\bff_{\text{ext},t}$ dado por:
-%%
-%\begin{equation}
-%\bff_{\text{ext},t} = \left[\begin{array}{c} 0\\ -g(m_b+m)/2\end{array}\right].
-%\end{equation}
-%
-%\textbf{Solución Numérica - Método de Diferencia Centrada:}
-%
-%Para obtener la solución numérica se debe definir un paso temporal $\Delta t$ tal que el método de Diferencia Centrada sea estable.
-%
-%\cajaactividad{
-%Discutir y estimar cuánto vale $\Delta T_{cr}$ para el ejemplo de la cercha de Von Mises.
-%}
-%
-%Luego de definido $\Delta T_{cr}$ se procede a implementar el método. En el Código~\ref{cod:VonMisesCod} se muestra una implementación para la resolución del ejemplo.
-%
-%\lstinputlisting[caption = {Código para análisis dinámico de cercha de Von Mises.}\label{cod:VonMisesCod}]{../src/VonMisesNL_DifCent.m}
-%
-%En la Figura~\ref{fig:ResVM} se muestra la solución de la dinámica para una masa suspendida igual a $m = 1.4$ kg.
-%
-%\begin{figure}[!htb]
-%	\centering
-%	\resizebox{.95\linewidth}{!}{\input{../fig/PlotsVMises}}
-%	\caption{Resultados de Cercha de Von Mises (m=1.4kg) - Dinámica}
-%	\label{fig:ResVM}
-%\end{figure}
-%
-%
-%Para valores de masa mayores a $1.4$ kg se observa pandeo tipo \textit{Snap-through} dinámico de la estructura.
-%
-%\cajaactividad{
-%Compare este valor con el valor de carga crítica correspondiente a carga cuasi-estática.
-%}
-%
-%
-%\subsection{Método de Newmark - Implícito}
-%
-%La deducción de este método es similar a la presentada en la sección de dinámica lineal. %
-%%
-%El objetivo es determinar $\bfu_{t+\Delta t}$, para ello Newmark considera el equilibrio dinámico en el tiempo $t+\Delta t$ y se usan las mismas expresiones de tipo Taylor para aproximar $\bfu_{t+\Delta t}$ y $\dot{\bfu}_{t+\Delta t}$. Se debe notar que las fuerzas internas en el tiempo $t+\Delta t$ están dadas por $\bff_{\text{int}}(\bfu_{t+\Delta t})$.
-%
-%Lo anterior, en conjunto con las Ecuaciones \eqref{Newmark1} y \eqref{Newmark2}, permiten obtener la expresión:
-%%
-%\begin{equation}\label{NewmarkNL1}
-%\bff_{\text{int}}(\bfu_{t+\Delta t})+\left[ \frac{1}{\alpha \Delta t^2} \bfM + \frac{\delta}{\alpha \Delta t} \bfC \right] \bfu_{t+\Delta t} = \hat{\bff}_{t+\Delta t},
-%\end{equation}
-%%
-%donde la definición de $\hat{\bff}_{t+\Delta t}$ es la misma que la dada en la Sección~\ref{FormNewmarkLin}. %
-%
-%Se observa por lo tanto que para determinar $\bfu_{t+\Delta t}$ mediante Newmark, para el caso de un problema dinámico no lineal, se debe resolver la ecuación no lineal dada por la Ecuación~\eqref{NewmarkNL1}. %
-%%
-%Esto es claramente más laborioso que en el caso de un problema dinámico lineal, en el cual cada paso de Newmark consistía simplemente en resolver un sistema de ecuaciones lineales.
-%
-%\cajaactividad{
-%Formular la solución de la ecuación no lineal definida en el paso de Newmark aplicando soluciones iterativas de tipo Newton-Raphson o incluso Newton-Raphson modificado.
-%}
-%
-%Para los métodos de tipo Newton-Raphson se debe usar la matriz tangente $\bfK_T = \partial \bff_{\text{int}} / \partial \bfu$, que ya fue presentada en el caso de análisis estáticos. %
-%%
-%Para que la solución sea correcta se debe iterar hasta obtener convergencia del equilibrio dinámico en el paso $t+\Delta t$, con lo cual los criterios de convergencia son similares a los ya discutidos anteriormente, aunque usando la ecuación no lineal dada en esta sección.
-%
-%Tal como se indicó al comienzo de esta sección, si el paso temporal es suficientemente corto como para que la estructura se comporte de forma aproximadamente lineal durante varios instantes de tiempo, entonces Newmark presentará un comportamiento estable. A pesar de esto, es posible seleccionar pasos temporales suficientemente largos como para que los análisis de estabilidad numérica, hechos en la hipótesis de dinámica lineal, pierdan validez y el método presente inestabilidad numérica. %
-%%
-%Se puede ver un ejemplo de este tipo de comportamiento en el Capítulo 24 del libro \citep{Crisfield1997}.
-%
-%
-%
-%
-%\section{Ejercicios}
-%
+Se puede observar que el Método del Trapecio es incondicionalmente estable, mientras que el método de aceleración lineal es condicionalmente estable.
+
+\subsubsection{Ejemplo - Edificio bajo Acción Sísmica}
+
+Finalmente, se presenta un ejemplo en el cual se realiza el análisis dinámico lineal del edificio definido en la Sección~\ref{EjBlast} bajo una acción sísmica. %
+%
+Para analizar el edificio sometido a movimientos sísmicos laterales de su base, es necesario definir coordenadas absolutas para expresar el movimiento del suelo y otras coordenadas relativas al referencial solidario al suelo.
+
+Los desplazamientos absolutos serán: $\bfu_{G,t}=x_{S,t}\boldsymbol{\iota} + \bfu_{t}$. Donde $\bfu_{G,t}$ son desplazamientos absolutos, $x_{S,t}\boldsymbol{\iota}$ indica la posición del suelo respecto del referencial absoluto y $\bfu_t$ son desplazamientos del edificio relativos al referencial solidario al suelo. Notar que el vector: $\boldsymbol{\iota}$, llamado vector de influencia, indica cómo influye el movimiento de suelo en cada uno de los grados de libertad de la estructura.
+
+Derivando dos veces respecto del tiempo se obtiene: $\ddot{\bfu}_{G,t}=\ddot{x}_{S,t}\boldsymbol{\iota} + \ddot{\bfu}_{t}$. 
+
+Finalmente, notando que las fuerzas internas y los efectos disipativos de la estructura dependen de los desplazamientos relativos $\bfu_t$ y de su derivada primera $\dot{\bfu}_t$, se llega a la ecuación de movimiento bajo acción sísmica:
+%
+\begin{equation}\label{EcMovLinSismo}
+\bfM \ddot{\bfu}_t + \bfC \dot{\bfu}_t + \bfK \bfu_t = -\ddot{x}_{G,t}\bfM \boldsymbol{\iota},
+\end{equation}
+%
+donde $\ddot{x}_{G,t}$ tiene el registro de aceleraciones de suelo medidos según una dirección dada.
+
+En el presente ejemplo, los datos de aceleración corresponden al sismo de Loma Prieta, ocurrido el 17 de octubre de 1987 en California, U.S.A. %\footnote{Obtenidos de \url{http://peer.berkeley.edu/products/strong_ground_motion_db.html}} 
+
+En la Figura~\ref{fig:LomaPrieta} se muestran los resultados de la solución de la dinámica del edificio para la aceleración de terreno elegida. %
+Comparando los resultados obtenidos con los de la solución de la dinámica del edificio sometido a una detonación, se observa mayores desplazamientos en el caso del sismo.
+
+\begin{figure}[htb]
+	\centering
+	\resizebox{.95\linewidth}{!}{\input{../fig/sismo}}
+	\caption{Solución numérica del movimiento del edificio bajo acción de sismo.}
+	\label{fig:LomaPrieta}
+\end{figure}
+
+
+\section{Dinámica No Lineal}\label{DinNoLin}
+
+Luego de haber estudiado los procedimientos de solución de la ecuación de movimiento para una estructura sin considerar no linealidades, se puede pasar a estudiar los cambios necesarios para poder resolver la dinámica considerando no linealidades, es decir Dinámica No Lineal.
+
+Tal como fue presentada en la Sección \ref{EcMov}, la ecuación de movimiento para una estructura no lineal tiene un vector de fuerzas internas que es función de $\bfu_t$. Dicho vector puede contemplar no linealidad material, geométrica o de ambos tipos.
+%
+\begin{equation}
+\bfM \ddot{\bfu}_t + \bfC \dot{\bfu}_t + \bff_{\text{int}}(\bfu_t) = \bff_{\text{ext},t}
+\end{equation}
+
+Los procedimientos de solución explícitos e implícitos se deben ajustar al hecho de que el vector de fuerzas internas ya no es simplemente el producto de la matriz de rigidez por el vector de desplazamientos en el tiempo considerado. %
+%
+Este cambio tiene un efecto menor en el procedimiento correspondiente al Método de Diferencia Centrada, pero implica un cambio significativo en el procedimiento asociado al Método de Newmark.
+
+De manera resumida, en el caso de dinámica no lineal, se deberá asegurar que el equilibrio se verifica para cada instante de tiempo. En el caso de métodos explícitos eso es inmediato, pero en el caso de métodos implícitos esto requerirá de iteraciones de tipo N-R para asegurar dicho equilibrio.
+
+También cabe mencionar que los criterios de estabilidad numérica vistos para el caso de estructuras lineales no aplican de manera inmediata al caso no lineal. En particular, siempre y cuando el paso temporal ($\Delta t$) sea suficientemente corto, tal que la estructura mantenga un comportamiento aproximadamente lineal durante varios instantes de tiempo, los criterios de estabilidad tendrán cierto grado de validez. Se debe tomar en cuenta que los períodos de vibración relevantes para determinar la estabilidad numérica corresponden a la rigidez de la estructura a medida que transcurre el tiempo. Una estructura que se vuelve más rígida por efectos geométricos a medida que avanza el tiempo, tendrá, para el Método de Diferencia Centrada, un paso temporal crítico cada vez menor debido a dicho aumento de la rigidez.
+
+Para pasos temporales largos, tales que de un instante a otro el comportamiento de la estructura no puede considerarse aproximadamente lineal, los criterios de estabilidad no aplican y se pueden llegar a observar inestabilidades numéricas en métodos que se clasificaron como incondicionalmente estables para problemas lineales.
+
+\subsection{Método de Diferencia Centrada - Explícito}
+
+La deducción del método es idéntica a la presentada en la sección de dinámica lineal. Se busca determinar $\bfu_{t+\Delta t}$, para ello se considera el equilibrio dinámico en el tiempo $t$ y se usan los mismos cocientes incrementales para aproximar las derivadas primera y segunda de $\bfu_t$. En este caso se debe simplemente tomar en cuenta que las fuerzas internas están dadas por $\bff_{\text{int}}(\bfu_{t})$.
+
+Usando la Ecuación~\eqref{EcDifCent} se puede escribir,
+%
+\begin{equation}\label{EcDifCentNL}
+\begin{split}
+\left[\frac{1}{\Delta t^2}\bfM + \frac{1}{2\Delta t}\bfC \right] \bfu_{t+\Delta t} = \bff_{ext,t} - &\bff_{\text{int}}(\bfu_{t}) + \frac{2}{\Delta t ^2}\bfM \bfu_t \\
+- & \left[\frac{1}{\Delta t^2}\bfM-\frac{1}{2\Delta t}\bfC\right] \bfu_{t-\Delta t}.
+\end{split}
+\end{equation}
+
+La Ecuación~\eqref{EcDifCentNL} provee la regla mediante la cual se calcula $\bfu_{t+\Delta t}$. Notar que en el caso de una estructura no lineal debemos en cada paso evaluar el vector de fuerzas internas en el instante de tiempo actual. Es claro que el método continúa siendo explícito. 
+
+Se destaca que sigue siendo necesario, tal como en la solución de problemas lineales, que la matriz de masa y eventualmente la de amortiguamiento sean diagonales de manera que la evaluación de $\bfu_{t+\Delta t}$ a partir de la Ecuación~\eqref{EcDifCentNL} sea computacionalmente económica.
+
+A partir del desarrollo anterior, se puede actualizar el procedimiento de solución del Método de Diferencia Centrada para el caso de estructuras no lineales tal como se muestra en el Algoritmo~\ref{PCDifCentNL}.
+
+\begin{algorithm}
+	
+	\caption{Método de Diferencia Centrada - No-Lineal}
+	\label{PCDifCentNL}
+	
+	\begin{algorithmic}[1]
+		
+		\STATE Ensamblar: $\bfM$ y $\bfC$ a nivel de estructura.
+		\STATE Definir: tiempo final de análisis dinámico: $t_f$
+		\STATE Definir: Condiciones iniciales: $\bfu_{0}$, $\dot{\bfu}_{0}$
+		\STATE Calcular: $\ddot{\bfu}_{0}\leftarrow \bfM^{-1}(\bff_{ext,t} - \bfC \dot{\bfu}_0 - \bff_{\text{int}}(\bfu_0))$
+		\STATE Definir: $\Delta t$, considerar estabilidad numérica.
+		\STATE Calcular: $a_0\leftarrow1/\Delta t^2$, $a_1\leftarrow1/(2\Delta t)$, $a_2\leftarrow2a_0$ y $a_3\leftarrow1/a_2$
+		\STATE Calcular: $\bfu_{-\Delta t} \leftarrow \bfu_0 - \Delta t \dot{\bfu}_0 + a_3\ddot{\bfu}_0$
+		\STATE Calcular y factorizar: $\hat{\bfM}\leftarrow a_0\bfM+a_1\bfC$
+		\STATE $t \leftarrow 0$
+		\WHILE{$t<t_f$}
+		\STATE Calcular: $\hat{\bff}_t\leftarrow \bff_{ext,t} -\bff_{\text{int}}(\bfu_t) +a_2\bfM \bfu_t - (a_0\bfM-a_1\bfC)\bfu_{t-\Delta t}$
+		\STATE Resolver: $\bfu_{t+\Delta t}\leftarrow \hat{\bfM}^{-1}\hat{\bff}_t$
+		\STATE Calcular aceleración: $\ddot{\bfu}_{t}\leftarrow a_0(\bfu_{t+\Delta t}-2\bfu_{t}+\bfu_{t-\Delta t})$
+		\STATE Calcular velocidad: $\dot{\bfu}_{t}\leftarrow a_1(\bfu_{t+\Delta t}-\bfu_{t-\Delta t})$
+		\STATE $t\leftarrow t+\Delta t$
+		\ENDWHILE
+		
+	\end{algorithmic}
+	
+\end{algorithm}
+
+En este momento es una buena idea comentar sobre la elección del paso temporal ($\Delta t$) para el Método de Diferencia Centrada en problemas no lineales. Tal como se mencionó anteriormente, la estabilidad numérica del método continúa restringiendo el paso temporal máximo que se puede usar. La elección del paso se vuelve más difícil en el caso de estructuras no lineales ya que el paso temporal crítico no es constante durante la solución. %
+%
+La rigidez de la estructura puede variar a lo largo del tiempo por efectos de rigidez geométrica o por no linealidad material. Si se espera que la estructura solamente se flexibilice a medida que transcurre el tiempo, un criterio razonable puede ser determinar el paso temporal en base a la rigidez inicial de la estructura. Si este no es el caso, se debe prever el efecto de la rigidización de la estructura en el paso temporal crítico y asegurar que el paso elegido no superará el valor crítico mínimo previsto.
+
+Al realizar análisis dinámicos de estructuras no lineales usando el Método de Diferencia centrada, la elección de un paso temporal demasiado largo en comparación con el mínimo paso temporal crítico previsto, puede llevar a acumular errores significativos durante aquellos instantes de tiempo en los cuales el paso temporal elegido superó al paso crítico. %
+%
+Esta acumulación acotada de errores es marcadamente distinta a la que se observa en análisis dinámicos lineales, en los cuales si se elije un paso temporal por encima del valor crítico, la solución diverge y el analista puede reconocer fácilmente que seleccionó un paso temporal erróneo.
+
+
+\subsubsection{Ejemplo Dinámica No Lineal - Cercha de Von Mises}
+
+Se considera una cercha de tipo de Von Mises bajo la acción de una carga dinámica. %
+%
+La estructura consiste en dos columnas flexibles empotradas en la base y dos bielas articuladas que trabajan como puntales de la cercha tal como se muestra en la Figura~\ref{fig:GeomVM}. %
+
+Se coloca una masa $m$ suspendida de la cumbre de la cercha. %
+%
+Todas las barras de la cercha están formada por acero ($E=200 \text{ GPa}$) y sección rectangular ($a=3.2\text{mm}$ y $b=25.4\text{mm}$). %
+%
+Los parámetros que definen la geometría son: $L_c = 240 $ mm, $L_x= 187$ mm y $L_z=84$ mm. %
+%
+Esta estructura es la utilizada por el profesor A. Wadee en la presentación referida al inicio del Capítulo 2 de este documento.
+
+\begin{figure}[htb]
+	\centering
+	\def\svgwidth{0.7\textwidth}
+\input{../fig/misses_truss_Cap4.pdf_tex}
+	\caption{Geometría de Cercha de Von Mises.}
+	\label{fig:GeomVM}
+\end{figure}
+
+La forma de cargar la estructura consiste en suspender la masa en la configuración indeformada y luego dejarla libre. Esto implica que el vector de deformación inicial es nulo y también lo es el vector de velocidades inicial.
+
+Dada la simetría axial, respecto al eje vertical, presente en la estructura y las cargas aplicadas, se modela la mitad izquierda de la estructura. %
+%
+De esta forma solo se debe analizar una biela de Green con condición de borde deslizante vertical en el extremo derecho y deslizante horizontal con resorte en el extremo izquierdo tal como se muestra en la Figura~\ref{fig:ModelVM}. %
+%
+La constante elástica del resorte está dado por la rigidez flexional de los pilares.
+
+\begin{figure}[htb]
+	\centering
+	\def\svgwidth{0.6\textwidth}
+\input{../fig/misses_truss_Cap4_simetr.pdf_tex}
+	\caption{Modelo de Cálculo de Cercha de Von Mises.}
+	\label{fig:ModelVM}
+\end{figure}
+
+El vector de desplazamientos es considerado $\bfu_t = (u_{1,t}, u_{2,t})^\text{T}$ y por lo tanto la ecuación dinámica está dada por:
+%
+\begin{equation}
+\bfM \ddot{\bfu}_t + \bfC \dot{\bfu}_t + \bff_{\text{int}}(\bfu_t)=\bff_{ext,t}.
+\end{equation}	
+%
+Dado que se está analizando media estructura la matriz de masa es igual a:
+%
+$$\bfM = \left[\begin{array}{cc}m_b& 0\\ 0& (m_b+m)/2\end{array}\right],$$
+%
+donde $m_b$ es la masa de una biela o columna y $m$ es la masa suspendida del centro de la cercha. Dicha masa se considera rígidamente vinculada a la cercha en la dirección vertical.
+
+Se considera que existe amortiguamiento, para lo cual se introduce una constante $c$ empírica de amortiguamiento de manera de reproducir un amortiguamiento realista de la estructura. %
+%
+Se usa $c$ para el grado de libertad de movimiento vertical y $c/10$ para el de movimiento horizontal, por lo que la matriz $\bfC$ está dada por:
+$$\bfC = \left[\begin{array}{cc}c/10& 0\\ 0& c\end{array}\right].$$
+%
+A través de estos amortiguamientos se pretende introducir el arrastre de la pesa debido al aire y la fricción existente en las bisagras que forman las articulaciones de la cercha en el modelo.
+
+Para resolver la dinámica de esta estructura se aplica el Método de Diferencia Centrada, el cual requiere que el usuario calcule únicamente el vector de fuerzas internas. %
+%
+En lo que sigue se deducirá $\bff_{\text{int}}(\bfu_t)$ asumiendo que las bielas son de tipo Green y que la columna se puede modelar como un resorte lineal horizontal de constante $k_c$,  donde $k_c$ está dado por la rigidez flexional $3 E I_c / L_c^3$.
+
+El vector de fuerzas internas de la biela se deduce usando el PTV. Evaluando el trabajo virtual interno se tiene:
+%
+\begin{equation}
+\delta W_{\text{int}}=\delta\bfu^T \bff_{\text{int}}(\bfu_t)= \int_{l_0} \sigma_t \delta\varepsilon_G A dx + \delta\bfu^T\bfK_s \bfu_t,
+\end{equation}
+%
+donde el segundo sumando del trabajo virtual interno corresponde al trabajo virtual interno de la fuerza realizada por el resorte horizontal de constante $k_c$.
+
+La deformación unitaria de Green para la biela está dada por:
+%
+\begin{equation}
+\varepsilon_G = \frac{l_t^2 - l_0^2}{2 l_0^2}.
+\end{equation}
+
+Se asume una relación constitutiva elástica lineal entre tensión y deformación de Green, válido para pequeñas deformaciones unitarias pero grandes desplazamientos y rotaciones.
+%
+\begin{equation}
+\sigma = E \varepsilon_G.
+\end{equation}
+
+Los largos de barra iniciales (de referencia) y actuales (deformada) se pueden escribir como:
+%
+\begin{equation}
+l_0 ^2 = L_x^2+ L_z^2 \quad \text{y} \quad 
+l_t ^2 = (L_x-u_{1,t})^2+ (L_z+u_{2,t})^2,
+\end{equation}
+respectivamente, con lo cual la deformación de Green se reduce a:
+%
+\begin{equation}
+\varepsilon_G = \frac{-2 L_x u_{1,t}+2 L_z u_{2,t} + u_{1,t}^2 + u_{2,t}^2}{2 (L_x^2+L_z^2)}.
+\end{equation}
+
+Se procede a calcular la variación de la deformación de Green ($\delta \varepsilon_G$):
+%
+\begin{eqnarray}
+	\delta \varepsilon_G &=& \dfrac{1}{L_x^2+L_z^2}\left[ (-L_x + u_1)\delta u_1 + (L_z+u_2)\delta u_2 \right] \\
+	 &=& \delta\bfu^T  \left[\begin{array}{c} -L_x + u_{1,t}\\ L_z + u_{2,t}\end{array}\right] \dfrac{1}{l_0^2},
+\end{eqnarray}
+con lo cual, el vector de fuerzas internas para la barra de Green y el resorte lineal resulta:
+%
+\begin{equation}
+\begin{split}
+	\bff_{\text{int}}(\bfu_t) = \dfrac{E A l_0(u_{1,t}^2 + u_{2,t}^2 -2 L_x u_{1,t}+2 L_z u_{2,t})}{2 l_0^4} &\left[\begin{array}{c} -L_x + u_{1,t}\\ L_z + u_{2,t}\end{array}\right] \\ +& \left[\begin{array}{c} k_c u_{1,t}\\ 0\end{array}\right].
+\end{split}
+\end{equation}
+
+Finalmente, la fuerza externa dinámica aplicada sobre la cercha resulta en un vector $\bff_{\text{ext},t}$ dado por:
+%
+\begin{equation}
+\bff_{\text{ext},t} = \left[\begin{array}{c} 0\\ -g(m_b+m)/2\end{array}\right].
+\end{equation}
+
+\textbf{Solución Numérica - Método de Diferencia Centrada:}
+
+Para obtener la solución numérica se debe definir un paso temporal $\Delta t$ tal que el método de Diferencia Centrada sea estable.
+
+\cajaactividad{
+Discutir y estimar cuánto vale $\Delta T_{cr}$ para el ejemplo de la cercha de Von Mises.
+}
+
+Luego de definido $\Delta T_{cr}$ se procede a implementar el método. En el Código~\ref{cod:VonMisesCod} se muestra una implementación para la resolución del ejemplo.
+
+\lstinputlisting[caption = {Código para análisis dinámico de cercha de Von Mises.}\label{cod:VonMisesCod}]{../src/VonMisesNL_DifCent.m}
+
+En la Figura~\ref{fig:ResVM} se muestra la solución de la dinámica para una masa suspendida igual a $m = 1.4$ kg.
+
+\begin{figure}[!htb]
+	\centering
+	\resizebox{.95\linewidth}{!}{\input{../fig/PlotsVMises}}
+	\caption{Resultados de Cercha de Von Mises (m=1.4kg) - Dinámica}
+	\label{fig:ResVM}
+\end{figure}
+
+
+Para valores de masa mayores a $1.4$ kg se observa pandeo tipo \textit{Snap-through} dinámico de la estructura.
+
+\cajaactividad{
+Compare este valor con el valor de carga crítica correspondiente a carga cuasi-estática.
+}
+
+
+\subsection{Método de Newmark - Implícito}
+
+La deducción de este método es similar a la presentada en la sección de dinámica lineal. %
+%
+El objetivo es determinar $\bfu_{t+\Delta t}$, para ello Newmark considera el equilibrio dinámico en el tiempo $t+\Delta t$ y se usan las mismas expresiones de tipo Taylor para aproximar $\bfu_{t+\Delta t}$ y $\dot{\bfu}_{t+\Delta t}$. Se debe notar que las fuerzas internas en el tiempo $t+\Delta t$ están dadas por $\bff_{\text{int}}(\bfu_{t+\Delta t})$.
+
+Lo anterior, en conjunto con las Ecuaciones \eqref{Newmark1} y \eqref{Newmark2}, permiten obtener la expresión:
+%
+\begin{equation}\label{NewmarkNL1}
+\bff_{\text{int}}(\bfu_{t+\Delta t})+\left[ \frac{1}{\alpha \Delta t^2} \bfM + \frac{\delta}{\alpha \Delta t} \bfC \right] \bfu_{t+\Delta t} = \hat{\bff}_{t+\Delta t},
+\end{equation}
+%
+donde la definición de $\hat{\bff}_{t+\Delta t}$ es la misma que la dada en la Sección~\ref{FormNewmarkLin}. %
+
+Se observa por lo tanto que para determinar $\bfu_{t+\Delta t}$ mediante Newmark, para el caso de un problema dinámico no lineal, se debe resolver la ecuación no lineal dada por la Ecuación~\eqref{NewmarkNL1}. %
+%
+Esto es claramente más laborioso que en el caso de un problema dinámico lineal, en el cual cada paso de Newmark consistía simplemente en resolver un sistema de ecuaciones lineales.
+
+\cajaactividad{
+Formular la solución de la ecuación no lineal definida en el paso de Newmark aplicando soluciones iterativas de tipo Newton-Raphson o incluso Newton-Raphson modificado.
+}
+
+Para los métodos de tipo Newton-Raphson se debe usar la matriz tangente $\bfK_T = \partial \bff_{\text{int}} / \partial \bfu$, que ya fue presentada en el caso de análisis estáticos. %
+%
+Para que la solución sea correcta se debe iterar hasta obtener convergencia del equilibrio dinámico en el paso $t+\Delta t$, con lo cual los criterios de convergencia son similares a los ya discutidos anteriormente, aunque usando la ecuación no lineal dada en esta sección.
+
+Tal como se indicó al comienzo de esta sección, si el paso temporal es suficientemente corto como para que la estructura se comporte de forma aproximadamente lineal durante varios instantes de tiempo, entonces Newmark presentará un comportamiento estable. A pesar de esto, es posible seleccionar pasos temporales suficientemente largos como para que los análisis de estabilidad numérica, hechos en la hipótesis de dinámica lineal, pierdan validez y el método presente inestabilidad numérica. %
+%
+Se puede ver un ejemplo de este tipo de comportamiento en el Capítulo 24 del libro \citep{Crisfield1997}.
+
+
+
+
+\section{Ejercicios}
+
+\begin{exercise}
+	
+En el planteo de las ecuaciones de movimiento de una estructura, la disipación viscosa fue definida en base a una matriz de amortiguamiento $\bfC$. En particular, se definió el amortiguamiento de Rayleigh en la Ecuación~\eqref{eqn:amorRayl}.
+
+\textbf{Se pide:}
+\begin{itemize}
+		\item[i)] Deducir la relación entre amortiguamiento crítico en el modo $i$ ($\xi_i$) y la frecuencia natural del modo $i$ ($\omega_i$) en la hipótesis de amortiguamiento de Rayleigh. Hacer un croquis de dicha relación.
+		\item[ii)] Deducir los valores de $\eta$ y $\chi$ de manera de lograr amortiguamientos críticos $\xi_1$ y $\xi_2$ en las frecuencias $\omega_1$ y $\omega_2$ respectivamente.
+	\end{itemize}
+	
+\end{exercise}
+
+% ------------ EJ2 -------------------------------------------
+
 %\begin{exercise}
+%	En el método de Diferencia Centrada se utilizaron Cocientes Incrementales para aproximar las derivadas en el tiempo de los desplazamientos. 
 %	
-%En el planteo de las ecuaciones de movimiento de una estructura, la disipación viscosa fue definida en base a una matriz de amortiguamiento $\bfC$. En particular, se definió el amortiguamiento de Rayleigh en la Ecuación~\eqref{eqn:amorRayl}.
-%
-%\textbf{Se pide:}
-%\begin{itemize}
-%		\item[i)] Deducir la relación entre amortiguamiento crítico en el modo $i$ ($\xi_i$) y la frecuencia natural del modo $i$ ($\omega_i$) en la hipótesis de amortiguamiento de Rayleigh. Hacer un croquis de dicha relación.
-%		\item[ii)] Deducir los valores de $\eta$ y $\chi$ de manera de lograr amortiguamientos críticos $\xi_1$ y $\xi_2$ en las frecuencias $\omega_1$ y $\omega_2$ respectivamente.
-%	\end{itemize}
+%	Se pide deducir los errores de truncamiento $O(\Delta t^p)$ para los cocientes incrementales:
+%	
+%	\begin{equation}\label{DifCenAccel}
+%		\ddot{\bfu}_t = \frac{\bfu_{t+\Delta t}-2\bfu_{t}+\bfu_{t-\Delta t}}{\Delta t ^2} + O(\Delta t^p)
+%	\end{equation}
+%	
+%	\begin{equation}\label{DifCenVel}
+%		\dot{\bfu}_t = \frac{\bfu_{t+\Delta t}-\bfu_{t-\Delta t}}{2\Delta t} + O(\Delta t^p)
+%	\end{equation}
 %	
 %\end{exercise}
-%
-%% ------------ EJ2 -------------------------------------------
-%
-%%\begin{exercise}
-%%	En el método de Diferencia Centrada se utilizaron Cocientes Incrementales para aproximar las derivadas en el tiempo de los desplazamientos. 
-%%	
-%%	Se pide deducir los errores de truncamiento $O(\Delta t^p)$ para los cocientes incrementales:
-%%	
-%%	\begin{equation}\label{DifCenAccel}
-%%		\ddot{\bfu}_t = \frac{\bfu_{t+\Delta t}-2\bfu_{t}+\bfu_{t-\Delta t}}{\Delta t ^2} + O(\Delta t^p)
-%%	\end{equation}
-%%	
-%%	\begin{equation}\label{DifCenVel}
-%%		\dot{\bfu}_t = \frac{\bfu_{t+\Delta t}-\bfu_{t-\Delta t}}{2\Delta t} + O(\Delta t^p)
-%%	\end{equation}
-%%	
-%%\end{exercise}
-%
-%%-------------- EJ3 --------------------------
-%
-%\bigskip
-%\begin{exercise}
-%	
-%	La estabilidad numérica del Método de Diferencia Centrada requiere que el paso de integración en el tiempo sea menor que un valor crítico $\Delta t_{crit}$. Esto es equivalente a afirmar que dicho método es condicionalmente estable. Para el caso sin amortiguamiento, se mostró que $\Delta t_{crit} = T_{min}/\pi$.
-%	
-%	Dado el Método de Diferencia Centrada, se pide:
-%	
-%	\begin{itemize}
-%		\item[i)] Hallar la matriz $\bfA$ en el caso de un sistema con amortiguamiento. $\ddot{x}_t + 2\omega\xi\dot{x}_t+\omega^2 x_t=0$.
-%		\item[ii)] Deducir o evaluar numéricamente (tabular o graficar) el valor $\Delta t_{crit}$ en función de $\xi$ para la matriz $\bfA$ hallada en el ítem anterior.
-%		\item[iii)] \textquestiondown Es la condición de estabilidad hallada más o menos estricta que la del caso sin amortiguamiento?
-%	\end{itemize}
-%	
-%	
-%\end{exercise}
-%
-%%--------------- EJ4 ----------------------------------------------------------------------
-%
-%\bigskip
-%\begin{exercise}
-%	
-%	Tal como se vió en la Sección~\ref{sec:newmarkLineal} el método de Newmark con $\alpha=1/4$ y $\delta=1/2$, también conocido como Método del Trapecio, es incondicionalmente estable. En este ejercicio se pide reproducir la gráfica de $\rho(\bfA)$ en función de $\Delta t / T$.
-%	
-%	%, que se repite a continuación:
-%	%
-%	%\begin{figure}[htb]
-%	%	\centering
-%	%	\includegraphics[width=.74\linewidth]{pr4/stabNewmark}
-%	%	\caption{Estabilidad de variantes del Método de Newmark}
-%	%	\label{fig:stabnewmark}
-%	%\end{figure}
-%	
-%\end{exercise}
-%
-%%--------------- EJ5 ----------------------------------------------------------------------
-%
-%\bigskip
-%\begin{exercise}
-%	
-%	Fue presentado un ejemplo de dinámica de un edificio bajo cargas sísmicas. El edificio corresponde al del ejemplo de carga explosiva visto. En este ejercicio se pide analizar dicha estructura bajo la acción sísmica. Los datos de aceleración del terreno se pueden descargar de la carpeta \textit{Ejemplo sismo} del  \href{https://eva.fing.edu.uy/course/view.php?id=1043}{sitio EVA del curso ANLE}.
-%	
-%	\begin{itemize}
-%		
-%		\item[i)] Ajustar el amortiguamiento de Rayleigh de la estructura de manera de tener 5\% de amortiguamiento crítico en 25 rad/s y 106 rad/s.
-%		
-%		\item[i)] Reproducir la gráfica de la solución dinámica de la estructura bajo carga de sismo dada en las notas.
-%		%	, que se repite a continuación:
-%		%	
-%		%	\begin{figure}[htb]
-%			%		\centering
-%			%		\includegraphics[width=.73\linewidth]{pr4/sismo}
-%			%		\caption{Dinámica de edificio bajo carga sísmica}
-%			%		\label{fig:sismo}
-%			%	\end{figure}
-%		
-%		\item[ii)] Calcular y presentar gráficamente las fuerzas de corte experimentadas por los pilares de cada uno de los tres niveles en función del tiempo.
-%		
-%	\end{itemize}
-%	
-%\end{exercise}
-%
-%%--------------- EJ6 ----------------------------------------------------------------------
-%
-%\bigskip
-%\begin{exercise}
-%	
-%	Se considera una péndulo elástico bajo la acción de la gravedad como se muestra en la \autoref{fig:pendulo}. El mismo consiste de una barra tipo biela (largo indeformado: $2\text{ m}$, módulo de Young: $E=210 \text{ GPa}$, diámetro: $10 \text{ mm}$), con un extremo articulado y el otro sujeto a una masa concentrada ($m=214 \text{ kg}$).
-%
-%		\begin{figure}[htb]
-%	\centering
-%	\includegraphics[width=.45\linewidth]{pendulo}
-%	\caption{Esquema de péndulo elástico}
-%	\label{fig:pendulo}
-%\end{figure}
-%
-%
-%	
-%	\begin{itemize}
-%		\item[i)] Deducir la ecuación de movimiento del sistema. Usar la deformación de Green para determinar el vector de fuerzas internas del elemento de biela.
-%		
-%		$$\bfM \ddot{\bfu}_t + \bff_{int}(\bfu_t)=\bff_{ext,t}$$
-%		
-%		\item[ii)] Estimar de forma analítica:
-%		\begin{itemize}
-%			\item[a)] El período de oscilación del péndulo, en la hipótesis de pequeña amplitud.
-%			\item[b)] El período de vibración axial del péndulo.
-%			\item[c)] La fuerza máxima esperada en la biela para las condiciones iniciales dadas en el ítem iii).
-%		\end{itemize}
-%		
-%		\item[iii)] Implementar en Octave la solución de la dinámica del sistema mediante el Método de Diferencia Centrada. 
-%		
-%		\begin{itemize}
-%			\item La condición inicial corresponde a la masa en reposo con la biela horizontal y sin estiramiento alguno.
-%			\item Seleccione $\Delta t$ a partir de los cálculos realizados en el ítem ii). Evalúe y comente sobre la estabilidad numérica variando $\Delta t$.
-%			\item Compare la fuerza máxima  obtenida en la biela para la solución numérica contra la de la estimación analítica.
-%		\end{itemize}
-%				
-%	\end{itemize}
-%	
-%\end{exercise}
-%
-%%--------------- EJ7 ----------------------------------------------------------------------
-%
-%\bigskip
-%\begin{exercise}
-%	
-%	En este ejercicio se busca estudiar la carga cuasi-estática de la cercha de Von Mises. Dicha estructura fue vista en teórico en la sección de dinámica no lineal.
-%	
-%	\begin{itemize}
-%		\item[1)] Modificar el código dado en teórico de manera de poder cargar la estructura gradualmente. Se debe implementar la siguiente función $\bff_{ext,t}$:
-%		
-%		\begin{figure}[htb]
-%			\centering
-%			\includegraphics[width=.5\linewidth]{fextt}
-%			\caption{Carga progresiva de la estructura.}
-%			\label{fig:fextt}
-%		\end{figure}
-%		
-%		\item[2)] Justificar y deducir cuál sería un período de carga ($t^*$) adecuado para modelar de manera aproximada la carga cuasi-estática de la estructura.
-%		
-%		\item[3)] Usando el período de carga ($t^*$) y valores de masa progresivamente mayores, realizar los correspondientes análisis dinámicos hasta hallar el valor de masa mínimo que genera la inestabilidad tipo \textit{snap-through}.
-%		
-%		\item[4)] Calcular, utilizando el principio de Mínima Energía Potencial Total, el valor de carga crítica de la cercha de Von Mises considerada en este ejercicio y comparar dicho valor con el hallado en 3).
-%	\end{itemize}
-%\end{exercise}	
-%
+
+%-------------- EJ3 --------------------------
+
+\bigskip
+\begin{exercise}
+	
+	La estabilidad numérica del Método de Diferencia Centrada requiere que el paso de integración en el tiempo sea menor que un valor crítico $\Delta t_{crit}$. Esto es equivalente a afirmar que dicho método es condicionalmente estable. Para el caso sin amortiguamiento, se mostró que $\Delta t_{crit} = T_{min}/\pi$.
+	
+	Dado el Método de Diferencia Centrada, se pide:
+	
+	\begin{itemize}
+		\item[i)] Hallar la matriz $\bfA$ en el caso de un sistema con amortiguamiento. $\ddot{x}_t + 2\omega\xi\dot{x}_t+\omega^2 x_t=0$.
+		\item[ii)] Deducir o evaluar numéricamente (tabular o graficar) el valor $\Delta t_{crit}$ en función de $\xi$ para la matriz $\bfA$ hallada en el ítem anterior.
+		\item[iii)] \textquestiondown Es la condición de estabilidad hallada más o menos estricta que la del caso sin amortiguamiento?
+	\end{itemize}
+	
+	
+\end{exercise}
+
+%--------------- EJ4 ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	Tal como se vió en la Sección~\ref{sec:newmarkLineal} el método de Newmark con $\alpha=1/4$ y $\delta=1/2$, también conocido como Método del Trapecio, es incondicionalmente estable. En este ejercicio se pide reproducir la gráfica de $\rho(\bfA)$ en función de $\Delta t / T$.
+	
+	%, que se repite a continuación:
+	%
+	%\begin{figure}[htb]
+	%	\centering
+	%	\includegraphics[width=.74\linewidth]{pr4/stabNewmark}
+	%	\caption{Estabilidad de variantes del Método de Newmark}
+	%	\label{fig:stabnewmark}
+	%\end{figure}
+	
+\end{exercise}
+
+%--------------- EJ5 ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	Fue presentado un ejemplo de dinámica de un edificio bajo cargas sísmicas. El edificio corresponde al del ejemplo de carga explosiva visto. En este ejercicio se pide analizar dicha estructura bajo la acción sísmica. Los datos de aceleración del terreno se pueden descargar de la carpeta \textit{Ejemplo sismo} del  \href{https://eva.fing.edu.uy/course/view.php?id=1043}{sitio EVA del curso ANLE}.
+	
+	\begin{itemize}
+		
+		\item[i)] Ajustar el amortiguamiento de Rayleigh de la estructura de manera de tener 5\% de amortiguamiento crítico en 25 rad/s y 106 rad/s.
+		
+		\item[i)] Reproducir la gráfica de la solución dinámica de la estructura bajo carga de sismo dada en las notas.
+		%	, que se repite a continuación:
+		%	
+		%	\begin{figure}[htb]
+			%		\centering
+			%		\includegraphics[width=.73\linewidth]{pr4/sismo}
+			%		\caption{Dinámica de edificio bajo carga sísmica}
+			%		\label{fig:sismo}
+			%	\end{figure}
+		
+		\item[ii)] Calcular y presentar gráficamente las fuerzas de corte experimentadas por los pilares de cada uno de los tres niveles en función del tiempo.
+		
+	\end{itemize}
+	
+\end{exercise}
+
+%--------------- EJ6 ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	Se considera una péndulo elástico bajo la acción de la gravedad como se muestra en la \autoref{fig:pendulo}. El mismo consiste de una barra tipo biela (largo indeformado: $2\text{ m}$, módulo de Young: $E=210 \text{ GPa}$, diámetro: $10 \text{ mm}$), con un extremo articulado y el otro sujeto a una masa concentrada ($m=214 \text{ kg}$).
+
+		\begin{figure}[htb]
+	\centering
+	\includegraphics[width=.45\linewidth]{pendulo}
+	\caption{Esquema de péndulo elástico}
+	\label{fig:pendulo}
+\end{figure}
+
+
+	
+	\begin{itemize}
+		\item[i)] Deducir la ecuación de movimiento del sistema. Usar la deformación de Green para determinar el vector de fuerzas internas del elemento de biela.
+		
+		$$\bfM \ddot{\bfu}_t + \bff_{int}(\bfu_t)=\bff_{ext,t}$$
+		
+		\item[ii)] Estimar de forma analítica:
+		\begin{itemize}
+			\item[a)] El período de oscilación del péndulo, en la hipótesis de pequeña amplitud.
+			\item[b)] El período de vibración axial del péndulo.
+			\item[c)] La fuerza máxima esperada en la biela para las condiciones iniciales dadas en el ítem iii).
+		\end{itemize}
+		
+		\item[iii)] Implementar en Octave la solución de la dinámica del sistema mediante el Método de Diferencia Centrada. 
+		
+		\begin{itemize}
+			\item La condición inicial corresponde a la masa en reposo con la biela horizontal y sin estiramiento alguno.
+			\item Seleccione $\Delta t$ a partir de los cálculos realizados en el ítem ii). Evalúe y comente sobre la estabilidad numérica variando $\Delta t$.
+			\item Compare la fuerza máxima  obtenida en la biela para la solución numérica contra la de la estimación analítica.
+		\end{itemize}
+				
+	\end{itemize}
+	
+\end{exercise}
+
+%--------------- EJ7 ----------------------------------------------------------------------
+
+\bigskip
+\begin{exercise}
+	
+	En este ejercicio se busca estudiar la carga cuasi-estática de la cercha de Von Mises. Dicha estructura fue vista en teórico en la sección de dinámica no lineal.
+	
+	\begin{itemize}
+		\item[1)] Modificar el código dado en teórico de manera de poder cargar la estructura gradualmente. Se debe implementar la siguiente función $\bff_{ext,t}$:
+		
+		\begin{figure}[htb]
+			\centering
+			\includegraphics[width=.5\linewidth]{fextt}
+			\caption{Carga progresiva de la estructura.}
+			\label{fig:fextt}
+		\end{figure}
+		
+		\item[2)] Justificar y deducir cuál sería un período de carga ($t^*$) adecuado para modelar de manera aproximada la carga cuasi-estática de la estructura.
+		
+		\item[3)] Usando el período de carga ($t^*$) y valores de masa progresivamente mayores, realizar los correspondientes análisis dinámicos hasta hallar el valor de masa mínimo que genera la inestabilidad tipo \textit{snap-through}.
+		
+		\item[4)] Calcular, utilizando el principio de Mínima Energía Potencial Total, el valor de carga crítica de la cercha de Von Mises considerada en este ejercicio y comparar dicho valor con el hallado en 3).
+	\end{itemize}
+\end{exercise}	
+
