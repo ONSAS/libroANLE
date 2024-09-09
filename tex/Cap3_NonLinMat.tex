@@ -893,10 +893,10 @@ Para esto, se debe incluir el cálculo de las magnitudes asociadas a la plastifi
 %
 En el primer capítulo de \citep{Simo1998} se encuentra un desarrollo completo de los modelos unidimensionales y su integración en algoritmos basados en el MEF.
 
-\section[Solicitaciones últimas en sección de hormigón armado] {Ejemplo: cálculo de solicitaciones últimas en sección de hormigón armado} 
+\section[Solicitaciones últimas en sección de hormigón armado] {Ejemplo: solicitaciones últimas en sección de hormigón armado} 
 %
 
-En esta sección se presenta una breve discusión sobre análisis no lineal de secciones y se resuelve un ejemplo de cálculo de solicitaciones últimas en una sección de hormigón armado considerando el comportamiento no lineal del hormigón. %
+En esta sección se presenta una breve discusión sobre análisis no lineal de secciones y se presenta un ejemplo de cálculo de solicitaciones últimas en una sección de hormigón armado considerando el comportamiento no lineal del hormigón. %
 
 A pesar de que el comportamiento del hormigón es usualmente considerado elastoplástico, en el ejemplo se considera un análisis elástico no lineal dado por una relación tensión-deformación sin calcular deformaciones plásticas. %
 %
@@ -921,21 +921,20 @@ Para la integración se utiliza el método de cuadratura de Gauss \citep{quarter
 
 Se considera una sección de hormigón armado de geometría rectangular de ancho $b=0.25$ m y altura $h= 0.6$ m con armadura simétrica dispuesta como se muestra en la Figura~\ref{fig:seccion}, con recubrimiento mecánico $r_m=0.06$ m. %
 %
-Los rectángulos oscuros representan barras de acero de refuerzo.
+Los rectángulos oscuros representan barras de acero de refuerzo. El acero considerado es de tipo B500 y el hormigón es tipo C25 (resistencia característica $f_{ck}=25 $ N/mm$^2$). %
 	
 %
 \begin{figure}[htb]
-	\def\svgwidth{0.4\textwidth}
+	\centering
+	\def\svgwidth{0.35\textwidth}
 \input{../fig/seccion.pdf_tex}
 	\caption{Esquema de sección transversal de hormigón armado.}
 	\label{fig:seccion}
 \end{figure}
 
-El acero considerado es de tipo B500 y el hormigón es tipo C25 (resistencia característica $f_{ck}=25 $ N/mm$^2$). %
-
-Se desea obtener las solicitaciones últimas resistidas por la sección para diferente cuantía, posición de linea neutra y curvatura, es decir los diagramas de interacción para la sección.
-
-Para la resolución de este ejemplo nos guiaremos por el procedimiento descrito en \citep{JimenezMontoya}, material basado en la norma española EHE-2008\footnote{Enlace a norma en \href{http://www.fomento.es/MFOM/LANG_CASTELLANO/ORGANOS_COLEGIADOS/MASORGANOS/CPH/instrucciones/EHE_es/}{sitio web de ministerio de fomento español} (último acceso diciembre 2017).}. %
+Se desea obtener las solicitaciones últimas resistidas por la sección para diferente cuantía, posición de linea neutra y curvatura, es decir los diagramas de interacción para la sección. %
+%
+Para la resolución de este ejemplo nos guiaremos por el procedimiento descrito en \citep{JimenezMontoya}, material basado en la norma española EHE-2008\footnote{Enlace a norma en \href{https://www.transportes.gob.es/organos-colegiados/mas-organos-colegiados/comision-permanente-del-hormigon/cph/instrucciones/ehe-08-version-en-castellano}{sitio web de ministerio de transporte español} (último acceso setiembre 2024).}. %
 %
 Para determinar las solicitaciones últimas soportadas por una sección rectangular se debe calcular las siguientes integrales
 %

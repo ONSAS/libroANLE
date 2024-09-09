@@ -1,4 +1,4 @@
-%% Creator: Inkscape inkscape 0.48.4, www.inkscape.org
+%% Creator: Inkscape 1.3.2 (091e20ef0f, 2023-11-25, custom), www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'seccion.pdf' (pdf, eps, ps)
 %%
@@ -35,8 +35,10 @@
     \renewcommand\transparent[1]{}%
   }%
   \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{308.66630751bp}%
+    \setlength{\unitlength}{209.60890961bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,11 +50,14 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.6780639)%
-    \put(0,0){\includegraphics[width=\unitlength]{seccion.pdf}}%
-    \put(-0.00860557,0.09816592){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$A_s$}}}%
-    \put(0.13025387,0.57892092){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$A_s$}}}%
-    \put(0.76530598,0.62653536){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$d$}}}%
-    \put(0.89718599,0.26767299){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$h$}}}%
+  \begin{picture}(1,0.93633665)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{seccion.pdf}}%
+    \put(-0.00262312,0.08333816){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}$A_s$\end{tabular}}}}%
+    \put(0.00230528,0.79934598){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}$A_s$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{seccion.pdf}}%
+    \put(0.81461803,0.86507989){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}$d$\end{tabular}}}}%
+    \put(0.87266212,0.36316568){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}$h$\end{tabular}}}}%
   \end{picture}%
 \endgroup%
