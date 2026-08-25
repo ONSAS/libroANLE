@@ -2,7 +2,8 @@
 clc, clear all, close all
 
 % Punto Inicial
-x0 = [0];     L0 = 0;
+x0 = 0;     
+L0 = 0;
 
 % Definicion de Ecuacion No-Lineal
 v = 1;
@@ -10,53 +11,74 @@ f = @(x) x-3/2*x.^2+1/2*x.^3;
 F_x = @(x) 1-3*x+3/2*x.^2;
 
 % Pasos de Solucion con ArcLength
-Nsteps = 50;
+Nsteps = 20;
 
-x = x0;   L = L0;
+x = x0;
+L = L0;
 
 % Parametros de la restriccion de Long. Arco
-psi = 1;    Dl = .083;
+psi = 1;
+Dl = .25;
 
-for k=1:Nsteps 
+% Parametros de Control de Iteracion
+tol_F = 1e-8;
+Maxiter = 10;
+
+for k = 1:Nsteps 
    % Inicializacion de Incrementos para Iteracion. F.Euler, 
    % Se ajusta el signo de DL en base a pasaje de un punto critico.
-   DL_ki = Dl/2;
    
-   if F_x(x(k))>0 
-      DL_ki = DL_ki;      % si la rama es ascendente usa +Forw.Euler
+   DL_ki = 1; % incremento unitario, luego se escala para satisfacer Long. Arco
+   
+   if F_x(x(k)) > 0 
+      Dx_ki = DL_ki*v/F_x(x(k)); % si la rama es ascendente usa +Forw.Euler
+   elseif F_x(x(k)) < 0
+      DL_ki = -DL_ki;     % si la rama es descendente usa -Forw.Euler
+      Dx_ki = DL_ki*v/F_x(x(k));
    else
-      DL_ki = -DL_ki;     % si la rama es ascendente usa -Forw.Euler
-   end  
-   Dx_ki = DL_ki*v/F_x(x(k)); % Incremento Forw.Euler
+      DL_ki = 0;          % usa Lambda constante
+      Dx_ki = Dl;         % la rama es horizontal usa Dx = Dl
+   end
 
-  % Parametros de Control de Iteracion
-  tol_F = 1e-8;    Maxiter = 10;
+   norm_inc = sqrt(Dx_ki^2 + psi^2*v^2*DL_ki^2); % Norma de Incremento Long.Arco
+
+   Dx_ki = Dx_ki*Dl/norm_inc; % Escalo Dx_ki para satisfacer Dl
+   DL_ki = DL_ki*Dl/norm_inc; % Escalo DL_ki para satisfacer Dl
 
   % Iteracion de Metodo de Longitud de Arco.
-  i=1;     err_F = inf;
-  while and(i<Maxiter , err_F>tol_F)
-    A = [F_x(x(k)+Dx_ki), -v ; 2*Dx_ki , 2*psi^2*v^2*DL_ki];
+  i = 1;
+  err_F = inf;
+
+  while i < Maxiter && err_F > tol_F
+    A = [ F_x(x(k)+Dx_ki) , -v ; 2*Dx_ki , 2*psi^2*v^2*DL_ki ];
   
-    b = [ -(f(x(k)+Dx_ki)-(L(k)+DL_ki)*v) ; -(Dx_ki^2+(psi*v*DL_ki)^2-Dl^2)];
+    b = [ -(f(x(k)+Dx_ki)-(L(k)+DL_ki)*v) ; -(Dx_ki^2+(psi*v*DL_ki)^2-Dl^2) ];
   
     dIncr = A\b;    % solucion del sistema lineal
     
     Dx_ki = Dx_ki + dIncr(1); % Actualizo el Incremento en x
     DL_ki = DL_ki + dIncr(2); % Actualizo el Incremento en lambda
   
-    err_F = norm(f(x(k)+Dx_ki)-(L(k)+DL_ki)*v); % error para control de convergencia
+    err_F = abs( f(x(k)+Dx_ki) - (L(k)+DL_ki)*v ); % error para control de convergencia
     
-    i = i+1; % incrementa contador de iteraciones
+    i = i + 1; % incrementa contador de iteraciones
   end
+
+if err_F > tol_F
+   error('No se logro convergencia en el paso %d',k)
+end
 
   % Tenemos incrementos con convergencia deseada para el paso(k)
   % Incremento x(k) para obtener x(k+1)
-  x(k+1) = x(k) + Dx_ki;       L(k+1) = L(k) + DL_ki;  
+  x(k+1) = x(k) + Dx_ki;
+  L(k+1) = L(k) + DL_ki;  
 end
 
 % Genera graficas de Solucion Numerica y Exacta
-grid = 0:.01:3;  Solexact = f(grid);
+grid = 0:.01:3;
+Solexact = f(grid);
 plot(grid,Solexact,'-r',x,L,'ok')
-xlabel('x'), ylabel('\lambda')
+xlabel('x')
+ylabel('\lambda')
 title('Solucion Con Metodo de Longitud de Arco')
 legend('Solucion Exacta'), axis([0 3 -0.5 2.5],'square')
